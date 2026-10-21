@@ -14,7 +14,7 @@ namespace PowerPlannerAppDataLibrary.Components
     {
         private const string IMAGE_ATTACHMENT_SYMBOL = "\uD83D\uDCF7";
 
-        public static View Render(ViewItemTaskOrEvent Item, BaseMainScreenViewModelDescendant ViewModel, bool IncludeDate = true, bool IncludeClass = true, bool IncludeMargin = true, Action InterceptOnTapped = null, bool AllowDrag = false)
+        public static View Render(ViewItemTaskOrEvent Item, BaseMainScreenViewModelDescendant ViewModel, bool IncludeDate = true, bool IncludeClass = true, float? horizontalMargin = null, Action InterceptOnTapped = null, bool AllowDrag = false)
         {
             if (Item == null || ViewModel == null)
             {
@@ -24,11 +24,13 @@ namespace PowerPlannerAppDataLibrary.Components
             string details = GetDetails(Item);
             var subtitleColor = Item.Class.Color.ToColor().Opacity(Item.IsComplete ? 0.7 : 1);
 
+            float resolvedHorizontalMargin = horizontalMargin ?? (Theme.Current.PageMargin - Theme.Current.SmallPageMargin);
+
             var answer = new Border
             {
-                Margin = IncludeMargin ? new Thickness(Theme.Current.PageMargin, 3, Theme.Current.PageMargin, 3) : new Thickness(0, 3, 0, 3),
-                BackgroundColor = Theme.Current.BackgroundAlt1Color,
-                CornerRadius = 4,
+                Margin = new Thickness(resolvedHorizontalMargin, 3, resolvedHorizontalMargin, 3),
+                BackgroundColor = Theme.Current.ChromeColor,
+                CornerRadius = 6,
                 Tapped = () =>
                 {
                     if (InterceptOnTapped != null)
@@ -66,14 +68,16 @@ namespace PowerPlannerAppDataLibrary.Components
                                     Text = GetSubtitle(Item, IncludeDate, IncludeClass),
                                     FontWeight = FontWeights.SemiBold,
                                     TextColor = subtitleColor,
-                                    WrapText = false
+                                    WrapText = false,
+                                    FontSize = Theme.Current.CaptionFontSize
                                 },
 
                                 !string.IsNullOrWhiteSpace(details) ? new TextBlock
                                 {
                                     Text = details,
                                     WrapText = false,
-                                    TextColor = Theme.Current.SubtleForegroundColor
+                                    TextColor = Theme.Current.SubtleForegroundColor,
+                                    FontSize = Theme.Current.CaptionFontSize
                                 } : null
                             }
                         }.LinearLayoutWeight(1)
@@ -188,7 +192,7 @@ namespace PowerPlannerAppDataLibrary.Components
         private static View CompletionBar(ViewItemTaskOrEvent item)
         {
             bool isAbsolute = item.IsComplete || item.IsEvent || item.PercentComplete == 0;
-            const int width = 8;
+            const int width = 6;
             var doneColor = Theme.Current.SubtleForegroundColor.Opacity(0.3);
 
             if (isAbsolute)

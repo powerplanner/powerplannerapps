@@ -38,6 +38,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             switch (e.PropertyName)
             {
                 case nameof(MainScreenViewModel.IsCompactMode):
+                case nameof(MainScreenViewModel.NookInsets):
                     MarkDirty();
                     break;
             }
@@ -53,9 +54,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             // Subscribe to the school
             Subscribe(YearsViewItemsGroup.School);
 
+            bool hasTitlebar = MainScreenViewModel.IsCompactMode && !PowerPlannerApp.ShowYearsAsPopups;
+            var contentMargins = PowerPlannerApp.ShowYearsAsPopups ? new Thickness(Theme.Current.SmallPageMargin + NookInsets.Left, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin + NookInsets.Right, Theme.Current.SmallPageMargin + NookInsets.Bottom) : MainScreenViewModel.ContentMargins;
+
             var linearLayout = new LinearLayout
             {
-                Margin = new Thickness(Theme.Current.PageMargin).Combine(NookInsets),
+                Margin = new Thickness(Theme.Current.PageMargin - Theme.Current.SmallPageMargin),
                 Children =
                 {
                     new LinearLayout
@@ -98,6 +102,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 }
             };
 
+            if (PowerPlannerApp.ShowYearsAsPopups)
+            {
+                linearLayout.Margin = linearLayout.Margin.Combine(new Thickness(0, 0, 0, 24)).Combine(new Thickness(Theme.Current.SmallPageMargin));
+            }
+
             List<View> adaptiveGridPanelChildren;
 
             var adaptiveGridPanel = new AdaptiveGridPanel();
@@ -128,28 +137,37 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 });
             }
 
-            if (VxPlatform.Current == Platform.Uwp || VxPlatform.Current == Platform.iOS)
+            if (PowerPlannerApp.ShowYearsAsPopups)
             {
-                return new LinearLayout
+                return new ScrollView
                 {
-                    Children =
-                    {
-                        (MainScreenViewModel.IsCompactMode || VxPlatform.Current == Platform.iOS) ? new Toolbar
-                        {
-                            Title = Title
-                        }.InnerToolbarThemed() : null,
-
-                        new ScrollView
-                        {
-                            Content = linearLayout
-                        }.LinearLayoutWeight(1)
-                    }
+                    Content = linearLayout
                 };
             }
 
-            return new ScrollView
+            return new LinearLayout
             {
-                Content = linearLayout
+                BackgroundColor = Theme.Current.ChromeColor,
+                Children =
+                {
+                    hasTitlebar ? new Toolbar
+                    {
+                        Title = Title,
+                        NookInsets = MainScreenViewModel.ContentNookInsets,
+                        OnBack = CanGoBack ? () => GoBack() : null,
+                    }.InnerToolbarThemed() : null,
+
+                    new Border
+                    {
+                        CornerRadius = Theme.Current.CornerRadius,
+                        Margin = new Thickness(contentMargins.Left, hasTitlebar ? 0 : contentMargins.Top, contentMargins.Right, contentMargins.Bottom),
+                        BackgroundColor = Theme.Current.BackgroundColor,
+                        Content = new ScrollView
+                        {
+                            Content = linearLayout
+                        }
+                    }.LinearLayoutWeight(1)
+                }
             };
         }
 
@@ -284,7 +302,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 BackgroundColor = Theme.Current.BackgroundAlt1Color,
                 Content = linearLayout,
                 Margin = new Thickness(0, 24, 0, 0),
-                VerticalAlignment = VerticalAlignment.Top
+                VerticalAlignment = VerticalAlignment.Top,
+                CornerRadius = 9
             };
         }
 
@@ -424,7 +443,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             {
                 Margin = new Thickness(12, 0, 12, 12),
                 BackgroundColor = Theme.Current.BackgroundAlt2Color,
-                Content = linearLayout
+                Content = linearLayout,
+                CornerRadius = 6
             };
         }
 
@@ -571,7 +591,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
         public override bool GoBack()
         {
-            if (PowerPlannerApp.DoNotShowYearsInTabItems && !MainScreenViewModel.AvailableItems.Any())
+            if (PowerPlannerApp.ShowYearsAsPopups && !MainScreenViewModel.AvailableItems.Any())
             {
                 return false;
             }

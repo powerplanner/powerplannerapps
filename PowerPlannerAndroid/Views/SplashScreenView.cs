@@ -18,7 +18,7 @@ namespace PowerPlannerAndroid.Views
     {
         public SplashScreenView(Context context) : base(context, Resource.Layout.SplashScreen)
         {
-            FindViewById(Resource.Id.SplashRoot).SetBackgroundColor(Vx.Views.Theme.Current.ChromeColor.ToDroid());
+            FindViewById(Resource.Id.SplashRoot).SetBackgroundColor(Vx.Views.Theme.Current.PrimaryColor.ToDroid());
         }
     }
 }

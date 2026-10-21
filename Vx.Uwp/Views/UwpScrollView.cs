@@ -19,6 +19,11 @@ namespace Vx.Uwp.Views
         {
             base.ApplyProperties(oldView, newView);
 
+            View.HorizontalScrollBarVisibility = newView.HorizontalScrollEnabled ? ScrollBarVisibility.Auto : ScrollBarVisibility.Disabled;
+            View.ZoomMode = (newView.MaximumZoomScale != newView.MinimumZoomScale) ? ZoomMode.Enabled : ZoomMode.Disabled;
+            View.MaxZoomFactor = newView.MaximumZoomScale;
+            View.MinZoomFactor = newView.MinimumZoomScale;
+
             VxReconciler.Reconcile(oldView?.Content, newView.Content, view =>
             {
                 View.Content = view?.CreateFrameworkElement();

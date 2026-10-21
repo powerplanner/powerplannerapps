@@ -35,6 +35,8 @@ namespace PowerPlannerUWP.Helpers
             SetBrushColor(resources, "PowerPlannerDarkerBlue", colors.PrimaryDark);
             SetBrushColor(resources, "PowerPlannerCommandBarBackground", colors.PrimaryDark);
             SetBrushColor(resources, "TaskOrEventBrush", colors.PrimaryLight);
+
+            SetBrushColor(resources, "ApplicationPageBackgroundThemeBrush", Theme.Current.BackgroundColor);
         }
 
         private static void UpdateColorResources(ThemeColors colors)
@@ -65,7 +67,7 @@ namespace PowerPlannerUWP.Helpers
         {
             try
             {
-                var colors = ThemeColorGenerator.Generate(Theme.Current.ChromeColor);
+                var colors = ThemeColorGenerator.Generate(Theme.Current.AccentColor);
                 UpdateTitleBar(colors);
             }
             catch (Exception ex)
@@ -79,30 +81,26 @@ namespace PowerPlannerUWP.Helpers
             var view = ApplicationView.GetForCurrentView();
             var titleBar = view.TitleBar;
 
-            var darkColor = ToUwpColor(colors.PrimaryDarkest);
-            var hoverColor = ToUwpColor(colors.PrimaryHover);
-            var lightColor = ToUwpColor(colors.PrimaryLight);
+            var chromeColors = ThemeColorGenerator.Generate(Theme.Current.ChromeColor);
+            var lighterColor = ToUwpColor(Theme.Current.IsDarkTheme ? chromeColors.PrimaryDark : chromeColors.PrimaryHover);
+            var darkerColor = ToUwpColor(Theme.Current.IsDarkTheme ? chromeColors.PrimaryHover : chromeColors.PrimaryDark);
+            var darkestColor = ToUwpColor(Theme.Current.IsDarkTheme ? chromeColors.PrimaryLight : chromeColors.PrimaryDarkest);
 
-            // Generate an inactive color (lighter variant of primary)
-            var inactiveColor = ToUwpColor(colors.PrimaryInactive);
+            titleBar.BackgroundColor = ToUwpColor(Theme.Current.ChromeColor);
+            titleBar.ForegroundColor = ToUwpColor(Theme.Current.ForegroundColor);
+            titleBar.ButtonBackgroundColor = ToUwpColor(Theme.Current.ChromeColor);
+            titleBar.ButtonForegroundColor = ToUwpColor(Theme.Current.ForegroundColor);
 
-            titleBar.BackgroundColor = darkColor;
-            titleBar.ForegroundColor = Colors.White;
+            titleBar.InactiveBackgroundColor = ToUwpColor(chromeColors.PrimaryInactive);
+            titleBar.InactiveForegroundColor = ToUwpColor(Theme.Current.IsDarkTheme ? System.Drawing.Color.DarkGray : System.Drawing.Color.LightGray);
+            titleBar.ButtonInactiveBackgroundColor = ToUwpColor(chromeColors.PrimaryInactive);
+            titleBar.ButtonInactiveForegroundColor = ToUwpColor(Theme.Current.IsDarkTheme ? System.Drawing.Color.DarkGray : System.Drawing.Color.LightGray);
 
-            titleBar.InactiveBackgroundColor = inactiveColor;
-            titleBar.InactiveForegroundColor = Colors.LightGray;
+            titleBar.ButtonHoverBackgroundColor = darkerColor;
+            titleBar.ButtonHoverForegroundColor = ToUwpColor(Theme.Current.ForegroundColor);
 
-            titleBar.ButtonBackgroundColor = darkColor;
-            titleBar.ButtonForegroundColor = Colors.White;
-
-            titleBar.ButtonHoverBackgroundColor = hoverColor;
-            titleBar.ButtonHoverForegroundColor = Colors.White;
-
-            titleBar.ButtonInactiveBackgroundColor = inactiveColor;
-            titleBar.ButtonInactiveForegroundColor = Colors.LightGray;
-
-            titleBar.ButtonPressedBackgroundColor = lightColor;
-            titleBar.ButtonPressedForegroundColor = Colors.White;
+            titleBar.ButtonPressedBackgroundColor = darkestColor;
+            titleBar.ButtonPressedForegroundColor = ToUwpColor(Theme.Current.ForegroundColor);
         }
 
         private static void SetBrushColor(ResourceDictionary resources, string key, System.Drawing.Color color)

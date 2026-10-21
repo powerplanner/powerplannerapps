@@ -168,11 +168,6 @@ namespace Vx.iOS
                     return new iOSListView();
                 }
 
-                if (view is Vx.Views.Toolbar)
-                {
-                    return new iOSToolbar();
-                }
-
                 if (view is Vx.Views.WrapGrid)
                 {
                     return new iOSWrapGrid();

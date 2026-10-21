@@ -33,6 +33,8 @@ namespace InterfacesDroid.Windows
 
         public static WindowInsetsCompat WindowInsets { get; private set; }
 
+        public static event EventHandler<WindowInsetsCompat> WindowInsetsChanged;
+
         public NativeDroidAppWindow(BareActivity activity)
         {
             Activity = activity;
@@ -56,6 +58,11 @@ namespace InterfacesDroid.Windows
         public WindowInsetsCompat OnApplyWindowInsets(View v, WindowInsetsCompat windowInsets)
         {
             WindowInsets = windowInsets;
+            try
+            {
+                WindowInsetsChanged?.Invoke(this, windowInsets);
+            }
+            catch { }
 
             // Return CONSUMED if you don't want want the window insets to keep being
             // passed down to descendant views.

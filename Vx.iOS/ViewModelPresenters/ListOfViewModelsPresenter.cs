@@ -18,6 +18,14 @@ namespace InterfacesiOS.ViewModelPresenters
         public ListOfViewModelsPresenter()
         {
             NavigationBarHidden = true;
+
+            // With the default (non-fullscreen) page sheet presentation, the real status bar sits
+            // over the dimmed presenting view, and by default the presenting view controller keeps
+            // control of the status bar style. Since its content is dimmed, that can force a light
+            // (white) status bar even in our light theme. Capturing status bar appearance here makes
+            // this popup (and its actual, undimmed content) control the status bar instead, while
+            // keeping the native page sheet swipe-to-dismiss presentation.
+            ModalPresentationCapturesStatusBarAppearance = true;
         }
 
         /// <summary>

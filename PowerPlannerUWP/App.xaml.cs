@@ -116,8 +116,6 @@ namespace PowerPlannerUWP
             {
                 // Main views
                 { typeof(InitialSyncViewModel), viewModel => new InitialSyncView { ViewModel = (InitialSyncViewModel)viewModel } },
-                { typeof(AgendaViewModel), viewModel => new AgendaView { ViewModel = (AgendaViewModel)viewModel } },
-                { typeof(CalendarViewModel), viewModel => new ComponentView { ViewModel = (CalendarViewModel)viewModel } },
                 { typeof(ClassViewModel), viewModel => new ClassView { ViewModel = (ClassViewModel)viewModel } },
                 { typeof(LoginViewModel), viewModel => new LoginView { ViewModel = (LoginViewModel)viewModel } },
                 { typeof(DayViewModel), viewModel => new MainContentDayView { ViewModel = (DayViewModel)viewModel } },
@@ -504,7 +502,7 @@ namespace PowerPlannerUWP
 
                 // Apply themed colors to XAML brush resources and title bar
                 // using cached/default theme from SharedInitialization
-                var colors = ThemeColorGenerator.Generate(Vx.Views.Theme.Current.ChromeColor);
+                var colors = ThemeColorGenerator.Generate(Vx.Views.Theme.Current.PrimaryColor);
                 Helpers.UwpThemeColorApplier.Apply(colors);
 
                 // Set up the min window size

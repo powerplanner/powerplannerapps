@@ -23,21 +23,19 @@
             <SolidColorBrush x:Key="ItemShadow" Color="Black" Opacity="0.2"/>
             <SolidColorBrush x:Key="SubitemShadow" Color="Black" Opacity="0.2"/>
 
-            <SolidColorBrush x:Key="PopupBackground">#EFEFEF</SolidColorBrush>
+            <SolidColorBrush x:Key="PopupBackground">#FFFFFF</SolidColorBrush>
             <SolidColorBrush x:Key="PopupOverlayBackground" Color="Black" Opacity="0.3"/>
 
             <SolidColorBrush x:Key="ScheduleItemsExpandedBackground" Color="#E4E4E4"/>
 
             <Style x:Key="ItemContainer" TargetType="Border">
                 <Setter Property="Background" Value="{ThemeResource ItemBackground}"/>
-                <Setter Property="BorderThickness" Value="1,1,4,4"/>
-                <Setter Property="BorderBrush" Value="{ThemeResource ItemShadow}"/>
+                <Setter Property="CornerRadius" Value="9"/>
             </Style>
 
             <Style x:Key="SubitemContainer" TargetType="Border">
                 <Setter Property="Background" Value="{ThemeResource SubitemBackground}"/>
-                <Setter Property="BorderThickness" Value="1,1,3,3"/>
-                <Setter Property="BorderBrush" Value="{ThemeResource SubitemShadow}"/>
+                <Setter Property="CornerRadius" Value="6"/>
             </Style>
 
             <Style x:Key="ItemContainerStyle" TargetType="Button">
@@ -185,7 +183,7 @@
             <SolidColorBrush x:Key="ItemShadow" Color="White" Opacity="0.1"/>
             <SolidColorBrush x:Key="SubitemShadow" Color="White" Opacity="0.1"/>
 
-            <SolidColorBrush x:Key="PopupBackground">#1F1F1F</SolidColorBrush>
+            <SolidColorBrush x:Key="PopupBackground">#000000</SolidColorBrush>
             <SolidColorBrush x:Key="PopupOverlayBackground" Color="LightGray" Opacity="0.3"/>
 
             <SolidColorBrush x:Key="ScheduleItemsExpandedBackground" Color="#1B1B1B"/>

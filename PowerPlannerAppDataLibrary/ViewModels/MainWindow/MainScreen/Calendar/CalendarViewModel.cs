@@ -669,10 +669,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 toolbar = new Toolbar
                 {
-                    Title = CanGoBack ? "" : Title,
+                    Title = (CanGoBack && VxPlatform.Current == Platform.Uwp) ? "" : Title,
                     AlignTitleToLeft = true,
                     OnBack = CanGoBack ? () => GoBack() : (Action)null,
                     BackText = CanGoBack ? Title : null,
+                    NookInsets = NookInsets,
                     PrimaryCommands =
                     {
                         // Add will get inserted here unless it's used as floating action
@@ -695,20 +696,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     }
                 };
 
-                toolbar = VxPlatform.Current == Platform.Uwp ? toolbar.InnerToolbarThemed() : toolbar.PowerPlannerThemed();
-
-                // iOS reverses the order of toolbar items, so to ensure prev and next are in the right order, we reverse
-                if (Toolbar.DisplaysPrimaryCommandsRightToLeft)
-                {
-                    toolbar.PrimaryCommands.Reverse();
-
-                    addGoToTodayMenuItem(false);
-                }
-
-                else
-                {
-                    addGoToTodayMenuItem(true);
-                }
+                addGoToTodayMenuItem(true);
 
                 // Only on full calendar, show the option for past complete
                 toolbar.SecondaryCommands.Add(new MenuItem
@@ -717,9 +705,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     Click = () => ShowPastCompleteItemsOnCalendar = !ShowPastCompleteItemsOnCalendar
                 });
 
-                // Add button is displayed as floating action button sometimes on Android
+                // Add button is displayed as floating action button sometimes
                 bool hasAddButtonInToolbar = false;
-                if (VxPlatform.Current != Platform.Android || DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
+                if (DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
                 {
                     toolbar.PrimaryCommands.Insert(0, ToolbarHelper.AddCommand(() => AddTask(), () => AddEvent(), () => AddHoliday()));
                     hasAddButtonInToolbar = true;
@@ -769,46 +757,52 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     DisplayDate = SelectedDate,
                     OnDisplayDateChanged = value => SelectedDate = value,
                     IncludeHeader = DisplayState == DisplayStates.Split,
-                    OnExpand = DisplayState == DisplayStates.Split && VxPlatform.Current != Platform.Uwp ? ExpandDay : (Action)null,
-                    IncludeAdd = VxPlatform.Current == Platform.Uwp
-                    
+                    OnExpand = DisplayState == DisplayStates.Split && VxPlatform.Current != Platform.Uwp ? ExpandDay : (Action)null
                 };
                 day.LinearLayoutWeight(1);
             }
 
-            var root = new LinearLayout
+            Border content = new Border
             {
-                Orientation = Orientation.Vertical,
-                BackgroundColor = Theme.Current.BackgroundAlt2Color,
-                Children =
-                {
-                    toolbar,
-                    calendar,
-                    day
-                }
-            };
-
-            // Add floating action button for Android
-            if (VxPlatform.Current == Platform.Android)
-            {
-                return new FrameLayout
+                CornerRadius = Theme.Current.CornerRadius,
+                BackgroundColor = Theme.Current.BackgroundColor,
+                Margin = new Thickness(ContentMargins.Left, 0, ContentMargins.Right, ContentMargins.Bottom),
+                Content = new LinearLayout
                 {
                     Children =
                     {
-                        root,
+                        calendar,
+                        day
+                    }
+                }
+            }.LinearLayoutWeight(1);
 
-                        day != null ? new FloatingAddItemButton
-                        {
-                            AddTask = () => AddTask(),
-                            AddEvent = () => AddEvent(),
-                            AddHoliday = () => AddHoliday()
-                        } : null
-                    },
-                    BackgroundColor = Theme.Current.BackgroundAlt2Color
-                };
-            }
+            var root = new LinearLayout
+            {
+                Orientation = Orientation.Vertical,
+                BackgroundColor = Theme.Current.ChromeColor,
+                Children =
+                {
+                    toolbar,
+                    content
+                }
+            };
 
-            return root;
+            return new FrameLayout
+            {
+                Children =
+                {
+                    root,
+
+                    day != null ? new FloatingAddItemButton
+                    {
+                        AddTask = () => AddTask(),
+                        AddEvent = () => AddEvent(),
+                        AddHoliday = () => AddHoliday()
+                    } : null
+                },
+                BackgroundColor = Theme.Current.ChromeColor
+            };
         }
     }
 }

@@ -27,9 +27,9 @@ namespace PowerPlannerAppDataLibrary.App
         public static bool UseUnifiedCalendarDayTabItem { get; set; }
 
         /// <summary>
-        /// iOS and Android sets this to true. iOS shows years within settings page, opened as a popup, Android shows it in a separate menu, also opened as a popup.
+        /// Android sets this to true
         /// </summary>
-        public static bool DoNotShowYearsInTabItems { get; set; }
+        public static bool ShowYearsAsPopups { get; set; }
 
         /// <summary>
         /// Android sets this to true

@@ -78,10 +78,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         protected override View Render()
         {
-            var layout = new LinearLayout()
-            {
-                Margin = NookInsets
-            };
+            var layout = new LinearLayout();
 
             if (IsViewYearsAndSemestersVisible)
             {
@@ -340,39 +337,31 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 () => ShowPopup(new VxTests.VxTestsViewModel(this)));
 #endif
 
-            if (VxPlatform.Current == Platform.Uwp)
+            Subscribe(MainScreenViewModel);
+            bool hasTitlebar = MainScreenViewModel == null || MainScreenViewModel.IsCompactMode;
+
+            var finalContent = new Border
             {
-                return new LinearLayout
-                {
-                    Children =
-                    {
-                        MainScreenViewModel == null || MainScreenViewModel.IsCompactMode ? new Toolbar
-                        {
-                            Title = Title
-                        }.InnerToolbarThemed() : null,
+                BackgroundColor = Theme.Current.BackgroundColor,
+                CornerRadius = Theme.Current.CornerRadius,
+                Margin = new Thickness(ContentMargins.Left, hasTitlebar ? 0 : ContentMargins.Top, ContentMargins.Right, ContentMargins.Bottom),
+                Content = new ScrollView(layout)
+            };
 
-                        new ScrollView(layout).LinearLayoutWeight(1)
-                    }
-                };
-            }
-
-            if (VxPlatform.Current == Platform.iOS)
+            return new LinearLayout
             {
-                return new LinearLayout
+                BackgroundColor = Theme.Current.ChromeColor,
+                Children =
                 {
-                    Children =
+                    hasTitlebar ? new Toolbar
                     {
-                        new Toolbar
-                        {
-                            Title = Title
-                        }.PowerPlannerThemed(),
+                        Title = Title,
+                        NookInsets = NookInsets
+                    }.InnerToolbarThemed() : null,
 
-                        new ScrollView(layout).LinearLayoutWeight(1)
-                    }
-                };
-            }
-
-            return new ScrollView(layout);
+                    finalContent.LinearLayoutWeight(1)
+                }
+            };
         }
 
         private void RenderOption(LinearLayout layout, string icon, string title, string subtitle, Action action)

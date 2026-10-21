@@ -68,6 +68,7 @@ namespace PowerPlannerUWP
 
             // Register custom Vx views
             VxUwpExtensions.RegisterCustomView(v => v is PowerPlannerAppDataLibrary.Views.CompletionSlider, v => new UwpCompletionSlider());
+            VxUwpExtensions.RegisterCustomView(v => v is FloatingAddItemButton, v => new UwpFloatingAddItemButton());
 
             // Ensure we've loaded previous version info
             AppUpdatedHandler.GetPreviousVersionBeforeAppInitializes();

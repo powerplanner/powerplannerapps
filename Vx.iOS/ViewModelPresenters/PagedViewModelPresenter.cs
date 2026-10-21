@@ -57,7 +57,7 @@ namespace InterfacesiOS.ViewModelPresenters
             return window?.SafeAreaInsets ?? UIEdgeInsets.Zero;
         }
 
-        private static UIWindow GetKeyWindow()
+        public static UIWindow GetKeyWindow()
         {
             foreach (NSObject scene in UIApplication.SharedApplication.ConnectedScenes)
             {

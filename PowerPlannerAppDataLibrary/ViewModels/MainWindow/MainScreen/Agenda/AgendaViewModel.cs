@@ -80,47 +80,44 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 
             var baseView = RenderBase();
 
+            bool hasFab = VxPlatform.Current == Platform.Android;
+
+            // Wrap baseView in rounded border
+            baseView = new Border
+            {
+                BackgroundColor = Theme.Current.BackgroundColor,
+                CornerRadius = Theme.Current.CornerRadius,
+                Margin = new Thickness(ContentMargins.Left, 0, ContentMargins.Right, ContentMargins.Bottom),
+                Content = baseView
+            };
+
             // Wrap in floating action button
-            if (VxPlatform.Current == Platform.Android)
+            return new FrameLayout
             {
-                return new FrameLayout
+                BackgroundColor = Theme.Current.ChromeColor,
+                Children =
                 {
-                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
-                    Children =
+                    new LinearLayout
                     {
-                        baseView,
-
-                        new FloatingAddItemButton
+                        Children =
                         {
-                            AddTask = AddTask,
-                            AddEvent = AddEvent
-                        }
-                    }
-                };
-            }
-
-            else if (VxPlatform.Current == Platform.iOS)
-            {
-                return new LinearLayout
-                {
-                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
-                    Children =
-                    {
-                        new Toolbar
-                        {
-                            Title = "Agenda",
-                            PrimaryCommands =
+                            new Toolbar
                             {
-                                ToolbarHelper.AddCommand(AddTask, AddEvent)
-                            }
-                        }.PowerPlannerThemed(),
+                                Title = PowerPlannerResources.GetStringMenuItem(NavigationManager.MainMenuSelections.Agenda),
+                                NookInsets = NookInsets
+                            },
 
-                        baseView.LinearLayoutWeight(1)
+                            baseView.LinearLayoutWeight(1)
+                        }
+                    },
+
+                    new FloatingAddItemButton
+                    {
+                        AddTask = AddTask,
+                        AddEvent = AddEvent
                     }
-                };
-            }
-
-            return baseView;
+                }
+            };
         }
 
         private View RenderBase()
@@ -129,7 +126,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 return new LinearLayout
                 {
-                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
                     VerticalAlignment = VerticalAlignment.Center,
                     Children =
                     {
@@ -153,10 +149,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 
             return new ListView
             {
-                BackgroundColor = Theme.Current.BackgroundAlt2Color,
                 Items = ItemsWithHeaders,
                 ItemTemplate = RenderItem,
-                Padding = new Thickness(0, 0, 0, Theme.Current.PageMargin + (VxPlatform.Current == Platform.Android ? (FloatingActionButton.DefaultSize + Theme.Current.PageMargin) : 0))
+                Padding = new Thickness(0, 0, 0, FloatingActionButton.DefaultSize + (Theme.Current.PageMargin - Theme.Current.SmallPageMargin) * 2)
             };
         }
 
@@ -169,13 +164,71 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 
             else if (item is ItemsGroupHeader header)
             {
-                return new TextBlock
+                return new LinearLayout
                 {
-                    Text = header.Header,
-                    FontSize = Theme.Current.SubtitleFontSize,
-                    WrapText = false,
-                    Margin = new Thickness(Theme.Current.PageMargin, 12, 0, 3)
-                }.AllowDropTaskOrEventOnDate(header.DateToUseForNewItems);
+                    Orientation = Orientation.Horizontal,
+                    Children =
+                    {
+                        new TransparentContentButton
+                        {
+                            Content = new FontIcon
+                            {
+                                Glyph = header.Collapsed ? MaterialDesign.MaterialDesignIcons.KeyboardArrowRight : MaterialDesign.MaterialDesignIcons.KeyboardArrowDown,
+                                FontSize = 12,
+                                Color = Theme.Current.SubtleForegroundColor,
+                                Margin = new Thickness(4, 0, 4, 0)
+                            },
+                            Click = delegate
+                            {
+                                header.Collapsed = !header.Collapsed;
+                            },
+                        },
+
+                        new TextBlock
+                        {
+                            Text = header.Header,
+                            FontWeight = FontWeights.SemiBold,
+                            WrapText = false,
+                            Tapped = delegate
+                            {
+                                header.Collapsed = !header.Collapsed;
+                            }
+                        }.LinearLayoutWeight(1),
+
+                        new TransparentContentMenuButton
+                        {
+                            Content = new FontIcon
+                            {
+                                Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                                FontSize = 12,
+                                Color = Theme.Current.SubtleForegroundColor,
+                                Margin = new Thickness(4, 0, 4, 0)
+                            },
+                            Margin = new Thickness(6, 0, Theme.Current.PageMargin - Theme.Current.SmallPageMargin, 0),
+                            Menu = new List<IMenuItem>
+                            {
+                                new MenuItem
+                                {
+                                    Text = PowerPlannerResources.GetString("String_AddTask"),
+                                    Click = delegate
+                                    {
+                                        AddItem(TaskOrEventType.Task, header.DateToUseForNewItems);
+                                    }
+                                },
+
+                                new MenuItem
+                                {
+                                    Text = PowerPlannerResources.GetString("String_AddEvent"),
+                                    Click = delegate
+                                    {
+                                        AddItem(TaskOrEventType.Event, header.DateToUseForNewItems);
+                                    }
+                                },
+                            }
+                        }
+                    },
+                    Margin = new Thickness(0, 12, 0, 2)
+                };
             }
 
             else
@@ -405,14 +458,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             AddItem(TaskOrEventType.Event);
         }
 
-        private void AddItem(TaskOrEventType type)
+        private void AddItem(TaskOrEventType type, DateTime? date = null)
         {
             MainScreenViewModel.ShowPopup(AddTaskOrEventViewModel.CreateForAdd(MainScreenViewModel, new AddTaskOrEventViewModel.AddParameter()
             {
                 SemesterIdentifier = MainScreenViewModel.CurrentSemesterId,
                 Classes = MainScreenViewModel.Classes,
                 SelectedClass = null,
-                Type = type
+                Type = type,
+                DueDate = date
             }));
         }
 

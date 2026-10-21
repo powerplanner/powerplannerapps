@@ -17,6 +17,11 @@ namespace PowerPlannerAppDataLibrary.Components
         public Thickness NookInsets { get; set; } = new Thickness(0, 0, 0, 0);
         public float BottomNookInset => Math.Max(0, NookInsets.Bottom - 15);
 
+        public static float FinalHeight(Thickness nookInsets)
+        {
+            return 64 + Math.Max(0, nookInsets.Bottom - 15);
+        }
+
         protected override View Render()
         {
             return new FrameLayout
@@ -32,18 +37,18 @@ namespace PowerPlannerAppDataLibrary.Components
                         Orientation = Orientation.Horizontal,
                         Children =
                         {
-                            HasClasses ? RenderItem(NavigationManager.MainMenuSelections.Calendar, MaterialDesign.MaterialDesignIcons.CalendarMonth) : null,
+                            HasClasses ? RenderItem(NavigationManager.MainMenuSelections.Calendar, MaterialDesign.MaterialDesignIcons.CalendarMonth, isFirst: HasClasses) : null,
                             HasClasses ? RenderItem(NavigationManager.MainMenuSelections.Agenda, MaterialDesign.MaterialDesignIcons.Task) : null,
-                            RenderItem(NavigationManager.MainMenuSelections.Schedule, MaterialDesign.MaterialDesignIcons.Schedule),
+                            RenderItem(NavigationManager.MainMenuSelections.Schedule, MaterialDesign.MaterialDesignIcons.Schedule, isFirst: !HasClasses),
                             RenderItem(NavigationManager.MainMenuSelections.Classes, MaterialDesign.MaterialDesignIcons.LibraryBooks),
-                            RenderItem(NavigationManager.MainMenuSelections.Settings, MaterialDesign.MaterialDesignIcons.PersonOutline, IsOfflineOrHasSyncError)
+                            RenderItem(NavigationManager.MainMenuSelections.Settings, MaterialDesign.MaterialDesignIcons.PersonOutline, IsOfflineOrHasSyncError, isLast: true)
                         }
                     }
                 }
             };
         }
 
-        private View RenderItem(NavigationManager.MainMenuSelections item, string glyph, bool error = false)
+        private View RenderItem(NavigationManager.MainMenuSelections item, string glyph, bool error = false, bool isFirst = false, bool isLast = false)
         {
             var isThisItem =
                 item == SelectedItem ||
@@ -51,7 +56,7 @@ namespace PowerPlannerAppDataLibrary.Components
                 (SelectedItem == NavigationManager.MainMenuSelections.Day && item == NavigationManager.MainMenuSelections.Calendar);
 
             var title = item == NavigationManager.MainMenuSelections.Settings ? PowerPlannerResources.GetString("String_More") : MainScreenViewModel.MainMenuItemToString(item);
-            var color = isThisItem ? System.Drawing.Color.White : System.Drawing.Color.LightGray;
+            var color = isThisItem ? Theme.Current.ForegroundColor : Theme.Current.SubtleForegroundColor;
 
             var icon = new FontIcon
             {
@@ -65,7 +70,7 @@ namespace PowerPlannerAppDataLibrary.Components
                 Content = new LinearLayout
                 {
                     VerticalAlignment = VerticalAlignment.Center,
-                    Margin = new Thickness(0, 0, 0, BottomNookInset),
+                    Margin = new Thickness(isFirst ? NookInsets.Left + Theme.Current.SmallPageMargin : 0, 0, isLast ? NookInsets.Right + Theme.Current.SmallPageMargin : 0, BottomNookInset),
                     Children =
                     {
                         error ? (View)new FrameLayout
@@ -88,7 +93,7 @@ namespace PowerPlannerAppDataLibrary.Components
                         isThisItem ? new TextBlock
                         {
                             Text = title,
-                            TextColor = System.Drawing.Color.White,
+                            TextColor = color,
                             TextAlignment = HorizontalAlignment.Center,
                             WrapText = false,
                             FontSize = 12

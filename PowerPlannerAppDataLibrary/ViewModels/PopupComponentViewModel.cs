@@ -35,6 +35,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels
             protected set => SetProperty(ref _secondaryCommands, value, nameof(SecondaryCommands));
         }
 
+        public override Thickness NookInsets => PlatformNookInsets;
+
         public PopupComponentViewModel(BaseViewModel parent) : base(parent)
         {
         }

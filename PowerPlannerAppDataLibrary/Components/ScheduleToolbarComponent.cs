@@ -13,6 +13,7 @@ namespace PowerPlannerAppDataLibrary.Components
     public partial class ScheduleToolbarComponent : VxComponent
     {
         public ScheduleViewModel ViewModel { get; set; }
+        public Thickness NookInsets { get; set; }
 
         protected override View Render()
         {
@@ -29,6 +30,7 @@ namespace PowerPlannerAppDataLibrary.Components
             return new Toolbar
             {
                 Title = !hasScheduleContent ? MainScreenViewModel.MainMenuItemToString(NavigationManager.MainMenuSelections.Schedule) : null,
+                NookInsets = NookInsets,
                 CustomTitle = hasScheduleContent ? new LinearLayout
                 {
                     Orientation = Orientation.Horizontal,
@@ -40,7 +42,6 @@ namespace PowerPlannerAppDataLibrary.Components
                         {
                             Text = ViewModel.DisplayStartDate.ToString(GetWeekDateConverterParameter()) + "-" +
                                 ViewModel.DisplayEndDate.ToString(GetWeekDateConverterParameter()),
-                            TextColor = Color.White,
                             FontSize = 20,
                             FontWeight = FontWeights.SemiLight,
                             WrapText = false
@@ -48,7 +49,6 @@ namespace PowerPlannerAppDataLibrary.Components
                         new TextBlock
                         {
                             Text = ViewModel.DisplayStartDate.ToString("yyyy") + (ViewModel.HasTwoWeekSchedule ? ", " + PowerPlannerResources.GetLocalizedWeek(ViewModel.CurrentWeek) : ""),
-                            TextColor = Color.White,
                             Opacity = 0.7f,
                             FontSize = 16,
                             FontWeight = FontWeights.SemiLight,
@@ -77,7 +77,7 @@ namespace PowerPlannerAppDataLibrary.Components
                     ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.SplitEditing || ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.FullEditing ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetStringClose(),
-                        Glyph = MaterialDesign.MaterialDesignIcons.Close,
+                        Glyph = MaterialDesign.MaterialDesignIcons.Check,
                         Click = ViewModel.ExitEditMode
                     } : new MenuItem
                     {

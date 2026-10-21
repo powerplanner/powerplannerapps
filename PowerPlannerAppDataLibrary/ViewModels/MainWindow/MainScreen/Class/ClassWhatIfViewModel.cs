@@ -445,6 +445,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                     Click = AddGrade
                                 }
                             },
+                            NookInsets = NookInsets,
                             OnBack = () => GoBack()
                         }.InnerToolbarThemed(),
 

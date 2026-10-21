@@ -99,6 +99,11 @@ namespace Vx.Droid
                     return new DroidTransparentContentButton();
                 }
 
+                if (view is Vx.Views.TransparentContentMenuButton)
+                {
+                    return new DroidTransparentContentMenuButton();
+                }
+
                 if (view is Vx.Views.ScrollView)
                 {
                     return new DroidScrollView();
@@ -164,11 +169,6 @@ namespace Vx.Droid
                     return new DroidFloatingActionButton();
                 }
 
-                if (view is Vx.Views.Toolbar)
-                {
-                    return new DroidToolbar();
-                }
-
                 if (view is Vx.Views.ImageView)
                 {
                     if (view is Vx.Views.ZoomableImageView)
@@ -192,6 +192,11 @@ namespace Vx.Droid
                 if (view is Vx.Views.ProgressBar)
                 {
                     return new DroidProgressBar();
+                }
+
+                if (view is Vx.Views.PagedViewModelPresenterView)
+                {
+                    return new DroidPagedViewModelPresenterView();
                 }
 
 #if DEBUG

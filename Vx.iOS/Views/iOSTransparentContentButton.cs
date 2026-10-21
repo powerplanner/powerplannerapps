@@ -19,6 +19,10 @@ namespace Vx.iOS.Views
         {
             base.ApplyProperties(oldView, newView);
 
+            View.BackgroundColor = newView.BackgroundColor.ToUI();
+            View.Layer.CornerRadius = newView.CornerRadius;
+            View.Layer.MasksToBounds = newView.CornerRadius > 0; // Clip the corners of subviews
+
             ReconcileContentNew(oldView?.Content, newView.Content);
         }
     }

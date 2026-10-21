@@ -98,8 +98,8 @@ namespace Vx.Droid.Views
 
         private void UpdateColors()
         {
-            ViewCompat.SetBackgroundTintList(View, ColorTools.GetColorStateList(Vx.Views.Theme.Current.ChromeColor.ToDroid()));
-            View.RippleColor = Android.Content.Res.ColorStateList.ValueOf(Vx.Views.Theme.Current.ChromeLightColor.ToDroid());
+            ViewCompat.SetBackgroundTintList(View, ColorTools.GetColorStateList(Vx.Views.Theme.Current.AccentColor.ToDroid()));
+            View.RippleColor = Android.Content.Res.ColorStateList.ValueOf(Vx.Views.Theme.Current.PrimaryColor.ToDroid());
         }
     }
 }

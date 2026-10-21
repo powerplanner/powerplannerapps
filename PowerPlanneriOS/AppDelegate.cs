@@ -82,7 +82,6 @@ namespace PowerPlanneriOS
 
                 { typeof(InitialSyncViewModel), () => new InitialSyncViewController() },
                 { typeof(MainScreenViewModel), () => new MainScreenViewController() },
-                { typeof(ScheduleViewModel), () => new ScheduleViewController() },
                 { typeof(ClassViewModel), () => new ClassViewController() },
 
                 { typeof(YearsViewModel), () => new ComponentViewController() }, // Don't show Years as a popup on iOS
@@ -229,6 +228,7 @@ namespace PowerPlanneriOS
 
             // Register custom views
             Vx.iOS.VxiOSExtensions.RegisterCustomView(v => v is CompletionSlider, v => new iOSCompletionSlider());
+            Vx.iOS.VxiOSExtensions.RegisterCustomView(v => v is FloatingAddItemButton, v => new iOSFloatingAddItemButton());
 
             UNUserNotificationCenter.Current.Delegate = new MyUserNotificationCenterDelegate(this);
             RemindersExtension.Current = new IOSRemindersExtension();

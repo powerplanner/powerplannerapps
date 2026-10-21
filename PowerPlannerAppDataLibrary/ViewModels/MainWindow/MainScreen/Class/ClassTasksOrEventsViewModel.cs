@@ -114,27 +114,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             var baseView = RenderBase();
 
             // Wrap in floating action button
-            if (VxPlatform.Current == Platform.Android)
+            return new FrameLayout
             {
-                return new FrameLayout
+                Children =
                 {
-                    Children =
+                    baseView,
+
+                    new FloatingActionButton
                     {
-                        baseView,
-
-                        new FloatingActionButton
-                        {
-                            Glyph = MaterialDesign.MaterialDesignIcons.Add,
-                            Click = Add,
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            VerticalAlignment = VerticalAlignment.Bottom,
-                            Margin = new Thickness(PageMargin)
-                        }
+                        Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                        Click = Add,
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                        VerticalAlignment = VerticalAlignment.Bottom,
+                        Margin = new Thickness(PageMargin)
                     }
-                };
-            }
-
-            return baseView;
+                }
+            };
         }
 
         private View RenderBase()
@@ -157,7 +152,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         {
                             Items = PastCompletedItemsWithHeaders,
                             ItemTemplate = RenderItem,
-                            Padding = new Thickness(0, 0, 0, PageMargin + (VxPlatform.Current == Platform.Android ? (FloatingActionButton.DefaultSize + PageMargin) : 0))
+                            Padding = new Thickness(0, 0, 0, PageMargin + FloatingActionButton.DefaultSize + PageMargin)
                         }.LinearLayoutWeight(1)
                     }
                 };
@@ -177,7 +172,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                     {
                         Text = PowerPlannerResources.GetString(Type == TaskOrEventType.Task ? "ClassPage_ButtonShowOldTasksString" : "ClassPage_ButtonShowOldEventsString"),
                         HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Margin = new Thickness(PageMargin, PageMargin, PageMargin + (VxPlatform.Current == Platform.Android ? (FloatingActionButton.DefaultSize + PageMargin) : 0), PageMargin),
+                        Margin = new Thickness(PageMargin, PageMargin, PageMargin + FloatingActionButton.DefaultSize + PageMargin, PageMargin),
                         Click = ShowPastCompletedItems
                     }
                 }
@@ -188,7 +183,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             if (item is ViewItemTaskOrEvent taskOrEvent)
             {
-                var listItem = TaskOrEventListItemComponent.Render(taskOrEvent, this, IncludeDate: true, IncludeClass: false, IncludeMargin: false, AllowDrag: true);
+                var listItem = TaskOrEventListItemComponent.Render(taskOrEvent, this, IncludeDate: true, IncludeClass: false, horizontalMargin: 0, AllowDrag: true);
                 listItem.Margin = new Thickness(PageMargin, listItem.Margin.Top, PageMargin, listItem.Margin.Bottom);
                 return listItem;
             }

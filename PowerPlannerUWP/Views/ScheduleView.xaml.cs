@@ -502,11 +502,19 @@ namespace PowerPlannerUWP.Views
             VisualStateManager.GoToState(this, "WelcomeState", true);
             if (WelcomeRoot.Children.Count == 0)
             {
-                WelcomeRoot.Children.Add(new ScheduleWelcomeComponent()
+                WelcomeRoot.Background = Vx.Views.Theme.Current.ChromeColor.ToUwpBrush();
+                var renderedWelcomeComponent = new ScheduleWelcomeComponent()
                 {
-                    ScheduleViewModel = ViewModel,
-                    NookInsets = new Vx.Views.Thickness(ViewModel.NookInsets.Left, 0, ViewModel.NookInsets.Right, 0)
-                }.Render());
+                    ScheduleViewModel = ViewModel
+                }.Render();
+                
+                WelcomeRoot.Children.Add(new Border
+                {
+                    CornerRadius = new CornerRadius(Vx.Views.Theme.Current.CornerRadius),
+                    Background = Vx.Views.Theme.Current.BackgroundColor.ToUwpBrush(),
+                    Margin = new Thickness(Vx.Views.Theme.Current.SmallPageMargin),
+                    Child = renderedWelcomeComponent
+                });
             }
         }
 

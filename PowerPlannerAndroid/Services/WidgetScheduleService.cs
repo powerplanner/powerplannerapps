@@ -241,7 +241,7 @@ namespace PowerPlannerAndroid.Services
 
             RemoteViews classView = new RemoteViews(packageName, hasRoom ? Resource.Layout.WidgetScheduleClassWithRoomListItem : Resource.Layout.WidgetScheduleClassListItem);
             classView.SetTextViewText(Resource.Id.WidgetScheduleClassNameTextView, c.Name.Trim());
-            classView.SetTextViewText(Resource.Id.WidgetScheduleClassTimeTextView, Views.ListItems.MyScheduleItemView.GetStringTimeToTime(schedule, date));
+            classView.SetTextViewText(Resource.Id.WidgetScheduleClassTimeTextView, GetStringTimeToTime(schedule, date));
             if (hasRoom)
             {
                 classView.SetTextViewText(Resource.Id.WidgetScheduleClassRoomTextView, schedule.Room.Trim());
@@ -259,6 +259,11 @@ namespace PowerPlannerAndroid.Services
             classView.SetOnClickFillInIntent(Resource.Id.WidgetScheduleClassListItem, classIntent);
 
             return classView;
+        }
+
+        public static string GetStringTimeToTime(ViewItemSchedule s, DateTime date)
+        {
+            return PowerPlannerResources.GetStringTimeToTime(DateHelper.ToShortTimeString(s.StartTimeInLocalTime(date)), DateHelper.ToShortTimeString(s.EndTimeInLocalTime(date)));
         }
 
         public class WidgetScheduleFactory : Java.Lang.Object, RemoteViewsService.IRemoteViewsFactory

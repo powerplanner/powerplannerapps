@@ -7,6 +7,7 @@ using Foundation;
 using UIKit;
 using PowerPlanneriOS.Helpers;
 using InterfacesiOS.Views;
+using Vx.Views;
 
 namespace PowerPlanneriOS.Views
 {
@@ -17,7 +18,8 @@ namespace PowerPlanneriOS.Views
     {
         public UIStatusBarView()
         {
-            base.BackgroundColor = ColorResources.PowerPlannerBlueChromeColor;
+            // Extend the chrome color to the status bar area.
+            base.BackgroundColor = iOSThemeColorApplier.ToUIColor(Theme.Current.ChromeColor);
         }
 
         public static UIStatusBarView CreateAndAddTo(UIView viewToAddTo)

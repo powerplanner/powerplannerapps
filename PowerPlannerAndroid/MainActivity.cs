@@ -63,6 +63,20 @@ namespace PowerPlannerAndroid
             // Enable bleeding full screen into status and navigation bar
             WindowCompat.SetDecorFitsSystemWindows(Window, false);
 
+            // Chrome is light in light theme, so system bar icons must be dark (activity is recreated when UI mode changes)
+            var isDarkTheme = Resources.Configuration.UiMode.HasFlag(Android.Content.Res.UiMode.NightYes);
+            var insetsController = WindowCompat.GetInsetsController(Window, Window.DecorView);
+            if (insetsController != null)
+            {
+                insetsController.AppearanceLightStatusBars = !isDarkTheme;
+
+                // Nav bar is only transparent on API 30+ (values-v30); below that it's solid primaryDark
+                if (OperatingSystem.IsAndroidVersionAtLeast(30))
+                {
+                    insetsController.AppearanceLightNavigationBars = !isDarkTheme;
+                }
+            }
+
             // Initialize Vx (have to initialize here rather than in App so it picks up the right context with the themed context)
             Vx.Droid.VxDroidExtensions.ApplicationContext = this;
 

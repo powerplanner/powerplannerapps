@@ -31,9 +31,6 @@ namespace PowerPlanneriOS.Controllers
 
         private UIBarButtonItem _navButtonEditDetails;
         private UIBarButtonItem _navButtonEditTimes;
-        private UIBarButtonItem _navButtonAddTask;
-        private UIBarButtonItem _navButtonAddEvent;
-        private UIBarButtonItem _navButtonAddGrade;
 
         public override void OnViewModelLoadedOverride()
         {
@@ -48,24 +45,6 @@ namespace PowerPlanneriOS.Controllers
                 Title = PowerPlannerResources.GetString("AppBarButtonEdit.Label")
             };
             _navButtonEditTimes.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.EditTimes(); }).Handler;
-
-            _navButtonAddTask = new UIBarButtonItem(UIBarButtonSystemItem.Add)
-            {
-                Title = PowerPlannerResources.GetString("String_AddTask")
-            };
-            _navButtonAddTask.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.TasksViewModel.Add(); }).Handler;
-
-            _navButtonAddEvent = new UIBarButtonItem(UIBarButtonSystemItem.Add)
-            {
-                Title = PowerPlannerResources.GetString("String_AddEvent")
-            };
-            _navButtonAddEvent.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.EventsViewModel.Add(); }).Handler;
-
-            _navButtonAddGrade = new UIBarButtonItem(UIBarButtonSystemItem.Add)
-            {
-                Title = PowerPlannerResources.GetString("String_AddGrade")
-            };
-            _navButtonAddGrade.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.GradesViewModel.Add(); }).Handler;
 
             _detailsViewController = new ClassDetailsViewController()
             {
@@ -212,20 +191,20 @@ namespace PowerPlanneriOS.Controllers
             else if (currentController == _tasksViewController)
             {
                 ViewModel.CurrentPage = ClassViewModel.ClassPages.Tasks;
-                NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonAddTask };
+                NavItem.RightBarButtonItems = new UIBarButtonItem[] { };
                 ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
             }
             else if (currentController == _eventsViewController)
             {
                 ViewModel.CurrentPage = ClassViewModel.ClassPages.Events;
-                NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonAddEvent };
+                NavItem.RightBarButtonItems = new UIBarButtonItem[] { };
                 ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
 
             }
             else if (currentController == _gradesViewController)
             {
                 ViewModel.CurrentPage = ClassViewModel.ClassPages.Grades;
-                NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonAddGrade };
+                NavItem.RightBarButtonItems = new UIBarButtonItem[] { };
                 ViewModel.ViewItemsGroupClass.LoadGrades();
             }
         }

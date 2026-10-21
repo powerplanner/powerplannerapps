@@ -268,7 +268,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 return;
             }
 
-            if (response.Classes.Count > 15)
+            if (response.Classes.Count > 20)
             {
                 _errorText.Value = R.S("AddClassesWithAi_ErrorTooManyClasses");
                 TrackFailed("TooManyClasses");

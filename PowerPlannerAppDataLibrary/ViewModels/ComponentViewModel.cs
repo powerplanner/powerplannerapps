@@ -14,7 +14,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels
             protected set => SetProperty(ref _title, value, nameof(Title));
         }
 
-        public Thickness NookInsets { get; protected set; }
+        private Thickness _platformNookInsets;
+
+        /// <summary>
+        /// Raw insets reported by the platform view, for view models that cover the whole screen (popups).
+        /// </summary>
+        protected Thickness PlatformNookInsets => _platformNookInsets;
+
+        /// <summary>
+        /// Insets for main screen content, which exclude edges already handled by the sidebar or bottom nav bar.
+        /// </summary>
+        public virtual Thickness NookInsets => MainScreenViewModel.ContentNookInsets;
+
+        /// <summary>
+        /// Includes nook insets
+        /// </summary>
+        public virtual Thickness ContentMargins => MainScreenViewModel.ContentMargins;
+
+        internal void RefreshContentNookInsetsAndMargins()
+        {
+            MarkDirty();
+        }
 
         public ComponentViewModel(BaseViewModel parent) : base(parent)
         {
@@ -28,9 +48,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels
 
         public void UpdateNookInsets(Thickness newInsets)
         {
-            if (NookInsets != newInsets)
+            if (_platformNookInsets != newInsets)
             {
-                NookInsets = newInsets;
+                _platformNookInsets = newInsets;
                 MarkDirty();
             }
         }

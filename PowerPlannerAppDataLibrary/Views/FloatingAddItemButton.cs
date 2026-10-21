@@ -6,7 +6,7 @@ using Vx.Views;
 namespace PowerPlannerAppDataLibrary.Views
 {
     /// <summary>
-    /// Only supported on Android
+    /// Supported on Android, UWP, and iOS
     /// </summary>
     public class FloatingAddItemButton : View
     {

@@ -1,7 +1,10 @@
 ﻿using System;
+using Foundation;
+using UIKit;
 using InterfacesiOS.Controllers;
 using InterfacesiOS.Helpers;
 using InterfacesiOS.Views;
+using InterfacesiOS.ViewModelPresenters;
 using PowerPlannerAppDataLibrary.ViewModels;
 using Vx.iOS;
 
@@ -47,7 +50,23 @@ namespace PowerPlanneriOS.Controllers
 
         private void UpdateNookInsets()
         {
-            ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)View.SafeAreaInsets.Left, 0, (float)View.SafeAreaInsets.Right, (float)View.SafeAreaInsets.Bottom));
+            if (ViewModel == null)
+            {
+                return;
+            }
+
+            // Use the WINDOW's safe-area insets rather than this view's. The view's insets depend on
+            // where it sits in the hierarchy (a view that doesn't reach the screen edge reports 0),
+            // whereas the window always reports the true device insets (notch, home indicator, etc.).
+            var insets = GetWindowSafeAreaInsets();
+            ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)insets.Left, (float)insets.Top, (float)insets.Right, (float)insets.Bottom));
+        }
+
+
+        private UIEdgeInsets GetWindowSafeAreaInsets()
+        {
+            var window = View?.Window ?? PagedViewModelPresenter.GetKeyWindow();
+            return window?.SafeAreaInsets ?? UIEdgeInsets.Zero;
         }
     }
 }

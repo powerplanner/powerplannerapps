@@ -70,7 +70,7 @@
 
 
 
-    <Grid x:Name="Root" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid x:Name="Root">
 
         <Grid.RowDefinitions>
             <RowDefinition x:Name="RowToolbar" Height="Auto"/>
@@ -80,7 +80,7 @@
 
         <Grid Grid.Row="1">
 
-            <Grid x:Name="GridSchedule">
+            <Grid x:Name="GridSchedule" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" CornerRadius="9" Margin="6, 0, 6, 6">
 
                 <ScrollViewer x:Name="ScrollViewerSchedule" HorizontalScrollBarVisibility="Auto" ZoomMode="Enabled" Grid.Row="0" ViewChanging="ScrollViewerSchedule_ViewChanging" Tapped="ScrollViewerSchedule_Tapped">
                     <Grid>
@@ -344,28 +344,14 @@
             x:DeferLoadStrategy="Lazy"
             Visibility="Collapsed"
             Grid.Row="2"
-            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            
+            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+            CornerRadius="9"
+            Margin="6, 0, 6, 6">
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
-            <Border
-                x:Name="EditingSliderBar"
-                Background="{StaticResource PowerPlannerDarkerBlue}"
-                Height="15">
-                <!--<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Opacity="0.6">
-                    <Rectangle
-                        Fill="White"
-                        Height="1"
-                        Margin="0,0,0,2"/>
-                    <Rectangle
-                        Fill="White"
-                        Height="1"
-                        Margin="0,2,0,0"/>
-                </StackPanel>-->
-            </Border>
 
             <ScrollViewer
                 VerticalScrollBarVisibility="Auto"

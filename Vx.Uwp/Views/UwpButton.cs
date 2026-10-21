@@ -49,8 +49,8 @@ namespace Vx.Uwp.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            View.Background = Vx.Views.Theme.Current.ChromeColor.ToUwpBrush();
-            View.BorderBrush = Vx.Views.Theme.Current.ChromeColor.ToUwpBrush();
+            View.Background = Vx.Views.Theme.Current.AccentColor.ToUwpBrush();
+            View.BorderBrush = Vx.Views.Theme.Current.AccentColor.ToUwpBrush();
         }
     }
 

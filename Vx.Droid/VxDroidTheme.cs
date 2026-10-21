@@ -24,7 +24,7 @@ namespace Vx.Droid
 
         public override Color SubtleForegroundColor => GetThemeColor(Android.Resource.Attribute.TextColorSecondary);
 
-        public override Color PopupPageBackgroundColor => GetNormalColor(Android.Resource.Attribute.Background);
+        public override Color PopupPageBackgroundColor => BackgroundColor;
 
         public override Color PopupPageBackgroundAltColor => GetColor(Resource.Color.colorBackgroundSecondary);
 

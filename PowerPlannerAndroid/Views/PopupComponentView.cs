@@ -60,86 +60,32 @@ namespace PowerPlannerAndroid.Views
 
         private void UpdateCommands()
         {
-            Toolbar.Menu.Clear();
-
-            if (ViewModel.Commands != null && ViewModel.Commands.Length > 0)
-            {
-                Toolbar.Menu.Add(ViewModel.Commands[0].Text);
-                var item = Toolbar.Menu.GetItem(0);
-                item.SetIcon(ToDroidIconResource(ViewModel.Commands[0].Glyph));
-                item.SetShowAsAction(ShowAsAction.Always | ShowAsAction.WithText);
-
-                foreach (var c in ViewModel.Commands.Skip(1))
-                {
-                    Toolbar.Menu.Add(c.Text);
-                }
-            }
-
-            if (ViewModel.SecondaryCommands != null && ViewModel.SecondaryCommands.Length > 0)
-            {
-                foreach (var c in ViewModel.SecondaryCommands)
-                {
-                    Toolbar.Menu.Add(c.Text);
-                }
-            }
-        }
-
-        private static int ToDroidIconResource(string glyph)
-        {
-            switch (glyph)
-            {
-                case MaterialDesign.MaterialDesignIcons.Check:
-                case MaterialDesign.MaterialDesignIcons.Save:
-                    return Resource.Drawable.ic_check_white_36dp;
-
-                case MaterialDesign.MaterialDesignIcons.Delete:
-                    throw new NotImplementedException();
-
-                case MaterialDesign.MaterialDesignIcons.Edit:
-                    return Resource.Drawable.ic_edit_white_24dp;
-
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-
-        public override async void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
-        {
-            PopupCommand matching = null;
-
             if (ViewModel.Commands != null)
             {
-                matching = ViewModel.Commands.FirstOrDefault(i => i.Text == e.Item.TitleFormatted.ToString());
+                Toolbar.PrimaryCommands = ViewModel.Commands.OfType<Vx.Views.MenuItem>().ToList();
+            }
+            else
+            {
+                Toolbar.PrimaryCommands = new();
             }
 
-            if (matching == null && ViewModel.SecondaryCommands != null)
+            if (ViewModel.SecondaryCommands != null)
             {
-                matching = ViewModel.SecondaryCommands.FirstOrDefault(i => i.Text == e.Item.TitleFormatted.ToString());
+                Toolbar.SecondaryCommands = ViewModel.SecondaryCommands.OfType<Vx.Views.MenuItem>().ToList();
+            }
+            else
+            {
+                Toolbar.SecondaryCommands = new();
             }
 
-            if (matching != null)
-            {
-                if (matching.UseQuickConfirmDelete)
-                {
-                    // In Android I didn't implement the quick confirm delete
-                    if (await PowerPlannerAppDataLibrary.App.PowerPlannerApp.ConfirmDeleteAsync())
-                    {
-                        matching.Click?.Invoke();
-                    }
-                }
-                else
-                {
-                    matching.Click?.Invoke();
-                }
-                return;
-            }
+            Toolbar.RenderOnDemand();
         }
 
         private void UpdateNookInsets(WindowInsetsCompat windowInsets)
         {
             var imeInsets = windowInsets.GetInsets(WindowInsetsCompat.Type.Ime());
 
-            var insets = windowInsets.GetInsets(WindowInsetsCompat.Type.SystemBars());
+            var insets = windowInsets.GetInsets(WindowInsetsCompat.Type.SystemBars() | WindowInsetsCompat.Type.DisplayCutout());
 
             ViewModel.UpdateNookInsets(new Vx.Views.Thickness(
                 ThemeHelper.FromPxPrecise(Context, insets.Left),

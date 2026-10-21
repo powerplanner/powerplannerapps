@@ -44,8 +44,13 @@ namespace BareMvvm.Core.ViewModels
             if (NookInsets != newInsets)
             {
                 NookInsets = newInsets;
+                OnNookInsetsChanged();
                 MarkDirty();
             }
+        }
+
+        protected virtual void OnNookInsetsChanged()
+        {
         }
 
         private void PagedViewModel_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

@@ -80,7 +80,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
                 content = new LinearLayout
                 {
-                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
                     Children =
                     {
                         new ListView
@@ -106,27 +105,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
                 };
             }
 
-            if (VxPlatform.Current == Platform.Android)
+            // Wrap content in rounded border
+            content = new Border
             {
-                return new FrameLayout
-                {
-                    Children =
-                    {
-                        content,
-
-                        new FloatingActionButton
-                        {
-                            Click = AddClass,
-                            Margin = new Thickness(Theme.Current.PageMargin),
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            VerticalAlignment = VerticalAlignment.Bottom
-                        }
-                    }
-                };
-            }
+                BackgroundColor = Theme.Current.BackgroundColor,
+                CornerRadius = Theme.Current.CornerRadius,
+                Margin = new Thickness(ContentMargins.Left, 0, ContentMargins.Right, ContentMargins.Bottom),
+                Content = content
+            };
 
             return new LinearLayout
             {
+                BackgroundColor = Theme.Current.ChromeColor,
                 Children =
                 {
                     new Toolbar
@@ -140,7 +130,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
                                 Glyph = MaterialDesign.MaterialDesignIcons.Add,
                                 Click = AddClass
                             }
-                        }
+                        },
+                        NookInsets = NookInsets
                     }.InnerToolbarThemed(),
 
                     content.LinearLayoutWeight(1)
@@ -156,7 +147,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
         private View RenderClass(object classObject)
         {
-            float CIRCLE_SIZE = IsDesktop ? 16f : 32f;
+            float CIRCLE_SIZE = IsDesktop ? 16f : 24f;
             float TEXT_SIZE = IsDesktop ? Theme.Current.BodyFontSize : Theme.Current.SubtitleFontSize;
 
             var c = classObject as ViewItemClass;
@@ -168,8 +159,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
                 {
                     new Border
                     {
-                        BorderColor = System.Drawing.Color.Black,
-                        BorderThickness = new Thickness(1),
                         BackgroundColor = ColorBytesHelper.ToColor(c.Color),
                         Width = CIRCLE_SIZE,
                         Height = CIRCLE_SIZE,
@@ -207,7 +196,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
             return new LinearLayout
             {
-                BackgroundColor = Theme.Current.BackgroundAlt2Color,
                 Children =
                 {
                     new Border

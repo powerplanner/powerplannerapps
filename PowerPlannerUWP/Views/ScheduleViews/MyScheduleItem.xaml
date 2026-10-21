@@ -34,7 +34,7 @@
             Margin="-6"
             Opacity="0"/>
 
-        <StackPanel Background="{x:Bind Schedule.Class.Color, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}">
+        <StackPanel CornerRadius="6" Background="{x:Bind Schedule.Class.Color, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}">
 
             <TextBlock
                 Text="{x:Bind Schedule.Class.Name, Mode=OneWay}"
