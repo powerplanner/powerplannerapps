@@ -29,7 +29,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         private VxState<bool> _isFullVersion = new VxState<bool>(true);
 
         public const string HelpUrl = "https://support.powerplanner.net";
-        public const string OtherAppsUrl = "https://roamapps.com/embedded-apps";
 
         /// <summary>
         /// Android sets this to true to have subpages appear as popups
@@ -296,13 +295,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Title"),
                 PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Subtitle"),
                 OpenLanguageSettings);
-
-            RenderOption(
-                layout,
-                MaterialDesign.MaterialDesignIcons.Apps,
-                PowerPlannerResources.GetString("Settings_MainPage_OtherAppsItem.Title"),
-                PowerPlannerResources.GetString("Settings_MainPage_OtherAppsItem.Subtitle"),
-                OpenOtherApps);
 
             RenderOption(
                 layout,
@@ -627,21 +619,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 TelemetryExtension.Current?.TrackEvent("Action_OpenHelp");
 
                 await BrowserExtension.Current?.OpenUrlAsync(new Uri(HelpUrl));
-            }
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-                var dontWait = new PortableMessageDialog("Failed to open web browser", "Error").ShowAsync();
-            }
-        }
-
-        public async void OpenOtherApps()
-        {
-            try
-            {
-                TelemetryExtension.Current?.TrackEvent("Action_OpenOtherApps");
-
-                await BrowserExtension.Current?.OpenUrlAsync(new Uri(OtherAppsUrl));
             }
             catch (Exception ex)
             {
