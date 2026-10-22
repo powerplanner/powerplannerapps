@@ -1,13 +1,24 @@
-using System;
-using System.Drawing;
 using InterfacesiOS.App;
 using PowerPlannerAppDataLibrary.Helpers;
+using System;
+using System.Drawing;
 using UIKit;
+using Vx.Views;
 
 namespace PowerPlanneriOS.Helpers
 {
     public static class iOSThemeColorApplier
     {
+        static iOSThemeColorApplier()
+        {
+            Vx.Views.Theme.ThemeChanged += Theme_ThemeChanged;
+        }
+
+        private static void Theme_ThemeChanged(object sender, EventArgs e)
+        {
+            ThemeChanged?.Invoke(null, ThemeColorGenerator.Generate(Theme.Current.PrimaryColor));
+        }
+
         /// <summary>
         /// Fires when theme colors have been updated. Views can subscribe to update their appearance.
         /// </summary>
@@ -30,8 +41,6 @@ namespace PowerPlanneriOS.Helpers
 
                 // Update snackbar button text color
                 InterfacesiOS.Views.BareSnackbarPresenter.ButtonTextColor = ToUIColor(colors.Accent);
-
-                ThemeChanged?.Invoke(null, colors);
             }
             catch (Exception ex)
             {

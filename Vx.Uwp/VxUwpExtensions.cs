@@ -201,6 +201,11 @@ namespace Vx.Uwp
                     return new UwpWrapGrid();
                 }
 
+                if (view is Vx.Views.CustomColorPicker)
+                {
+                    return new UwpCustomColorPicker();
+                }
+
 #if DEBUG
                 if (System.Diagnostics.Debugger.IsAttached)
                 {

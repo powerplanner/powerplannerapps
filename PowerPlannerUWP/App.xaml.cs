@@ -54,6 +54,7 @@ using Windows.System.Profile;
 using PowerPlannerUWP.BackgroundTasks;
 using PowerPlannerAppDataLibrary.ViewModels;
 using System.Diagnostics.CodeAnalysis;
+using Vx.Uwp;
 
 namespace PowerPlannerUWP
 {
@@ -81,7 +82,23 @@ namespace PowerPlannerUWP
                 case Themes.Dark:
                     RequestedTheme = ApplicationTheme.Dark;
                     break;
+
+                case Themes.Custom:
+                    if (Settings.CustomForegroundColor != null)
+                    {
+                        if (Settings.CustomBackgroundColor.Value.GetBrightness() < 0.5f)
+                        {
+                            RequestedTheme = ApplicationTheme.Dark;
+                        }
+                        else
+                        {
+                            RequestedTheme = ApplicationTheme.Light;
+                        }
+                    }
+                    break;
             }
+
+            Vx.Views.Theme.SetPlatformDarkTheme(RequestedTheme == ApplicationTheme.Dark);
 
             this.UnhandledException += App_UnhandledException;
 

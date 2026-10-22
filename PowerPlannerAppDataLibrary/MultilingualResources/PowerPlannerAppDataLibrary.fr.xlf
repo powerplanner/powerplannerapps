@@ -2916,6 +2916,10 @@ Physique 202 - Mar, Jeu 9h30-10h45 en Salle 150</target>
           <source>Leave a review of Power Planner!</source>
           <target state="final">Laissez un avis sur Power Planner !</target>
         </trans-unit>
+        <trans-unit id="String_Custom" translate="yes" xml:space="preserve">
+          <source>Custom</source>
+          <target state="final">Personnalisé</target>
+        </trans-unit>
       </group>
     </body>
   </file>

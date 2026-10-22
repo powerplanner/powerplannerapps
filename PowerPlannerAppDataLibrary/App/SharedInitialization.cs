@@ -46,9 +46,15 @@ namespace PowerPlannerAppDataLibrary.App
                 }
             }
             var colors = ThemeColorGenerator.Generate(primary);
-            Theme.Current.PrimaryColor = primary;
-            Theme.DefaultAccentColor = colors.Accent;
-            Theme.DefaultDarkAccentColor = colors.DarkAccent;
+
+            Theme.Current.ApplyColors(
+                primaryColor: primary,
+                defaultAccentColor: colors.Accent,
+                defaultDarkAccentColor: colors.DarkAccent,
+                isCustomTheme: Settings.ThemeOverride == Extensions.Themes.Custom && Settings.CustomForegroundColor != null && Settings.CustomBackgroundColor != null && Settings.CustomChromeColor != null,
+                customForegroundColor: Settings.CustomForegroundColor ?? default,
+                customBackgroundColor: Settings.CustomBackgroundColor ?? default,
+                customChromeColor: Settings.CustomChromeColor ?? default);
         }
 
         private static void SetUpApiKey()

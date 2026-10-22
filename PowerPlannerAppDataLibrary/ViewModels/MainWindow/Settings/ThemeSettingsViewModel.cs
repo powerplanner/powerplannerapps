@@ -46,7 +46,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         };
 
         private VxState<Themes> _theme = new VxState<Themes>(Helpers.Settings.ThemeOverride);
-        private Themes[] Options = new Themes[]
+        private Themes[] Options = CustomColorPicker.IsSupported ? new Themes[]
+        {
+            Themes.Automatic,
+            Themes.Light,
+            Themes.Dark,
+            Themes.Custom
+        } : new Themes[]
         {
             Themes.Automatic,
             Themes.Light,
@@ -56,6 +62,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         private VxState<Color> _selectedColor;
         private VxState<bool> _isCustomColor;
         private VxState<Color> _noClassColor;
+        private VxState<Color> _customForegroundColor;
+        private VxState<Color> _customBackgroundColor;
+        private VxState<Color> _customChromeColor;
         private AccountDataItem _account;
 
         public ThemeSettingsViewModel(BaseViewModel parent) : base(parent)
@@ -73,13 +82,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             _selectedColor = new VxState<Color>(currentColor);
             _isCustomColor = new VxState<bool>(!ColorOptions.Any(o => o.Color == currentColor));
             _noClassColor = new VxState<Color>((_account?.NoClassColor ?? AccountDataItem.DefaultNoClassColor).ToColor());
+            _customForegroundColor = new VxState<Color>(Helpers.Settings.CustomForegroundColor ?? Theme.Current.ForegroundColor);
+            _customBackgroundColor = new VxState<Color>(Helpers.Settings.CustomBackgroundColor ?? Theme.Current.BackgroundColor);
+            _customChromeColor = new VxState<Color>(Helpers.Settings.CustomChromeColor ?? Theme.Current.ChromeColor);
         }
 
         private Color OriginalColor => _account?.PrimaryThemeColor?.ToColor() is Color c && c.A != 0
             ? c
             : ThemeColorGenerator.DefaultPrimary;
 
-        private bool IsThemeDirty => _theme.Value != Helpers.Settings.ThemeOverride;
+        private bool IsThemeDirty => _theme.Value != Helpers.Settings.ThemeOverride
+            || (_theme.Value == Themes.Custom &&
+                (_customForegroundColor.Value != Helpers.Settings.CustomForegroundColor
+                || _customBackgroundColor.Value != Helpers.Settings.CustomBackgroundColor
+                || _customChromeColor.Value != Helpers.Settings.CustomChromeColor));
         private bool IsColorDirty => _selectedColor.Value != OriginalColor;
         private bool IsNoClassColorDirty => _account != null && (_account.NoClassColor == null
             ? _noClassColor.Value != AccountDataItem.DefaultNoClassColor.ToColor()
@@ -110,6 +126,38 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     },
                     SelectedItem = VxValue.Create<object>(_theme.Value, v => _theme.Value = (Themes)v)
                 });
+
+                if (_theme.Value == Themes.Custom)
+                {
+                    content.Add(new AdaptiveGridPanel
+                    {
+                        MinColumnWidth = 150,
+                        ColumnSpacing = 12,
+                        Children =
+                        {
+                            new CustomColorPicker
+                            {
+                                Header = "Chrome color",
+                                Color = VxValue.Create(_customChromeColor.Value, v => _customChromeColor.Value = v),
+                                Margin = new Thickness(0, 12, 0, 0)
+                            },
+
+                            new CustomColorPicker
+                            {
+                                Header = "Background color",
+                                Color = VxValue.Create(_customBackgroundColor.Value, v => _customBackgroundColor.Value = v),
+                                Margin = new Thickness(0, 12, 0, 0)
+                            },
+
+                            new CustomColorPicker
+                            {
+                                Header = "Foreground color",
+                                Color = VxValue.Create(_customForegroundColor.Value, v => _customForegroundColor.Value = v),
+                                Margin = new Thickness(0, 12, 0, 0)
+                            }
+                        }
+                    });
+                }
             }
 
             // Theme color section (only when logged in)
@@ -181,7 +229,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                 if (_isCustomColor.Value)
                 {
-                    content.Add(new ColorPicker
+                    content.Add(CustomColorPicker.IsSupported ? new CustomColorPicker
+                    {
+                        Header = "Custom color",
+                        Color = VxValue.Create(_selectedColor.Value, v => _selectedColor.Value = v),
+                        Margin = new Thickness(0, 12, 0, 0)
+                    } : new ColorPicker
                     {
                         Header = "Custom color",
                         Color = VxValue.Create(_selectedColor.Value, v => _selectedColor.Value = v),
@@ -197,20 +250,83 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     Margin = new Thickness(0, 18, 0, 6)
                 });
 
-                content.Add(new Border
+                if (_theme.Value == Themes.Custom)
                 {
-                    BackgroundColor = previewColors.Primary,
-                    CornerRadius = 8,
-                    Height = 48,
-                    Content = new TextBlock
+                    content.Add(new Border
                     {
-                        Text = GetSelectedColorName(),
-                        TextColor = Color.White,
-                        FontWeight = FontWeights.Bold,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center
-                    }
-                });
+                        CornerRadius = Theme.Current.CornerRadius,
+                        BackgroundColor = _customChromeColor.Value,
+                        Content = new LinearLayout
+                        {
+                            Children =
+                            {
+                                new TextBlock
+                                {
+                                    Text = "Title",
+                                    FontSize = Theme.Current.TitleFontSize,
+                                    Margin = new Thickness(6),
+                                    TextColor = _customForegroundColor.Value
+                                },
+
+                                new Border
+                                {
+                                    CornerRadius = Theme.Current.CornerRadius,
+                                    BackgroundColor = _customBackgroundColor.Value,
+                                    Margin = new Thickness(6),
+                                    Content = new FrameLayout
+                                    {
+                                        Children =
+                                        {
+                                            new TextBlock
+                                            {
+                                                Text = "Body text",
+                                                FontSize = Theme.Current.BodyFontSize,
+                                                Margin = new Thickness(6),
+                                                TextColor = _customForegroundColor.Value
+                                            },
+
+                                            new Border
+                                            {
+                                                BackgroundColor = previewColors.Primary,
+                                                Width = FloatingActionButton.DefaultSize,
+                                                Height = FloatingActionButton.DefaultSize,
+                                                CornerRadius = FloatingActionButton.DefaultSize / 2,
+                                                Margin = new Thickness(6),
+                                                HorizontalAlignment = HorizontalAlignment.Right,
+                                                VerticalAlignment = VerticalAlignment.Bottom,
+                                                Content = new FontIcon
+                                                {
+                                                    Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                                                    FontSize = 20,
+                                                    Color = Color.White,
+                                                    HorizontalAlignment = HorizontalAlignment.Center,
+                                                    VerticalAlignment = VerticalAlignment.Center
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    content.Add(new Border
+                    {
+                        BackgroundColor = previewColors.Primary,
+                        CornerRadius = 8,
+                        Height = 48,
+                        Content = new TextBlock
+                        {
+                            Text = GetSelectedColorName(),
+                            TextColor = Color.White,
+                            FontWeight = FontWeights.Bold,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            VerticalAlignment = VerticalAlignment.Center
+                        }
+                    });
+                }
             }
 
             // No class color section (only when logged in )
@@ -230,7 +346,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     Margin = new Thickness(0, 6, 0, 0)
                 });
 
-                content.Add(new ColorPicker
+                content.Add(CustomColorPicker.IsSupported ? new CustomColorPicker
+                {
+                    Header = PowerPlannerResources.GetString("AddClassPage_ColorPickerEditClassColor.Header"),
+                    Color = VxValue.Create(_noClassColor.Value, v => _noClassColor.Value = v),
+                    Margin = new Thickness(0, 18, 0, 0)
+                } : new ColorPicker
                 {
                     Header = PowerPlannerResources.GetString("AddClassPage_ColorPickerEditClassColor.Header"),
                     Color = VxValue.Create(_noClassColor.Value, v => _noClassColor.Value = v),
@@ -370,6 +491,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 if (IsThemeDirty)
                 {
                     Helpers.Settings.ThemeOverride = _theme.Value;
+                    if (_theme.Value == Themes.Custom)
+                    {
+                        Helpers.Settings.CustomForegroundColor = _customForegroundColor.Value;
+                        Helpers.Settings.CustomBackgroundColor = _customBackgroundColor.Value;
+                        Helpers.Settings.CustomChromeColor = _customChromeColor.Value;
+                    }
 
                     TelemetryExtension.Current?.TrackEvent("ChangedTheme", new Dictionary<string, string>()
                     {

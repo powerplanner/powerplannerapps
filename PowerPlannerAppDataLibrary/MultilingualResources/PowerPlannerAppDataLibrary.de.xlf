@@ -2918,6 +2918,10 @@ Physik 202 - Di, Do 9:30-10:45 Uhr in Raum 150</target>
           <source>Leave a review of Power Planner!</source>
           <target state="final">Schreibe eine Rezension für Power Planner!</target>
         </trans-unit>
+        <trans-unit id="String_Custom" translate="yes" xml:space="preserve">
+          <source>Custom</source>
+          <target state="final">Benutzerdefiniert</target>
+        </trans-unit>
       </group>
     </body>
   </file>

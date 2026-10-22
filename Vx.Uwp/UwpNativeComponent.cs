@@ -78,7 +78,7 @@ namespace Vx.Uwp
 
         private void UwpNativeComponent_ActualThemeChanged(Windows.UI.Xaml.FrameworkElement sender, object args)
         {
-            ThemeChanged?.Invoke(this, null);
+            Theme.SetPlatformDarkTheme(Windows.UI.Xaml.Application.Current.RequestedTheme == Windows.UI.Xaml.ApplicationTheme.Dark);
         }
 
         private void UwpNativeComponent_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)

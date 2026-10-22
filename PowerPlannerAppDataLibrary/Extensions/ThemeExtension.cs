@@ -15,7 +15,8 @@ namespace PowerPlannerAppDataLibrary.Extensions
     {
         Automatic,
         Light,
-        Dark
+        Dark,
+        Custom
     }
 
     public static class ThemeExtensionMethods
@@ -32,6 +33,9 @@ namespace PowerPlannerAppDataLibrary.Extensions
 
                 case Themes.Dark:
                     return PowerPlannerResources.GetString("String_Dark");
+
+                case Themes.Custom:
+                    return PowerPlannerResources.GetString("String_Custom");
 
                 default:
                     return theme.ToString();
