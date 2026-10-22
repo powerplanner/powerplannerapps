@@ -1,17 +1,16 @@
-﻿using BareMvvm.Core.App;
-using CoreGraphics;
-using Foundation;
-using InterfacesiOS.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ToolsPortable;
+
+using Foundation;
 using UIKit;
-using Vx.iOS;
-using Vx.Views;
+using BareMvvm.Core.App;
+using ToolsPortable;
+using InterfacesiOS.Extensions;
+using CoreGraphics;
+using System.Globalization;
 
 namespace InterfacesiOS.App
 {
@@ -19,18 +18,10 @@ namespace InterfacesiOS.App
     {
         public static event EventHandler Activated;
 
-        private UIWindow _window;
         public override UIWindow Window
         {
-            get => _window;
-            set
-            {
-                _window = value;
-                if (value != null)
-                {
-                    Theme.Current = new VxiOSTheme();
-                }
-            }
+            get;
+            set;
         }
 
         private static WeakReference<NativeiOSApplication> _current;

@@ -23,25 +23,14 @@ namespace Vx.Droid
             _customViews.Add(new Tuple<Func<Vx.Views.View, bool>, Func<Vx.Views.View, NativeView>>(predicate, create));
         }
 
-        private static Context _applicationContext;
         /// <summary>
         /// Parent app must initialize this
         /// </summary>
-        public static Context ApplicationContext
-        {
-            get => _applicationContext;
-            set
-            {
-                _applicationContext = value;
-                if (value != null)
-                {
-                    Theme.Current = new VxDroidTheme();
-                }
-            }
-        }
+        public static Context ApplicationContext { get; set; }
 
         static VxDroidExtensions()
         {
+            Theme.Current = new VxDroidTheme();
             VxPlatform.Current = Platform.Android;
             VxDeviceType.Current = DeviceType.Phone;
 
