@@ -3,6 +3,7 @@ using Plugin.Settings;
 using Plugin.Settings.Abstractions;
 using PowerPlannerAppDataLibrary.Extensions;
 using System;
+using System.Drawing;
 using ToolsPortable;
 using static PowerPlannerAppDataLibrary.NavigationManager;
 
@@ -103,6 +104,9 @@ namespace PowerPlannerAppDataLibrary.Helpers
         private const string LANGUAGE_OVERRIDE = "LanguageOverride";
         private const string THEME_OVERRIDE = "ThemeOverride";
         private const string CACHED_PRIMARY_THEME_COLOR = "CachedPrimaryThemeColor";
+        private const string CUSTOM_FOREGROUND_COLOR = "CustomForegroundColor";
+        private const string CUSTOM_BACKGROUND_COLOR = "CustomBackgroundColor";
+        private const string CUSTOM_CHROME_COLOR = "CustomChromeColor";
 
         #endregion
 
@@ -280,6 +284,63 @@ namespace PowerPlannerAppDataLibrary.Helpers
         {
             get => AppSettings.GetEnumOrDefault(THEME_OVERRIDE, Themes.Automatic);
             set => AppSettings.AddOrUpdateEnum(THEME_OVERRIDE, value);
+        }
+
+        private static Color? GetColorOrDefault(string key)
+        {
+            string val = AppSettings.GetValueOrDefault(key, null);
+            if (val != null)
+            {
+                try
+                {
+                    return ColorTranslator.FromHtml(val);
+                }
+                catch
+                {
+                    // Invalid cached value, fall through to default
+                }
+            }
+            return null;
+        }
+
+        private static void SetColor(string key, Color? value)
+        {
+            if (value != null)
+            {
+                AppSettings.AddOrUpdateValue(key, ColorTranslator.ToHtml(value.Value));
+            }
+            else
+            {
+                AppSettings.Remove(key);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the custom foreground color setting.
+        /// </summary>
+        /// <remarks>Stored in application settings.</remarks>
+        public static Color? CustomForegroundColor
+        {
+            get => GetColorOrDefault(CUSTOM_FOREGROUND_COLOR);
+            set => SetColor(CUSTOM_FOREGROUND_COLOR, value);
+        }
+        
+        /// <summary>
+        /// Gets or sets the custom background color setting.
+        /// </summary>
+        public static Color? CustomBackgroundColor
+        {
+            get => GetColorOrDefault(CUSTOM_BACKGROUND_COLOR);
+            set => SetColor(CUSTOM_BACKGROUND_COLOR, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the custom chrome color setting.
+        /// </summary>
+        public static Color? CustomChromeColor
+        {
+            get => GetColorOrDefault(CUSTOM_CHROME_COLOR);
+            set => SetColor(CUSTOM_CHROME_COLOR, value);
         }
 
         /// <summary>

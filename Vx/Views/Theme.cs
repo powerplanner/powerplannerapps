@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using ToolsPortable;
 
 namespace Vx.Views
 {
@@ -27,46 +28,79 @@ namespace Vx.Views
             set => _currentTheme = value;
         }
 
-        public abstract bool IsDarkTheme { get; }
+        protected abstract bool IsPlatformDarkTheme { get; }
 
-        public Color PrimaryColor { get; set; } = Color.Blue;
+        public bool IsDarkTheme => IsCustomTheme ? _isCustomThemeDark : IsPlatformDarkTheme;
 
-        public static Color DefaultAccentColor { get; set; } = Color.Blue;
+        public bool IsCustomTheme { get; private set; }
+        private bool _isCustomThemeDark;
+        private Color _customForegroundColor;
+        private Color _customBackgroundColor;
+        private Color _customChromeColor;
+
+        public void ApplyColors(Color primaryColor, Color defaultAccentColor, Color defaultDarkAccentColor, bool isCustomTheme, Color customForegroundColor, Color customBackgroundColor, Color customChromeColor)
+        {
+            PrimaryColor = primaryColor;
+            DefaultAccentColor = defaultAccentColor;
+            DefaultDarkAccentColor = defaultDarkAccentColor;
+
+            IsCustomTheme = isCustomTheme;
+            _isCustomThemeDark = customForegroundColor.GetBrightness() > 0.5f;
+            _customForegroundColor = customForegroundColor;
+            _customBackgroundColor = customBackgroundColor;
+            _customChromeColor = customChromeColor;
+
+            ForegroundColor = IsCustomTheme ? _customForegroundColor : IsDarkTheme ? Color.White : Color.Black;
+            SubtleForegroundColor = Color.FromArgb(179, ForegroundColor.R, ForegroundColor.G, ForegroundColor.B);
+            ChromeColor = IsCustomTheme ? _customChromeColor : IsDarkTheme ? DarkThemeChromeColor : LightThemeChromeColor;
+            ChromeLightColor = ColorHelper.AdjustLightnessBlend(ChromeColor, IsDarkTheme ? 15 : -15);
+            BackgroundColor = IsCustomTheme ? _customBackgroundColor : IsDarkTheme ? Color.FromArgb(30, 30, 30) : Color.White;
+            BackgroundAlt1Color = ColorHelper.AdjustLightnessBlend(BackgroundColor, IsDarkTheme ? 13 : -10);
+            BackgroundAlt2Color = ColorHelper.AdjustLightnessBlend(BackgroundColor, IsDarkTheme ? 3 : -3);
+
+            // PROBLEM: The BackroundAlt1Color doesn't look as good on light theme as it used to in the prev version... I want it to be bluer, closer to the chrome color...
+
+            NotifyThemeChanged();
+        }
+
+        public Color PrimaryColor { get; private set; } = Color.Blue;
+
+        public static Color DefaultAccentColor { get; private set; } = Color.Blue;
 
         /// <summary>
         /// Accent color for light theme so shows up on dark themes
         /// </summary>
-        public static Color DefaultDarkAccentColor { get; set; } = Color.Blue;
+        public static Color DefaultDarkAccentColor { get; private set; } = Color.Blue;
 
         /// <summary>
         /// Background color of buttons, titlebars, etc
         /// </summary>
-        public Color ChromeColor => IsDarkTheme ? DarkThemeChromeColor : LightThemeChromeColor;
+        public Color ChromeColor { get; private set; }
 
-        public Color DarkThemeChromeColor { get; set; } = Color.FromArgb(15, 15, 15);
+        public Color DarkThemeChromeColor { get; private set; } = Color.FromArgb(15, 15, 15);
 
-        public Color LightThemeChromeColor { get; set; } = Color.FromArgb(239, 244, 249);
+        public Color LightThemeChromeColor { get; private set; } = Color.FromArgb(239, 244, 249);
 
         /// <summary>
         /// Lighter variant of <see cref="ChromeColor"/>, used for ripple/pressed states.
         /// </summary>
-        public Color ChromeLightColor => IsDarkTheme ? Color.FromArgb(31, 40, 48) : Color.FromArgb(230, 235, 239);
+        public Color ChromeLightColor { get; private set; }
 
-        public abstract Color ForegroundColor { get; }
+        public Color ForegroundColor { get; private set; }
 
-        public abstract Color SubtleForegroundColor { get; }
+        public Color SubtleForegroundColor { get; private set; }
 
-        public Color BackgroundColor => IsDarkTheme ? Color.FromArgb(30, 30, 30) : Color.White;
+        public Color BackgroundColor { get; private set; }
 
-        public abstract Color PopupPageBackgroundColor { get; }
+        public Color PopupPageBackgroundColor => BackgroundColor;
 
-        public abstract Color PopupPageBackgroundAltColor { get; }
+        public Color PopupPageBackgroundAltColor => ChromeColor;
 
         public Color AccentColor => IsDarkTheme ? DefaultDarkAccentColor : DefaultAccentColor;
 
-        public Color BackgroundAlt1Color => IsDarkTheme ? Color.FromArgb(51, 51, 51) : Color.FromArgb(233, 233, 233);
+        public Color BackgroundAlt1Color { get; private set; }
 
-        public Color BackgroundAlt2Color => IsDarkTheme ? Color.FromArgb(22, 22, 22) : Color.FromArgb(245, 245, 245);
+        public Color BackgroundAlt2Color { get; private set; }
 
         private static Lazy<float> _pageMargin = new Lazy<float>(() =>
         {

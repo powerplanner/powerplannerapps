@@ -2173,6 +2173,9 @@ CSC 337 - Tue, Thu 9:30-10:45am in ILC 150</value>
   <data name="String_Light" xml:space="preserve">
     <value>Light</value>
   </data>
+  <data name="String_Custom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
   <data name="SemesterActions_MoveSemester" xml:space="preserve">
     <value>Move semester</value>
   </data>

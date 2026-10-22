@@ -12,15 +12,7 @@ namespace Vx.Uwp
 {
     public class VxUwpTheme : Theme
     {
-        public override Color ForegroundColor => (Application.Current.Resources["ApplicationForegroundThemeBrush"] as SolidColorBrush).ToVx();
-
-        public override Color SubtleForegroundColor => (Application.Current.Resources["ApplicationSecondaryForegroundThemeBrush"] as SolidColorBrush).ToVx();
-
-        public override Color PopupPageBackgroundColor => BackgroundColor;
-
-        public override Color PopupPageBackgroundAltColor => (Application.Current.Resources["ButtonPointerOverBackgroundThemeBrush"] as SolidColorBrush).ToVx();
-
-        public override bool IsDarkTheme => Application.Current.RequestedTheme == ApplicationTheme.Dark;
+        protected override bool IsPlatformDarkTheme => Application.Current.RequestedTheme == ApplicationTheme.Dark;
     }
 
     internal static class UwpThemeExtensions

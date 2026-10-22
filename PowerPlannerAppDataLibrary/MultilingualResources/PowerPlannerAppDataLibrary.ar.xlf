@@ -2920,6 +2920,10 @@ CSC 337 - Tue, Thu 9:30-10:45am in ILC 150</source>
           <source>Leave a review of Power Planner!</source>
           <target state="final">اترك مراجعة لـ Power Planner!</target>
         </trans-unit>
+        <trans-unit id="String_Custom" translate="yes" xml:space="preserve">
+          <source>Custom</source>
+          <target state="final">مخصص</target>
+        </trans-unit>
       </group>
     </body>
   </file>

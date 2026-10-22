@@ -55,6 +55,15 @@ namespace PowerPlannerUWP.Views
             this.InitializeComponent();
             _columnGridLength = grid.ColumnDefinitions[1].Width;
 
+            for (int i = 0; i < 8; i++)
+            {
+                var color = (i % 2 == 0 ? Vx.Views.Theme.Current.BackgroundAlt1Color : Vx.Views.Theme.Current.BackgroundColor)
+                    .ToUwpBrush();
+
+                (AllDayItemsGrid.Children[i] as Rectangle).Fill = color;
+                (grid.Children[i] as Rectangle).Fill = color;
+            }
+
             _toolbar = new ScheduleToolbarComponent();
             Root.Children.Add(_toolbar.Render());
         }

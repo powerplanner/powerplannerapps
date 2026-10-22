@@ -2917,6 +2917,10 @@ Física 202 - Ter, Qui 9:30-10:45 na Sala 150</target>
           <source>Leave a review of Power Planner!</source>
           <target state="final">Deixe uma avaliação do Power Planner!</target>
         </trans-unit>
+        <trans-unit id="String_Custom" translate="yes" xml:space="preserve">
+          <source>Custom</source>
+          <target state="final">Personalizado</target>
+        </trans-unit>
       </group>
     </body>
   </file>

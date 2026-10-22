@@ -62,7 +62,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
                 root.Children.Add(new Border
                 {
-                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                    BackgroundColor = Theme.Current.BackgroundAlt1Color,
                     Height = TIME_INDICATOR_SIZE,
                     Width = TIME_INDICATOR_SIZE,
                     HorizontalAlignment = HorizontalAlignment.Left,
@@ -83,7 +83,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                     Margin = new Thickness(TIME_INDICATOR_SIZE, fromTop, 0, 0),
                     VerticalAlignment = VerticalAlignment.Top,
                     Height = TIME_INDICATOR_SIZE,
-                    BackgroundColor = Theme.Current.BackgroundAlt2Color
+                    BackgroundColor = Theme.Current.BackgroundAlt1Color
                 });
             }
 

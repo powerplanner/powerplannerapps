@@ -23,10 +23,14 @@ namespace PowerPlannerAppDataLibrary.Helpers
 
             var colors = ThemeColorGenerator.Generate(primary);
 
-            //Theme.Current.ChromeColor = colors.Primary;
-            //Theme.Current.ChromeLightColor = colors.PrimaryLight;
-            Theme.DefaultAccentColor = colors.Accent;
-            Theme.DefaultDarkAccentColor = colors.DarkAccent;
+            Theme.Current.ApplyColors(
+                primaryColor: primary,
+                defaultAccentColor: colors.Accent,
+                defaultDarkAccentColor: colors.DarkAccent,
+                isCustomTheme: Settings.ThemeOverride == Extensions.Themes.Custom && Settings.CustomForegroundColor != null && Settings.CustomBackgroundColor != null && Settings.CustomChromeColor != null,
+                customForegroundColor: Settings.CustomForegroundColor ?? default,
+                customBackgroundColor: Settings.CustomBackgroundColor ?? default,
+                customChromeColor: Settings.CustomChromeColor ?? default);
 
             // Cache for next startup
             if (account?.PrimaryThemeColor != null && !account.PrimaryThemeColor.SequenceEqual(ThemeColorGenerator.DefaultPrimaryArray) && account.PrimaryThemeColor.Length >= 3)

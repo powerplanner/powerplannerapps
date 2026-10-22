@@ -29,7 +29,7 @@ namespace PowerPlannerAppDataLibrary.Components
             var answer = new Border
             {
                 Margin = new Thickness(resolvedHorizontalMargin, 3, resolvedHorizontalMargin, 3),
-                BackgroundColor = Theme.Current.ChromeColor,
+                BackgroundColor = Theme.Current.BackgroundAlt1Color,
                 CornerRadius = 6,
                 Tapped = () =>
                 {
