@@ -12,7 +12,6 @@ namespace Vx.Uwp
 {
     public class VxUwpTheme : Theme
     {
-        protected override bool IsPlatformDarkTheme => Application.Current.RequestedTheme == ApplicationTheme.Dark;
     }
 
     internal static class UwpThemeExtensions

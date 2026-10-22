@@ -20,6 +20,5 @@ namespace Vx.Droid
 {
     public class VxDroidTheme : Theme
     {
-        protected override bool IsPlatformDarkTheme => VxDroidExtensions.ApplicationContext.Resources.Configuration.UiMode.HasFlag(UiMode.NightYes);
     }
 }

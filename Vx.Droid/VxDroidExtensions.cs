@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Content.Res;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -26,7 +27,19 @@ namespace Vx.Droid
         /// <summary>
         /// Parent app must initialize this
         /// </summary>
-        public static Context ApplicationContext { get; set; }
+        private static Context _applicationContext;
+        public static Context ApplicationContext
+        {
+            get => _applicationContext;
+            set
+            {
+                _applicationContext = value;
+                if (value != null)
+                {
+                    Theme.SetPlatformDarkTheme(value.Resources.Configuration.UiMode.HasFlag(UiMode.NightYes));
+                }
+            }
+        }
 
         static VxDroidExtensions()
         {

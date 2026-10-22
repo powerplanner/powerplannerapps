@@ -11,6 +11,7 @@ using ToolsPortable;
 using InterfacesiOS.Extensions;
 using CoreGraphics;
 using System.Globalization;
+using Vx.Views;
 
 namespace InterfacesiOS.App
 {
@@ -18,10 +19,18 @@ namespace InterfacesiOS.App
     {
         public static event EventHandler Activated;
 
+        private UIWindow _window;
         public override UIWindow Window
         {
-            get;
-            set;
+            get => _window;
+            set
+            {
+                _window = value;
+                if (value != null)
+                {
+                    Theme.SetPlatformDarkTheme(value.TraitCollection.UserInterfaceStyle == UIUserInterfaceStyle.Dark);
+                }
+            }
         }
 
         private static WeakReference<NativeiOSApplication> _current;

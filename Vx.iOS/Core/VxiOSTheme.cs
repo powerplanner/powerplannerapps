@@ -13,8 +13,6 @@ namespace Vx.iOS
 {
     public class VxiOSTheme : Theme
     {
-        protected override bool IsPlatformDarkTheme => NativeiOSApplication.Current.Window.TraitCollection.UserInterfaceStyle == UIUserInterfaceStyle.Dark;
-
         public override float BodyFontSize => 15;
 
         public override float CaptionFontSize => 12;

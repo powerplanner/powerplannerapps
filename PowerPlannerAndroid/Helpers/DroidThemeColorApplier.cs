@@ -1,11 +1,22 @@
 using System;
 using System.Drawing;
 using PowerPlannerAppDataLibrary.Helpers;
+using Vx.Views;
 
 namespace PowerPlannerAndroid.Helpers
 {
     public static class DroidThemeColorApplier
     {
+        static DroidThemeColorApplier()
+        {
+            Theme.ThemeChanged += Theme_ThemeChanged;
+        }
+
+        private static void Theme_ThemeChanged(object sender, EventArgs e)
+        {
+            ThemeChanged?.Invoke(ThemeColorGenerator.Generate(Theme.Current.PrimaryColor));
+        }
+
         /// <summary>
         /// Fires when theme colors have been updated. Views subscribe to update their appearance.
         /// </summary>

@@ -7,6 +7,16 @@ namespace PowerPlannerAppDataLibrary.Helpers
 {
     public static class ThemeColorApplier
     {
+        static ThemeColorApplier()
+        {
+            Theme.ThemeChanged += Theme_ThemeChanged;
+        }
+
+        private static void Theme_ThemeChanged(object sender, EventArgs e)
+        {
+            PlatformThemeApplier?.Invoke(ThemeColorGenerator.Generate(Theme.Current.PrimaryColor));
+        }
+
         /// <summary>
         /// Platform-specific callback to apply theme colors (e.g., UWP brushes, Android status bar).
         /// Set by each platform's initialization code.
@@ -23,15 +33,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
 
             var colors = ThemeColorGenerator.Generate(primary);
 
-            Theme.Current.ApplyColors(
-                primaryColor: primary,
-                defaultAccentColor: colors.Accent,
-                defaultDarkAccentColor: colors.DarkAccent,
-                isCustomTheme: Settings.ThemeOverride == Extensions.Themes.Custom && Settings.CustomForegroundColor != null && Settings.CustomBackgroundColor != null && Settings.CustomChromeColor != null,
-                customForegroundColor: Settings.CustomForegroundColor ?? default,
-                customBackgroundColor: Settings.CustomBackgroundColor ?? default,
-                customChromeColor: Settings.CustomChromeColor ?? default);
-
             // Cache for next startup
             if (account?.PrimaryThemeColor != null && !account.PrimaryThemeColor.SequenceEqual(ThemeColorGenerator.DefaultPrimaryArray) && account.PrimaryThemeColor.Length >= 3)
             {
@@ -42,10 +43,14 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 Settings.CachedPrimaryThemeColor = null;
             }
 
-            Theme.NotifyThemeChanged();
-
-            // Notify platform-specific code
-            PlatformThemeApplier?.Invoke(colors);
+            Theme.Current.ApplyColors(
+                primaryColor: primary,
+                defaultAccentColor: colors.Accent,
+                defaultDarkAccentColor: colors.DarkAccent,
+                isCustomTheme: Settings.ThemeOverride == Extensions.Themes.Custom && Settings.CustomForegroundColor != null && Settings.CustomBackgroundColor != null && Settings.CustomChromeColor != null,
+                customForegroundColor: Settings.CustomForegroundColor ?? default,
+                customBackgroundColor: Settings.CustomBackgroundColor ?? default,
+                customChromeColor: Settings.CustomChromeColor ?? default);
         }
     }
 }

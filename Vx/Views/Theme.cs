@@ -28,7 +28,16 @@ namespace Vx.Views
             set => _currentTheme = value;
         }
 
-        protected abstract bool IsPlatformDarkTheme { get; }
+        protected static bool IsPlatformDarkTheme { get; private set; }
+
+        public static void SetPlatformDarkTheme(bool isDarkTheme)
+        {
+            if (IsPlatformDarkTheme != isDarkTheme)
+            {
+                IsPlatformDarkTheme = isDarkTheme;
+                Current?.ReapplyColors();
+            }
+        }
 
         public bool IsDarkTheme => IsCustomTheme ? _isCustomThemeDark : IsPlatformDarkTheme;
 
@@ -50,6 +59,11 @@ namespace Vx.Views
             _customBackgroundColor = customBackgroundColor;
             _customChromeColor = customChromeColor;
 
+            ReapplyColors();
+        }
+
+        private void ReapplyColors()
+        { 
             ForegroundColor = IsCustomTheme ? _customForegroundColor : IsDarkTheme ? Color.White : Color.Black;
             SubtleForegroundColor = Color.FromArgb(179, ForegroundColor.R, ForegroundColor.G, ForegroundColor.B);
             ChromeColor = IsCustomTheme ? _customChromeColor : IsDarkTheme ? DarkThemeChromeColor : LightThemeChromeColor;
@@ -57,8 +71,6 @@ namespace Vx.Views
             BackgroundColor = IsCustomTheme ? _customBackgroundColor : IsDarkTheme ? Color.FromArgb(30, 30, 30) : Color.White;
             BackgroundAlt1Color = ColorHelper.AdjustLightnessBlend(BackgroundColor, IsDarkTheme ? 13 : -10);
             BackgroundAlt2Color = ColorHelper.AdjustLightnessBlend(BackgroundColor, IsDarkTheme ? 3 : -3);
-
-            // PROBLEM: The BackroundAlt1Color doesn't look as good on light theme as it used to in the prev version... I want it to be bluer, closer to the chrome color...
 
             NotifyThemeChanged();
         }

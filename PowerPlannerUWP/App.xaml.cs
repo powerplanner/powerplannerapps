@@ -98,6 +98,8 @@ namespace PowerPlannerUWP
                     break;
             }
 
+            Vx.Views.Theme.SetPlatformDarkTheme(RequestedTheme == ApplicationTheme.Dark);
+
             this.UnhandledException += App_UnhandledException;
 
             this.InitializeComponent();

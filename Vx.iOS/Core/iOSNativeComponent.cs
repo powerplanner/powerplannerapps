@@ -31,7 +31,7 @@ namespace Vx.iOS
                 [typeof(UITraitUserInterfaceStyle)],
                 (self, previousTraitCollection) =>
                 {
-                    ThemeChanged?.Invoke(this, null);
+                    Theme.SetPlatformDarkTheme(TraitCollection.UserInterfaceStyle == UIUserInterfaceStyle.Dark);
                 });
 
             if (component.SubscribeToMouseEvents)
@@ -69,7 +69,6 @@ namespace Vx.iOS
         public SizeF ComponentSize => new SizeF((float)this.Bounds.Width, (float)this.Bounds.Height);
 
         public event EventHandler<SizeF> ComponentSizeChanged;
-        public event EventHandler ThemeChanged;
         public event EventHandler<bool> MouseOverChanged;
 
         private bool _rendered;
