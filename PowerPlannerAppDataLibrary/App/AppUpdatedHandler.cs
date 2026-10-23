@@ -106,7 +106,7 @@ namespace PowerPlannerAppDataLibrary.App
         {
             string changedText = "";
 
-            if (v < new Version(2610, 10, 8, 0))
+            if (v < new Version(2610, 23, 0, 0))
             {
                 changedText += "\n - Cancel instances of a single class! Right click the class schedule entry on a specific day, and click 'Cancel this class'.";
             }
