@@ -116,7 +116,8 @@ namespace PowerPlannerAndroid.Extensions
                     receiverType: typeof(UpdateClassReminderReceiver),
                     wakeTime: nextUpdateTime.Value.AddSeconds(1), // Delay by 1 second just to give a bit of buffer
                     uriData: "powerplanner:?localAccountId=" + account.LocalAccountId,
-                    wakeDevice: true);
+                    wakeDevice: true,
+                    exact: true);
             }
         }
 

@@ -31,6 +31,16 @@ namespace PowerPlannerAndroid.Receivers
                 {
                     // Update/schedule both day-of and day-before
                     await AndroidRemindersExtension.UpdateAndScheduleNotifications(context, account, fromForeground: false);
+
+                    // Alarms are cleared on reboot, so re-schedule the class reminder alarm too
+                    try
+                    {
+                        await DroidClassRemindersExtension.OnBackgroundTaskExecutingAsync(context, account.LocalAccountId);
+                    }
+                    catch (Exception ex)
+                    {
+                        TelemetryExtension.Current?.TrackException(ex);
+                    }
                 }
             }
 
