@@ -81,6 +81,7 @@ namespace PowerPlannerAppDataLibrary.Serialization
     [JsonSerializable(typeof(EmailAddress.Type), TypeInfoPropertyName = "EmailAddressTypeInfo")]
     [JsonSerializable(typeof(PostalAddress.Type), TypeInfoPropertyName = "PostalAddressTypeInfo")]
     [JsonSerializable(typeof(PhoneNumber.Type), TypeInfoPropertyName = "PhoneNumberTypeInfo")]
+    [JsonSerializable(typeof(VEvent), TypeInfoPropertyName = "VEventTypeInfo")]
     internal partial class PowerPlannerJsonContext : JsonSerializerContext
     {
     }

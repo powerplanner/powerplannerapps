@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.Helpers;
+﻿using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewLists;
 using System;
@@ -20,6 +21,7 @@ namespace PowerPlannerAppDataLibrary.Components
 
         private ViewItemSchedule s => ScheduleItem.Item;
         private ViewItemClass c => s.Class;
+        private bool IsCancelled => ScheduleItem.IsCancelled;
 
         private static Thickness TextMargin = new Thickness(6, 0, 6, 0);
 
@@ -84,10 +86,34 @@ namespace PowerPlannerAppDataLibrary.Components
 
             return new Border
             {
-                BackgroundColor = c.Color.ToColor(),
+                BackgroundColor = IsCancelled ? c.Color.ToColor().Opacity(0.1) : c.Color.ToColor(),
                 Height = (float)ScheduleItem.Height,
                 CornerRadius = 6,
-                Content = layout
+                BorderColor = IsCancelled ? c.Color.ToColor().Opacity(0.5) : Color.Transparent,
+                BorderThickness = new Thickness(IsCancelled ? 1 : 0),
+                Content = layout,
+                ContextMenu = () => new ContextMenu()
+                {
+                    Items =
+                    {
+                        new MenuItem
+                        {
+                            Text = IsCancelled ? "Restore occurrence" : "Cancel occurrence",
+                            Glyph = IsCancelled ? MaterialDesign.MaterialDesignIcons.Restore : MaterialDesign.MaterialDesignIcons.Delete,
+                            Click = delegate
+                            {
+                                if (IsCancelled)
+                                {
+                                    PowerPlannerApp.Current.GetMainScreenViewModel().RestoreScheduleOccurrence(s, DateOnly.FromDateTime(ScheduleItem.Date));
+                                }
+                                else
+                                {
+                                    PowerPlannerApp.Current.GetMainScreenViewModel().CancelScheduleOccurrence(s, DateOnly.FromDateTime(ScheduleItem.Date));
+                                }
+                            }
+                        }
+                    }
+                }
             };
         }
 
@@ -96,8 +122,9 @@ namespace PowerPlannerAppDataLibrary.Components
             return new TextBlock
             {
                 Text = txt,
-                FontWeight = FontWeights.SemiBold,
-                TextColor = Color.White,
+                FontWeight = IsCancelled ? default : FontWeights.SemiBold,
+                TextColor = IsCancelled ? Theme.Current.SubtleForegroundColor : Color.White,
+                Strikethrough = IsCancelled,
                 Margin = TextMargin,
                 WrapText = false,
                 FontSize = 14

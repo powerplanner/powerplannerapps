@@ -230,7 +230,7 @@ namespace PowerPlannerAndroid.Extensions
         {
             var schedulesOnDay = holidayHelper.Get(account, scheduleViewItemsGroup.Classes, now.Date, account.GetWeekOnDifferentDate(now.Date));
 
-            ViewItemSchedule nextSchedule = schedulesOnDay.FirstOrDefault(i => i.StartTimeInLocalTime(now) > now);
+            ViewItemSchedule nextSchedule = schedulesOnDay.FirstOrDefault(i => i.StartTimeInLocalTime(now) > now && !i.VEvent.ExcludedDates.Contains(DateOnly.FromDateTime(now)));
 
             if (nextSchedule != null)
             {

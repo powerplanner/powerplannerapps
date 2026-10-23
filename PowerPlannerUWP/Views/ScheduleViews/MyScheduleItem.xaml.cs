@@ -1,10 +1,13 @@
-﻿using PowerPlannerAppDataLibrary.ViewItems;
+﻿using PowerPlannerAppDataLibrary.Components;
+using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewLists;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Vx.Extensions;
+using Vx.Uwp;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Globalization.DateTimeFormatting;
@@ -22,35 +25,40 @@ namespace PowerPlannerUWP.Views.ScheduleViews
 {
     public sealed partial class MyScheduleItem : UserControl
     {
+        private ScheduleItemComponent _scheduleItemComponent;
+
         public MyScheduleItem()
         {
             this.InitializeComponent();
         }
 
-        public DateTime Date { get; set; }
-
-        public ViewItemSchedule Schedule
+        private DayScheduleItemsArranger.ScheduleItem _scheduleItem;
+        public DayScheduleItemsArranger.ScheduleItem ScheduleItem
         {
-            get { return (ViewItemSchedule)GetValue(ScheduleProperty); }
-            set { SetValue(ScheduleProperty, value); }
-        }
+            get => _scheduleItem;
+            set
+            {
+                if (_scheduleItem != value)
+                {
+                    _scheduleItem = value;
 
-        // Using a DependencyProperty as the backing store for Schedule.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ScheduleProperty =
-            DependencyProperty.Register("Schedule", typeof(ViewItemSchedule), typeof(MyScheduleItem), new PropertyMetadata(null, OnScheduleChanged));
-
-        private static void OnScheduleChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            (sender as MyScheduleItem).OnScheduleChanged(e);
-        }
-
-        private void OnScheduleChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (Schedule == null)
-                return;
-
-            var timeFormatter = DateTimeFormatterExtension.Current;
-            TextBlockTime.Text = string.Format(LocalizedResources.GetString("String_TimeToTime"), timeFormatter.FormatAsShortTime(Schedule.StartTimeInLocalTime(Date)), timeFormatter.FormatAsShortTime(Schedule.EndTimeInLocalTime(Date)));
+                    if (value != null)
+                    {
+                        if (_scheduleItemComponent == null)
+                        {
+                            _scheduleItemComponent = new ScheduleItemComponent
+                            {
+                                ScheduleItem = value
+                            };
+                            ScheduleItemComponentContainer.Child = _scheduleItemComponent.Render();
+                        }
+                        else
+                        {
+                            _scheduleItemComponent.ScheduleItem = value;
+                        }
+                    }
+                }
+            }
         }
 
         public bool IsHighlighted

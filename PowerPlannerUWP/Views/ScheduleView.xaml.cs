@@ -172,8 +172,7 @@ namespace PowerPlannerUWP.Views
             {
                 MyScheduleItem visual = new MyScheduleItem()
                 {
-                    Date = date,
-                    Schedule = s.Item,
+                    ScheduleItem = s,
                     Height = s.Height
                 };
 
@@ -380,7 +379,7 @@ namespace PowerPlannerUWP.Views
                 return;
             }
 
-            var schedule = (sender as MyScheduleItem).Schedule;
+            var schedule = (sender as MyScheduleItem).ScheduleItem.Item;
 
             UnhighlightSchedules(schedule.Class.GetGroupOfSchedulesWithSharedEditingValues(schedule));
         }
@@ -392,7 +391,7 @@ namespace PowerPlannerUWP.Views
                 return;
             }
 
-            var schedule = (sender as MyScheduleItem).Schedule;
+            var schedule = (sender as MyScheduleItem).ScheduleItem.Item;
 
             HighlightSchedules(
                 schedule.Class.GetGroupOfSchedulesWithSharedEditingValues(schedule),
@@ -418,7 +417,7 @@ namespace PowerPlannerUWP.Views
         {
             try
             {
-                var schedule = (sender as MyScheduleItem).Schedule;
+                var schedule = (sender as MyScheduleItem).ScheduleItem.Item;
                 
                 // If currently editing
                 if (IsEditing())
@@ -540,14 +539,14 @@ namespace PowerPlannerUWP.Views
         private void HighlightSchedules(IEnumerable<ViewItemSchedule> schedules, bool scrollToArea = true)
         {
             // Unhighlight everything else
-            foreach (var scheduleItem in GetMyScheduleItems().Where(i => !schedules.Contains(i.Schedule)))
+            foreach (var scheduleItem in GetMyScheduleItems().Where(i => !schedules.Contains(i.ScheduleItem.Item)))
                 scheduleItem.IsHighlighted = false;
 
             // If empty, do nothing
             if (!schedules.Any())
                 return;
 
-            MyScheduleItem[] scheduleItems = GetMyScheduleItems().Where(i => schedules.Contains(i.Schedule)).ToArray();
+            MyScheduleItem[] scheduleItems = GetMyScheduleItems().Where(i => schedules.Contains(i.ScheduleItem.Item)).ToArray();
 
             if (scheduleItems.Length == 0)
                 return;
@@ -663,7 +662,7 @@ namespace PowerPlannerUWP.Views
                 return;
 
             // Unhighlight
-            foreach (var scheduleItem in GetMyScheduleItems().Where(i => schedules.Contains(i.Schedule)))
+            foreach (var scheduleItem in GetMyScheduleItems().Where(i => schedules.Contains(i.ScheduleItem.Item)))
                 scheduleItem.IsHighlighted = false;
         }
 

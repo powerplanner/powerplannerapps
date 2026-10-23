@@ -87,8 +87,8 @@ namespace PowerPlanneriOS.Extensions
                         {
                             var reminderTime = schedule.StartTimeInLocalTime(date).Subtract(beforeTime);
 
-                            // Only schedule if at least 5 seconds in the future
-                            if (reminderTime >= DateTime.Now.AddSeconds(5))
+                            // Only schedule if at least 5 seconds in the future and not excluded by the schedule's excluded dates
+                            if (reminderTime >= DateTime.Now.AddSeconds(5) && !schedule.VEvent.ExcludedDates.Contains(DateOnly.FromDateTime(date)))
                             {
                                 await ScheduleClassReminderNotification(
                                     account.LocalAccountId,

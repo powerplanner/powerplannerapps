@@ -78,7 +78,7 @@ namespace PowerPlannerUWP.Extensions
                     foreach (var s in schedulesOnDay)
                     {
                         var reminderTime = s.StartTimeInLocalTime(today).Subtract(beforeTime);
-                        if (reminderTime >= DateTime.Now.AddSeconds(5))
+                        if (reminderTime >= DateTime.Now.AddSeconds(5) && !s.VEvent.ExcludedDates.Contains(DateOnly.FromDateTime(today)))
                         {
                             XmlDocument payload;
 
