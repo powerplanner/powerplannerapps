@@ -2297,4 +2297,10 @@ CSC 337 - Tue, Thu 9:30-10:45am in ILC 150</value>
   <data name="String_Progress" xml:space="preserve">
     <value>Progress</value>
   </data>
+  <data name="String_CancelThisClass" xml:space="preserve">
+    <value>Cancel this class</value>
+  </data>
+  <data name="String_RestoreThisClass" xml:space="preserve">
+    <value>Restore this class</value>
+  </data>
 </root>

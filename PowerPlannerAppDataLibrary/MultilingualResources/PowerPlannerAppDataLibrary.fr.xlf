@@ -2920,6 +2920,14 @@ Physique 202 - Mar, Jeu 9h30-10h45 en Salle 150</target>
           <source>Custom</source>
           <target state="final">Personnalisé</target>
         </trans-unit>
+        <trans-unit id="String_CancelThisClass" translate="yes" xml:space="preserve">
+          <source>Cancel this class</source>
+          <target state="final">Annuler ce cours</target>
+        </trans-unit>
+        <trans-unit id="String_RestoreThisClass" translate="yes" xml:space="preserve">
+          <source>Restore this class</source>
+          <target state="final">Rétablir ce cours</target>
+        </trans-unit>
       </group>
     </body>
   </file>

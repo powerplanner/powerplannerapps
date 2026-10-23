@@ -2924,6 +2924,14 @@ CSC 337 - Tue, Thu 9:30-10:45am in ILC 150</source>
           <source>Custom</source>
           <target state="final">مخصص</target>
         </trans-unit>
+        <trans-unit id="String_CancelThisClass" translate="yes" xml:space="preserve">
+          <source>Cancel this class</source>
+          <target state="final">إلغاء هذا الدرس</target>
+        </trans-unit>
+        <trans-unit id="String_RestoreThisClass" translate="yes" xml:space="preserve">
+          <source>Restore this class</source>
+          <target state="final">استعادة هذا الدرس</target>
+        </trans-unit>
       </group>
     </body>
   </file>

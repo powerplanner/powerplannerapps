@@ -98,7 +98,7 @@ namespace PowerPlannerAppDataLibrary.Components
                     {
                         new MenuItem
                         {
-                            Text = IsCancelled ? "Restore occurrence" : "Cancel occurrence",
+                            Text = R.S(IsCancelled ? "String_RestoreThisClass" : "String_CancelThisClass"),
                             Glyph = IsCancelled ? MaterialDesign.MaterialDesignIcons.Restore : MaterialDesign.MaterialDesignIcons.Delete,
                             Click = delegate
                             {
