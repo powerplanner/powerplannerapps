@@ -2922,6 +2922,14 @@ Physik 202 - Di, Do 9:30-10:45 Uhr in Raum 150</target>
           <source>Custom</source>
           <target state="final">Benutzerdefiniert</target>
         </trans-unit>
+        <trans-unit id="String_CancelThisClass" translate="yes" xml:space="preserve">
+          <source>Cancel this class</source>
+          <target state="final">Diesen Unterrichtstermin absagen</target>
+        </trans-unit>
+        <trans-unit id="String_RestoreThisClass" translate="yes" xml:space="preserve">
+          <source>Restore this class</source>
+          <target state="final">Diesen Unterrichtstermin wiederherstellen</target>
+        </trans-unit>
       </group>
     </body>
   </file>

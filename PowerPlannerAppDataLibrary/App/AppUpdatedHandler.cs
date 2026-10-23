@@ -106,6 +106,11 @@ namespace PowerPlannerAppDataLibrary.App
         {
             string changedText = "";
 
+            if (v < new Version(2610, 23, 0, 0))
+            {
+                changedText += "\n - Cancel instances of a single class! Right click the class schedule entry on a specific day, and click 'Cancel this class'.";
+            }
+
             if (v <= new Version(2610, 8) && VxPlatform.Current == Platform.iOS && VxDeviceType.Current == DeviceType.Desktop)
             {
                 changedText += "\n - Fixed viewing What If mode on grades page";

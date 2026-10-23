@@ -14,7 +14,7 @@ namespace PowerPlannerAndroid.Helpers
 {
     public static class AlarmManagerHelper
     {
-        public static void Schedule(Context context, Type receiverType, DateTime wakeTime, string uriData = null, bool wakeDevice = false)
+        public static void Schedule(Context context, Type receiverType, DateTime wakeTime, string uriData = null,         bool wakeDevice = false, bool exact = false)
         {
             Intent alarmIntent = new Intent(context, receiverType);
 
@@ -34,7 +34,31 @@ namespace PowerPlannerAndroid.Helpers
                 milliseconds = 5000;
             }
 
-            alarmManager.Set(wakeDevice ? AlarmType.RtcWakeup : AlarmType.Rtc, Java.Lang.JavaSystem.CurrentTimeMillis() + (long)milliseconds, pendingAlarmIntent);
+            var alarmType = wakeDevice ? AlarmType.RtcWakeup : AlarmType.Rtc;
+            long triggerAtMillis = Java.Lang.JavaSystem.CurrentTimeMillis() + (long)milliseconds;
+
+            if (exact)
+            {
+                // Plain Set() is inexact and gets deferred by Doze/App Standby, so time-sensitive alarms need the exact + allow-while-idle variants
+                if (Build.VERSION.SdkInt < BuildVersionCodes.S || alarmManager.CanScheduleExactAlarms())
+                {
+                    try
+                    {
+                        alarmManager.SetExactAndAllowWhileIdle(alarmType, triggerAtMillis, pendingAlarmIntent);
+                        return;
+                    }
+                    catch (Java.Lang.SecurityException)
+                    {
+                        // Exact alarm permission was revoked, fall through to the inexact variant
+                    }
+                }
+
+                // Exact alarms not permitted, so this is the best we can do (still fires during Doze, but possibly a few minutes late)
+                alarmManager.SetAndAllowWhileIdle(alarmType, triggerAtMillis, pendingAlarmIntent);
+                return;
+            }
+
+            alarmManager.Set(alarmType, triggerAtMillis, pendingAlarmIntent);
         }
     }
 }
