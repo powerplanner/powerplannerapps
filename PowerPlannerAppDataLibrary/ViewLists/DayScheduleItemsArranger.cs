@@ -131,11 +131,13 @@ namespace PowerPlannerAppDataLibrary.ViewLists
         {
             public ViewItemSchedule Item { get; private set; }
             public DateTime Date { get; private set; }
+            public bool IsCancelled { get; private set; }
 
             public ScheduleItem(DayScheduleItemsArranger arranger, ViewItemSchedule viewItem, TimeSpan? overriddenStartTime = null, TimeSpan? overriddenEndTime = null) : base(arranger)
             {
                 Item = viewItem;
                 Date = arranger.Date;
+                IsCancelled = viewItem.VEvent.ExcludedDates.Contains(DateOnly.FromDateTime(Date));
 
                 StartTime = overriddenStartTime ?? viewItem.StartTimeInLocalTime(Date).TimeOfDay;
                 EndTime = overriddenEndTime ?? viewItem.EndTimeInLocalTime(Date).TimeOfDay;

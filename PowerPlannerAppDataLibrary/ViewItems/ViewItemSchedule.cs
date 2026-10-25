@@ -84,7 +84,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         }
 
         /// <summary>
-        /// If the schedule instance occurs on the given (local) day, returns true. Accomodates for time zones including when time zone causes schedule that occurs on Wednesdays to actually be on Tuesday. Does NOT take into consideration week settings.
+        /// If the schedule instance occurs on the given (local) day, returns true. Accomodates for time zones including when time zone causes schedule that occurs on Wednesdays to actually be on Tuesday. Does NOT take into consideration week settings. Does NOT factor in cancelled schedules.
         /// </summary>
         /// <param name="date">Date to check in local time</param>
         /// <returns></returns>
@@ -134,6 +134,13 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             set { SetProperty(ref _scheduleWeek, value, "ScheduleWeek"); }
         }
 
+        private VEvent _vEvent = new VEvent();
+        public VEvent VEvent
+        {
+            get => _vEvent;
+            set => SetProperty(ref _vEvent, value, "VEvent");
+        }
+
         /// <summary>
         /// Does not have property change notifications
         /// </summary>
@@ -155,6 +162,22 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
             Room = schedule.Room;
             ScheduleWeek = schedule.ScheduleWeek;
+
+            if (string.IsNullOrWhiteSpace(schedule.Details))
+            {
+                VEvent = new VEvent();
+            }
+            else
+            {
+                try
+                {
+                    VEvent = Serialization.PowerPlannerJson.Deserialize<VEvent>(schedule.Details);
+                }
+                catch
+                {
+                    VEvent = new VEvent();
+                }
+            }
         }
 
         public override int CompareTo(object obj)

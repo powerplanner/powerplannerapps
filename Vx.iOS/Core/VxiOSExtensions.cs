@@ -348,10 +348,14 @@ namespace Vx.iOS
                     return "number";
 
                 case MaterialDesign.MaterialDesignIcons.Close:
+                case MaterialDesign.MaterialDesignIcons.Cancel:
                     return "xmark";
 
                 case MaterialDesign.MaterialDesignIcons.Bolt:
                     return "bolt";
+
+                case MaterialDesign.MaterialDesignIcons.Restore:
+                    return "trash.slash";
 
                 default:
                     return null;

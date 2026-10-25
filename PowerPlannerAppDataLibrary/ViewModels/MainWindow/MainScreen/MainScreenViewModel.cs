@@ -1988,6 +1988,64 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }
         }
 
+        public async void CancelScheduleOccurrence(ViewItemSchedule s, DateOnly date)
+        {
+            try
+            {
+                if (s.VEvent.ExcludedDates.Contains(date))
+                {
+                    return;
+                }
+
+                var updatedVEvent = s.VEvent.Clone();
+                updatedVEvent.ExcludedDates = updatedVEvent.ExcludedDates.Append(date).ToArray();
+
+                await HandleUserInteractionAsync("CancelScheduleOccurrence", async (cancellationToken) =>
+                {
+                    DataChanges changes = new DataChanges();
+                    changes.Add(new DataItemSchedule()
+                    {
+                        Identifier = s.Identifier,
+                        Details = Serialization.PowerPlannerJson.Serialize(updatedVEvent)
+                    });
+                    await PowerPlannerApp.Current.SaveChanges(changes);
+                });
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        public async void RestoreScheduleOccurrence(ViewItemSchedule s, DateOnly date)
+        {
+            try
+            {
+                if (!s.VEvent.ExcludedDates.Contains(date))
+                {
+                    return;
+                }
+
+                var updatedVEvent = s.VEvent.Clone();
+                updatedVEvent.ExcludedDates = updatedVEvent.ExcludedDates.Where(d => d != date).ToArray();
+
+                await HandleUserInteractionAsync("RestoreScheduleOccurrence", async (cancellationToken) =>
+                {
+                    DataChanges changes = new DataChanges();
+                    changes.Add(new DataItemSchedule()
+                    {
+                        Identifier = s.Identifier,
+                        Details = Serialization.PowerPlannerJson.Serialize(updatedVEvent)
+                    });
+                    await PowerPlannerApp.Current.SaveChanges(changes);
+                });
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
         private void OpenClassAsPopup(ViewItemClass c, ClassViewModel.ClassPages? initialPage = null)
         {
             try

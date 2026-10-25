@@ -998,6 +998,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 if (!changes.IsEmpty())
                 {
                     await PowerPlannerApp.Current.SaveChanges(changes);
+
+                    try
+                    {
+                        // Perfect time to ask for permission to send notifications
+                        RemindersExtension.Current?.RequestReminderPermission();
+                    }
+                    catch { }
                 }
             }, delegate
             {

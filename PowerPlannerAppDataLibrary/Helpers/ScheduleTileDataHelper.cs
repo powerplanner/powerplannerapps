@@ -103,7 +103,9 @@ namespace PowerPlannerAppDataLibrary.Helpers
 
             else
             {
-                answer.Schedules = SchedulesOnDay.Get(Account, ScheduleViewItemsGroup.Classes, date, Account.CurrentWeek, trackChanges: false).ToArray();
+                answer.Schedules = SchedulesOnDay.Get(Account, ScheduleViewItemsGroup.Classes, date, Account.CurrentWeek, trackChanges: false)
+                    .Where(i => !i.VEvent.ExcludedDates.Contains(DateOnly.FromDateTime(date)))
+                    .ToArray();
             }
 
             return answer;

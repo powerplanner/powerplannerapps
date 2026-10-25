@@ -306,6 +306,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             TryStartDataOperationAndThenNavigate(async delegate
             {
                 await ActuallySaveClassesAsync(response);
+
+                try
+                {
+                    // Perfect time to ask for permission to send notifications
+                    if (response.Classes.Any(i => i.Schedules.Any()))
+                    {
+                        RemindersExtension.Current?.RequestReminderPermission();
+                    }
+                }
+                catch { }
             }, delegate
             {
                 RemoveViewModel();

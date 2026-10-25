@@ -226,7 +226,8 @@ namespace PowerPlannerAndroid.Extensions
                     receiverType: typeof(UpdateDayOfNotificationsReceiver),
                     wakeTime: nextReminderTime,
                     uriData: "powerplanner:?localAccountId=" + account.LocalAccountId,
-                    wakeDevice: true);
+                    wakeDevice: true,
+                    exact: true);
             }
         }
 
@@ -774,7 +775,8 @@ namespace PowerPlannerAndroid.Extensions
                 receiverType: typeof(UpdateDayBeforeNotificationReceiver),
                 wakeTime: timeToScheduleAt,
                 uriData: "powerplanner:?localAccountId=" + account.LocalAccountId,
-                wakeDevice: true);
+                wakeDevice: true,
+                exact: true);
         }
 
         private static async Task<AgendaViewItemsGroup> GetAgendaViewItemsGroup(AccountDataItem account, DateTime today)

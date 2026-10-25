@@ -2921,6 +2921,14 @@ Física 202 - Mar, Jue 9:30-10:45 en Aula 150</target>
           <source>Custom</source>
           <target state="final">Personalizado</target>
         </trans-unit>
+        <trans-unit id="String_CancelThisClass" translate="yes" xml:space="preserve">
+          <source>Cancel this class</source>
+          <target state="final">Cancelar esta clase</target>
+        </trans-unit>
+        <trans-unit id="String_RestoreThisClass" translate="yes" xml:space="preserve">
+          <source>Restore this class</source>
+          <target state="final">Restaurar esta clase</target>
+        </trans-unit>
       </group>
     </body>
   </file>

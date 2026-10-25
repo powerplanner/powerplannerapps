@@ -446,11 +446,15 @@ namespace Vx.Uwp
                     return Symbol.Calculator;
 
                 case MaterialDesign.MaterialDesignIcons.Close:
+                case MaterialDesign.MaterialDesignIcons.Cancel:
                     return Symbol.Cancel;
 
                 case MaterialDesign.MaterialDesignIcons.More:
                 case MaterialDesign.MaterialDesignIcons.MoreHoriz:
                     return Symbol.More;
+
+                case MaterialDesign.MaterialDesignIcons.Restore:
+                    return Symbol.Redo;
 
                 default:
                     return Symbol.Refresh;

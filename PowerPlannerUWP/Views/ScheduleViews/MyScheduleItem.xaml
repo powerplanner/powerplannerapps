@@ -34,24 +34,7 @@
             Margin="-6"
             Opacity="0"/>
 
-        <StackPanel CornerRadius="6" Background="{x:Bind Schedule.Class.Color, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}">
-
-            <TextBlock
-                Text="{x:Bind Schedule.Class.Name, Mode=OneWay}"
-                Style="{StaticResource ScheduleTextBlockStyle}"
-                TextWrapping="WrapWholeWords"/>
-
-            <TextBlock
-                x:Name="TextBlockTime"
-                Style="{StaticResource ScheduleTextBlockStyle}"/>
-
-            <TextBlock
-                interfaces:TextBlockExtensions.HyperlinkColor="White"
-                interfaces:TextBlockExtensions.RawText="{x:Bind Schedule.Room, Mode=OneWay}"
-                Style="{StaticResource ScheduleTextBlockStyle}"
-                TextWrapping="WrapWholeWords"/>
-
-        </StackPanel>
+        <Border x:Name="ScheduleItemComponentContainer"/>
 
 
         <VisualStateManager.VisualStateGroups>
