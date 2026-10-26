@@ -21,18 +21,20 @@ namespace Vx.Droid.Views
             View.CheckedChange += View_CheckedChange;
             View.SetMinimumHeight(0);
 
-            UpdateCheckedTint();
+            UpdateThemeColors();
             View.ViewAttachedToWindow += (s, e) => Vx.Views.Theme.ThemeChanged += ThemeChanged;
             View.ViewDetachedFromWindow += (s, e) => Vx.Views.Theme.ThemeChanged -= ThemeChanged;
         }
 
         private void ThemeChanged(object sender, EventArgs e)
         {
-            UpdateCheckedTint();
+            UpdateThemeColors();
         }
 
-        private void UpdateCheckedTint()
+        private void UpdateThemeColors()
         {
+            View.SetTextColor(Vx.Views.Theme.Current.ForegroundColor.ToDroid());
+
             var accentColor = Vx.Views.Theme.Current.AccentColor.ToDroid();
             View.ButtonTintList = new ColorStateList(
                 new int[][] {

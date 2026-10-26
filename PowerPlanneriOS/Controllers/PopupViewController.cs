@@ -12,6 +12,7 @@ using PowerPlanneriOS.Helpers;
 using ToolsPortable;
 using PowerPlanneriOS.Views;
 using PowerPlannerAppDataLibrary;
+using Vx.iOS;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -29,6 +30,8 @@ namespace PowerPlanneriOS.Controllers
 
         public PopupViewController()
         {
+            base.View.BackgroundColor = Vx.Views.Theme.Current.BackgroundColor.ToUI();
+
             _contentView = new UIView()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false

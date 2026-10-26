@@ -153,6 +153,11 @@ namespace Vx.iOS
                     return new iOSColorPicker();
                 }
 
+                if (view is Vx.Views.CustomColorPicker)
+                {
+                    return new iOSCustomColorPicker();
+                }
+
                 if (view is Vx.Views.SlideView)
                 {
                     return new iOSSlideView();
@@ -266,7 +271,7 @@ namespace Vx.iOS
             return view.CreateNativeView(parentView).View as UIViewWrapper;
         }
 
-        internal static UIColor ToUI(this Color color)
+        public static UIColor ToUI(this Color color)
         {
             return UIColor.FromRGBA(color.R, color.G, color.B, color.A);
         }

@@ -90,7 +90,8 @@ namespace Vx.iOS.Views
 
         public UIRoundedTextView()
         {
-            BackgroundColor = UIColorCompat.TertiarySystemFillColor;
+            BackgroundColor = Theme.Current.BackgroundAlt1Color.ToUI();
+            TextColor = Theme.Current.ForegroundColor.ToUI();
             ClipsToBounds = true;
             Layer.CornerRadius = 10;
             Font = UIFont.PreferredBody;
@@ -100,7 +101,7 @@ namespace Vx.iOS.Views
 
             _placeholderLabel = new UILabel
             {
-                TextColor = UIColor.PlaceholderText,
+                TextColor = Theme.Current.SubtleForegroundColor.ToUI(),
                 Font = UIFont.PreferredBody,
                 Lines = 0
             };
@@ -177,7 +178,7 @@ namespace Vx.iOS.Views
         {
             _headerContainer = new UIView();
             {
-                _header = new UILabel();
+                _header = new UILabel { TextColor = Theme.Current.ForegroundColor.ToUI() };
 
                 _errorSymbol = new UILabel
                 {

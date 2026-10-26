@@ -162,6 +162,11 @@ namespace Vx.Droid
                     return new DroidColorPicker();
                 }
 
+                if (view is Vx.Views.CustomColorPicker)
+                {
+                    return new DroidCustomColorPicker();
+                }
+
                 if (view is Vx.Views.SlideView)
                 {
                     return new DroidSlideView();

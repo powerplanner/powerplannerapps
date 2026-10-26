@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Lifecycle;
 using Google.Android.Material.TextField;
+using InterfacesDroid.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,9 @@ namespace Vx.Droid.Views
             };
 
             View.AddView(_editText);
+
+            ColorTools.ApplyTheme(View);
+
             View.Click += View_Click;
             _editText.Click += View_Click;
         }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using ToolsPortable;
 using UIKit;
+using Vx.Views;
 
 namespace InterfacesiOS.Views
 {
@@ -56,20 +57,14 @@ namespace InterfacesiOS.Views
         }
 
         private ModalCustomColorPickerViewController m_modalCustomPicker;
-        private void ShowCustomColorPicker()
+        private async void ShowCustomColorPicker()
         {
-            if (m_modalCustomPicker == null)
-            {
-                m_modalCustomPicker = new ModalCustomColorPickerViewController(HeaderText, m_controller);
-                m_modalCustomPicker.OnModalEditSubmitted += new WeakEventHandler(ModalCustomPicker_OnModalEditSubmitted).Handler;
-            }
-            m_modalCustomPicker.ColorPicker.Color = SelectedColor;
-            m_modalCustomPicker.ShowAsModal();
-        }
+            var resp = await new ModalCustomColorPickerViewController(m_controller.View, SelectedColor).ShowAsync();
 
-        private void ModalCustomPicker_OnModalEditSubmitted(object sender, EventArgs e)
-        {
-            SelectedColor = (sender as ModalCustomColorPickerViewController).ColorPicker.Color;
+            if (resp?.Value != null)
+            {
+                SelectedColor = resp.Value;
+            }
         }
 
         public string HeaderText

@@ -31,6 +31,8 @@ namespace Vx.Droid.Views
 
             _textInputLayout.AddView(editText);
 
+            ColorTools.ApplyTheme(_textInputLayout);
+
             View.AddView(_textInputLayout);
 
             _button = new MaterialButton(VxDroidExtensions.ApplicationContext, null, Resource.Attribute.materialTextButtonStyle)

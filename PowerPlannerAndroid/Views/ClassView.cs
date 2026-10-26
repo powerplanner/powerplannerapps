@@ -53,7 +53,8 @@ namespace PowerPlannerAndroid.Views
         {
             var accentColor = DroidThemeColorApplier.ToDroid(colors.Accent);
             _tabLayout.SetSelectedTabIndicatorColor(accentColor);
-            _tabLayout.SetTabTextColors(_tabLayout.TabTextColors.DefaultColor, accentColor);
+            _tabLayout.SetTabTextColors(Vx.Views.Theme.Current.SubtleForegroundColor.ToDroid(), accentColor);
+            _tabLayout.SetBackgroundColor(Vx.Views.Theme.Current.BackgroundAlt1Color.ToDroid());
         }
 
         private void _viewPager_PageSelected(object sender, ViewPager.PageSelectedEventArgs e)

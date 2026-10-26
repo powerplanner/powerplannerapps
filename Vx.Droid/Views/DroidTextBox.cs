@@ -75,6 +75,8 @@ namespace Vx.Droid.Views
 
             View.AddView(_editText);
 
+            ColorTools.ApplyTheme(View);
+
             _editText.TextChanged += _editText_TextChanged;
             _editText.FocusChange += _editText_FocusChange;
         }

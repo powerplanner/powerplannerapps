@@ -15,19 +15,22 @@ namespace Vx.iOS.Views
 
         public iOSDatePicker()
         {
-            _header = new UILabel();
+            _header = new UILabel
+            {
+                TextColor = Theme.Current.ForegroundColor.ToUI()
+            };
 
             View.AddSubview(_header);
 
             _valueContainer = new ManualLayoutControl
             {
                 ClipsToBounds = true,
-                BackgroundColor = UIColorCompat.TertiarySystemFillColor
+                BackgroundColor = Theme.Current.BackgroundAlt1Color.ToUI()
             };
             _valueContainer.Layer.CornerRadius = 10;
             _valueContainer.TouchUpInside += _valueContainer_TouchUpInside;
 
-            _value = new UILabel { Lines = 1 };
+            _value = new UILabel { Lines = 1, TextColor = Theme.Current.ForegroundColor.ToUI() };
             _valueContainer.Add(_value);
 
             View.AddSubview(_valueContainer);

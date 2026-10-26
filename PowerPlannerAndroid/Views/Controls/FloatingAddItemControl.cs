@@ -21,6 +21,7 @@ using InterfacesDroid.Helpers;
 using PowerPlannerAndroid.Helpers;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Helpers;
+using Vx.Droid;
 
 namespace PowerPlannerAndroid.Views.Controls
 {
@@ -97,6 +98,10 @@ namespace PowerPlannerAndroid.Views.Controls
             _actionButtonAdd.RippleColor = ripple.DefaultColor;
             _actionButtonAddEvent.RippleColor = ripple.DefaultColor;
             _actionButtonAddHoliday.RippleColor = ripple.DefaultColor;
+
+            _textViewAddTask.SetTextColor(Vx.Views.Theme.Current.ForegroundColor.ToDroid());
+            _textViewAddEvent.SetTextColor(Vx.Views.Theme.Current.ForegroundColor.ToDroid());
+            _textViewAddHoliday.SetTextColor(Vx.Views.Theme.Current.ForegroundColor.ToDroid());
         }
 
         private void _sectionTask_Click(object sender, EventArgs e)

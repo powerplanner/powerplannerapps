@@ -10,7 +10,7 @@ namespace Vx.iOS.Views
 {
     public class iOSButton : iOSView<Button, UIButton>
     {
-        public iOSButton() : this(CreateRoundedButton(Theme.Current.AccentColor.ToUI(), InterfacesiOS.Helpers.UIColorCompat.TertiarySystemFillColor)) { }
+        public iOSButton() : this(CreateRoundedButton(Theme.Current.AccentColor.ToUI(), Theme.Current.BackgroundAlt1Color.ToUI())) { }
 
         protected iOSButton(UIButton button) : base(button)
         {

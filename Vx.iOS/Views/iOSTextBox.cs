@@ -115,7 +115,8 @@ namespace Vx.iOS.Views
 
         public UIRoundedTextField()
         {
-            BackgroundColor = UIColorCompat.TertiarySystemFillColor;
+            TextColor = Theme.Current.ForegroundColor.ToUI();
+            BackgroundColor = Theme.Current.BackgroundAlt1Color.ToUI();
             ClipsToBounds = true;
             Layer.CornerRadius = 10;
 
@@ -183,7 +184,10 @@ namespace Vx.iOS.Views
         {
             _headerContainer = new UIView();
             {
-                _header = new UILabel();
+                _header = new UILabel
+                {
+                    TextColor = Theme.Current.ForegroundColor.ToUI()
+                };
 
                 _errorSymbol = new UILabel
                 {
@@ -200,6 +204,7 @@ namespace Vx.iOS.Views
             _textField.EditingDidEnd += TextUpdated;
             _textField.EditingDidEndOnExit += TextUpdated;
             _textField.FocusChanged += _textField_FocusChanged;
+            _textField.TextColor = Theme.Current.ForegroundColor.ToUI();
 
             _errorMessageContainer = new UIView
             {
@@ -281,7 +286,9 @@ namespace Vx.iOS.Views
         public string Placeholder
         {
             get => _textField.Placeholder;
-            set => _textField.Placeholder = value;
+            set => _textField.AttributedPlaceholder = new NSAttributedString(
+                value ?? "", foregroundColor: Theme.Current.SubtleForegroundColor.ToUI()
+            );
         }
 
         private string _text;

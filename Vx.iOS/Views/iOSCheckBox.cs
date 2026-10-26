@@ -21,7 +21,8 @@ namespace Vx.iOS.Views
             _label = new UILabel()
             {
                 Lines = 0,
-                Font = UIFont.PreferredBody
+                Font = UIFont.PreferredBody,
+                TextColor = Theme.Current.ForegroundColor.ToUI()
             };
             View.Add(_label);
 

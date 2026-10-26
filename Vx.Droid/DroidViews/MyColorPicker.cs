@@ -7,6 +7,7 @@ using Android.Widget;
 using BareMvvm.Core.Binding;
 using Google.Android.Material.TextField;
 using InterfacesDroid.Dialogs;
+using InterfacesDroid.Helpers;
 using InterfacesDroid.Themes;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,8 @@ namespace InterfacesDroid.Views
             };
 
             _textInputLayout.AddView(editText);
+
+            ColorTools.ApplyTheme(_textInputLayout);
 
             _colorPicker = new MyColorPicker(context);
             _colorPicker.SetPadding(ThemeHelper.AsPx(context, 2), ThemeHelper.AsPx(context, 4), 0, 0);

@@ -43,7 +43,7 @@ namespace Vx.iOS.Views
 
             _internalColorPickerComponent.Header = newView.Header;
             _internalColorPickerComponent.IsEnabled = newView.IsEnabled;
-            _internalColorPickerComponent.Color = newView.Color?.Value ?? default(System.Drawing.Color);
+            _internalColorPickerComponent.Color = newView.Color?.Value ?? default;
 
             View.InvalidateIntrinsicContentSize();
             View.SetNeedsLayout();
@@ -60,21 +60,15 @@ namespace Vx.iOS.Views
             // Need to wait till previous modal is dismissed before showing this one
             await System.Threading.Tasks.Task.Delay(1);
 
-            if (m_modalCustomPicker == null)
-            {
-                m_modalCustomPicker = new ModalCustomColorPickerViewController(VxView.Header, View.GetViewController());
-                m_modalCustomPicker.OnModalEditSubmitted += new WeakEventHandler(ModalCustomPicker_OnModalEditSubmitted).Handler;
-            }
-            m_modalCustomPicker.ColorPicker.Color = (VxView.Color?.Value ?? default(System.Drawing.Color)).ToUI().CGColor;
-            m_modalCustomPicker.ShowAsModal();
-        }
+            var resp = await new ModalCustomColorPickerViewController(View, (VxView.Color?.Value ?? default).ToUI().CGColor).ShowAsync();
 
-        private void ModalCustomPicker_OnModalEditSubmitted(object sender, EventArgs e)
-        {
-            var uiColor = (sender as ModalCustomColorPickerViewController).ColorPicker.Color;
-            var color = System.Drawing.Color.FromArgb((int)(uiColor.Components[0] * 255), (int)(uiColor.Components[1] * 255), (int)(uiColor.Components[2] * 255));
-            _internalColorPickerComponent.Color = color;
-            VxView.Color?.ValueChanged?.Invoke(color);
+            if (resp?.Value != null)
+            {
+                var uiColor = resp.Value;
+                var color = System.Drawing.Color.FromArgb((int)(uiColor.Components[0] * 255), (int)(uiColor.Components[1] * 255), (int)(uiColor.Components[2] * 255));
+                _internalColorPickerComponent.Color = color;
+                VxView.Color?.ValueChanged?.Invoke(color);
+            }
         }
     }
 }

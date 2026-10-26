@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Widget;
 using Google.Android.Material.TextField;
 using InterfacesDroid.Adapters;
+using InterfacesDroid.Helpers;
 using InterfacesDroid.Themes;
 using System;
 using System.Collections;
@@ -74,6 +75,8 @@ namespace Vx.Droid.Views
 
                     _blankTextInputLayout.AddView(blankEditText);
 
+                    ColorTools.ApplyTheme(_blankTextInputLayout);
+
                     View.AddView(_blankTextInputLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent));
 
                     _spinner = new Spinner(View.Context);
@@ -110,6 +113,8 @@ namespace Vx.Droid.Views
                     _autoCompleteTextView.TextChanged += _autoCompleteTextView_TextChanged;
 
                     _autoCompleteTextInputLayout.AddView(_autoCompleteTextView);
+
+                    ColorTools.ApplyTheme(_autoCompleteTextInputLayout);
 
                     View.AddView(_autoCompleteTextInputLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent));
                 }

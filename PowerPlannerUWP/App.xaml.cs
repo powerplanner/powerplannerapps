@@ -84,7 +84,7 @@ namespace PowerPlannerUWP
                     break;
 
                 case Themes.Custom:
-                    if (Settings.CustomForegroundColor != null)
+                    if (Settings.CustomBackgroundColor != null)
                     {
                         if (Settings.CustomBackgroundColor.Value.GetBrightness() < 0.5f)
                         {
