@@ -77,27 +77,14 @@ namespace Vx.iOS.Views
                 return;
             }
 
-            // Need to wait till previous modal is dismissed before showing this one
-            await System.Threading.Tasks.Task.Delay(1);
+            var resp = await new ModalCustomColorPickerViewController(View, (VxView.Color?.Value ?? default).ToUI().CGColor).ShowAsync();
 
-            if (_modalCustomPicker == null)
+            if (resp?.Value != null)
             {
-                _modalCustomPicker = new ModalCustomColorPickerViewController(VxView.Header, View.GetViewController());
-                _modalCustomPicker.OnModalEditSubmitted += new WeakEventHandler(ModalCustomPicker_OnModalEditSubmitted).Handler;
-            }
-            _modalCustomPicker.ColorPicker.Color = (VxView.Color?.Value ?? default(System.Drawing.Color)).ToUI().CGColor;
-            _modalCustomPicker.ShowAsModal();
-        }
-
-        private void ModalCustomPicker_OnModalEditSubmitted(object sender, EventArgs e)
-        {
-            var uiColor = (sender as ModalCustomColorPickerViewController).ColorPicker.Color;
-            var color = System.Drawing.Color.FromArgb((int)Math.Round(uiColor.Components[0] * 255), (int)Math.Round(uiColor.Components[1] * 255), (int)Math.Round(uiColor.Components[2] * 255));
-
-            if (VxView.Color != null && VxView.Color.Value != color)
-            {
+                var uiColor = resp.Value;
+                var color = System.Drawing.Color.FromArgb((int)(uiColor.Components[0] * 255), (int)(uiColor.Components[1] * 255), (int)(uiColor.Components[2] * 255));
                 UpdateColorDisplay(color);
-                VxView.Color.ValueChanged?.Invoke(color);
+                VxView.Color?.ValueChanged?.Invoke(color);
             }
         }
 
