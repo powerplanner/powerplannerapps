@@ -21,10 +21,10 @@ namespace Vx.iOS.Views
 
         public iOSComboBox()
         {
-            _header = new UILabel();
+            _header = new UILabel() { TextColor = Theme.Current.ForegroundColor.ToUI() };
 
             _valueContainer = new ManualLayoutView();
-            _valueContainer.BackgroundColor = UIColorCompat.TertiarySystemFillColor;
+            _valueContainer.BackgroundColor = Theme.Current.BackgroundAlt1Color.ToUI();
             _valueContainer.ClipsToBounds = true;
             _valueContainer.Layer.CornerRadius = 10;
 
@@ -96,7 +96,7 @@ namespace Vx.iOS.Views
 
                 if (_value == null)
                 {
-                    _value = new UILabel { Lines = 1 };
+                    _value = new UILabel { Lines = 1, TextColor = Theme.Current.ForegroundColor.ToUI() };
                     _valueContainer.Add(_value);
                     _valueContainer.SetNeedsLayout();
                 }

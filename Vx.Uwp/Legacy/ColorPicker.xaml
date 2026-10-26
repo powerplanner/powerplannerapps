@@ -22,7 +22,9 @@
                 <Rectangle Fill='{x:Bind Color, Converter={StaticResource ColorToBrushConverter}}'
                     Margin="0,0,6,0"
                     Width="12"
-                    Height="12" />
+                    Height="12"
+                    RadiusX="6"
+                    RadiusY="6"/>
                 <TextBlock Text='{x:Bind Text}' VerticalAlignment='Center' />
 
             </StackPanel>

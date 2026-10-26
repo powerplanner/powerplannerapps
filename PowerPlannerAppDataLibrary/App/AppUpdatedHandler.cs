@@ -106,6 +106,11 @@ namespace PowerPlannerAppDataLibrary.App
         {
             string changedText = "";
 
+            if (v < new Version(2610, 26))
+            {
+                changedText += "\n - Custom theme color options! Change the background colors and more! Go to Settings -> Theme, and change the theme from \"Automatic\" to \"Custom\".";
+            }
+
             if (v < new Version(2610, 23, 0, 0))
             {
                 changedText += "\n - Cancel instances of a single class! Right click the class schedule entry on a specific day, and click 'Cancel this class'.";
@@ -170,11 +175,6 @@ namespace PowerPlannerAppDataLibrary.App
             if (v <= new Version(2605, 7, 0, 0))
             {
                 changedText += "\n - Edit with AI beta feature! Try it on the calendar page, click the ⚡ icon.";
-            }
-
-            if (v <= new Version(2604, 7, 1, 99))
-            {
-                changedText += "\n - Custom theme colors added! Go to settings to pick your favorite color for the app!";
             }
 
             if (v <= new Version(2402, 19, 0, 0))

@@ -162,8 +162,9 @@ namespace Vx.Views
                                 {
                                     Width = 16,
                                     Height = 16,
+                                    CornerRadius = 8,
                                     BackgroundColor = c.Color,
-                                    BorderColor = System.Drawing.Color.Black,
+                                    BorderColor = Theme.Current.ForegroundColor,
                                     BorderThickness = new Thickness(1),
                                     VerticalAlignment = VerticalAlignment.Center
                                 },

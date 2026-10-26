@@ -15,11 +15,15 @@ namespace Vx.iOS.Views
             _label = new UILabel()
             {
                 Lines = 1,
-                Font = UIFont.PreferredBody
+                Font = UIFont.PreferredBody,
+                TextColor = Theme.Current.ForegroundColor.ToUI()
             };
             View.Add(_label);
 
-            _switch = new UISwitch();
+            _switch = new UISwitch()
+            {
+                OnTintColor = Theme.Current.AccentColor.ToUI()
+            };
             View.Add(_switch);
 
             // Idk why, but on the add task page, if the keyboard is up, this doesn't get hit

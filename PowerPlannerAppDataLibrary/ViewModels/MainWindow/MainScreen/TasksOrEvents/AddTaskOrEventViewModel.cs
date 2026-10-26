@@ -71,8 +71,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                 {
                                     Width = 16,
                                     Height = 16,
+                                    CornerRadius = 8,
                                     BackgroundColor = (c as ViewItemClass).Color.ToColor(),
-                                    BorderColor = Color.Black,
+                                    BorderColor = Theme.Current.ForegroundColor,
                                     BorderThickness = new Thickness(1),
                                     VerticalAlignment = VerticalAlignment.Center
                                 },
