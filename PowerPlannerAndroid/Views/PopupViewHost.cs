@@ -99,6 +99,7 @@ namespace PowerPlannerAndroid.Views
         {
             try
             {
+                SetBackgroundColor(Vx.Views.Theme.Current.PopupPageBackgroundColor.ToDroid());
                 _statusBarSpacer?.SetBackgroundColor(DroidThemeColorApplier.ToDroid(Vx.Views.Theme.Current.ChromeColor));
                 Toolbar?.BackgroundColor = Vx.Views.Theme.Current.ChromeColor;
                 Toolbar?.ForegroundColor = Vx.Views.Theme.Current.ForegroundColor;
