@@ -15,6 +15,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes;
 using PowerPlanneriOS.Helpers;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary;
+using Vx.iOS;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -85,7 +86,10 @@ namespace PowerPlanneriOS.Controllers
             }, new CAPSPageMenuConfiguration()
             {
                 SelectedMenuItemLabelColor = ColorResources.PowerPlannerAccentBlue,
-                SelectionIndicatorColor = ColorResources.PowerPlannerAccentBlue
+                SelectionIndicatorColor = ColorResources.PowerPlannerAccentBlue,
+                ViewBackgroundColor = Vx.Views.Theme.Current.BackgroundColor.ToUI(),
+                ScrollMenuBackgroundColor = Vx.Views.Theme.Current.BackgroundAlt1Color.ToUI(),
+                UnselectedMenuItemLabelColor = Vx.Views.Theme.Current.SubtleForegroundColor.ToUI()
             }, initialPageIndex);
             _pageMenuController.View.TranslatesAutoresizingMaskIntoConstraints = false;
             AddChildViewController(_pageMenuController);

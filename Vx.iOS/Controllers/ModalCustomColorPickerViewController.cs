@@ -37,6 +37,7 @@ namespace InterfacesiOS.Controllers
             }
 
             var picker = new BareUICustomColorPicker(new CGRect(0, 0, width, height));
+            picker.Color = InitialValue;
             return picker;
         }
 

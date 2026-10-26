@@ -184,7 +184,10 @@ namespace Vx.iOS.Views
         {
             _headerContainer = new UIView();
             {
-                _header = new UILabel();
+                _header = new UILabel
+                {
+                    TextColor = Theme.Current.ForegroundColor.ToUI()
+                };
 
                 _errorSymbol = new UILabel
                 {
@@ -283,7 +286,9 @@ namespace Vx.iOS.Views
         public string Placeholder
         {
             get => _textField.Placeholder;
-            set => _textField.Placeholder = value;
+            set => _textField.AttributedPlaceholder = new NSAttributedString(
+                value ?? "", foregroundColor: Theme.Current.SubtleForegroundColor.ToUI()
+            );
         }
 
         private string _text;

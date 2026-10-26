@@ -178,7 +178,7 @@ namespace Vx.iOS.Views
         {
             _headerContainer = new UIView();
             {
-                _header = new UILabel();
+                _header = new UILabel { TextColor = Theme.Current.ForegroundColor.ToUI() };
 
                 _errorSymbol = new UILabel
                 {

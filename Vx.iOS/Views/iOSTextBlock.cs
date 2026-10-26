@@ -57,6 +57,7 @@ namespace Vx.iOS.Views
             // Lose the padding: https://stackoverflow.com/questions/746670/how-to-lose-margin-padding-in-uitextview
             View.TextContainerInset = UIEdgeInsets.Zero;
             View.TextContainer.LineFragmentPadding = 0;
+            View.BackgroundColor = null;
         }
 
         protected override void ApplyProperties(HyperlinkTextBlock oldView, HyperlinkTextBlock newView)

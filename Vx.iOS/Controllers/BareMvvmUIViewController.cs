@@ -59,7 +59,7 @@ namespace InterfacesiOS.Controllers
     {
         public BareMvvmUIViewController()
         {
-            base.View.BackgroundColor = UIColorCompat.SystemBackgroundColor;
+            base.View.BackgroundColor = Vx.iOS.VxiOSExtensions.ToUI(Vx.Views.Theme.Current.BackgroundColor);
 
             _shouldReturnCondition = new UITextFieldCondition(ShouldReturn);
 
