@@ -12,7 +12,5 @@ namespace Vx.Views
         public bool IsEnabled { get; set; } = true;
 
         public VxValue<Color> Color { get; set; }
-
-        public static bool IsSupported => VxPlatform.Current == Platform.Uwp;
     }
 }

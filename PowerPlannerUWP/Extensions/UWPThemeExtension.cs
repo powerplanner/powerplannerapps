@@ -11,7 +11,7 @@ namespace PowerPlannerUWP.Extensions
 {
     internal class UWPThemeExtension : ThemeExtension
     {
-        public override async void Relaunch()
+        public override async void ApplyThemeAndRelaunchIfNeeded()
         {
             try
             {

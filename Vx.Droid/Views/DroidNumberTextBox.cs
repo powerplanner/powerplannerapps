@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using InterfacesDroid.Helpers;
 using InterfacesDroid.Views;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace Vx.Droid.Views
     {
         public DroidNumberTextBox() : base(new BareMaterialEditDecimalNumber(VxDroidExtensions.ApplicationContext))
         {
+            ColorTools.ApplyTheme(View);
             View.ValueChanged += View_ValueChanged;
         }
 

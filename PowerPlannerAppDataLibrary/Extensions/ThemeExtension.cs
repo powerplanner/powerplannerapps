@@ -8,7 +8,7 @@ namespace PowerPlannerAppDataLibrary.Extensions
     {
         public static ThemeExtension Current { get; set; }
 
-        public abstract void Relaunch();
+        public abstract void ApplyThemeAndRelaunchIfNeeded();
     }
 
     public enum Themes

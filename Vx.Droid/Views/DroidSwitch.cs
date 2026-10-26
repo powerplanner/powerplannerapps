@@ -17,6 +17,27 @@ namespace Vx.Droid.Views
     {
         public DroidSwitch() : base(new SwitchMaterial(VxDroidExtensions.ApplicationContext))
         {
+            View.SetTextColor(Vx.Views.Theme.Current.ForegroundColor.ToDroid());
+
+            View.ThumbTintList = new Android.Content.Res.ColorStateList(
+                new int[][] {
+                    new int[] { Android.Resource.Attribute.StateChecked },
+                    new int[] { }
+                },
+                new int[] {
+                    Vx.Views.Theme.Current.AccentColor.ToDroid(),
+                    Vx.Views.Theme.Current.ForegroundColor.ToDroid()
+                });
+            View.TrackTintList = new Android.Content.Res.ColorStateList(
+            new int[][] {
+                new int[] { Android.Resource.Attribute.StateChecked },
+                new int[] { }
+            },
+            new int[] {
+                Vx.Views.Theme.Current.PrimaryColor.ToDroid(),
+                Vx.Views.Theme.Current.SubtleForegroundColor.ToDroid()
+            });
+
             View.CheckedChange += View_CheckedChange;
         }
 

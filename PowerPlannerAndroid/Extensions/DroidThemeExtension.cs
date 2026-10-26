@@ -15,7 +15,7 @@ namespace PowerPlannerAndroid.Extensions
 {
     internal class DroidThemeExtension : ThemeExtension
     {
-        public override void Relaunch()
+        public override void ApplyThemeAndRelaunchIfNeeded()
         {
             ApplyTheme();
         }
@@ -30,6 +30,20 @@ namespace PowerPlannerAndroid.Extensions
 
                 case Themes.Light:
                     AppCompatDelegate.DefaultNightMode = AppCompatDelegate.ModeNightNo;
+                    break;
+
+                case Themes.Custom:
+                    if (PowerPlannerAppDataLibrary.Helpers.Settings.CustomBackgroundColor != null)
+                    {
+                        if (PowerPlannerAppDataLibrary.Helpers.Settings.CustomBackgroundColor.Value.GetBrightness() < 0.5f)
+                        {
+                            AppCompatDelegate.DefaultNightMode = AppCompatDelegate.ModeNightYes;
+                        }
+                        else
+                        {
+                            AppCompatDelegate.DefaultNightMode = AppCompatDelegate.ModeNightNo;
+                        }
+                    }
                     break;
 
                 case Themes.Automatic:

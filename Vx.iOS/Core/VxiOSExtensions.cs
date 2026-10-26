@@ -153,6 +153,11 @@ namespace Vx.iOS
                     return new iOSColorPicker();
                 }
 
+                if (view is Vx.Views.CustomColorPicker)
+                {
+                    return new iOSCustomColorPicker();
+                }
+
                 if (view is Vx.Views.SlideView)
                 {
                     return new iOSSlideView();

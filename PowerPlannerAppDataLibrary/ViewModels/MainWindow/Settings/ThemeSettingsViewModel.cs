@@ -46,18 +46,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         };
 
         private VxState<Themes> _theme = new VxState<Themes>(Helpers.Settings.ThemeOverride);
-        private Themes[] Options = CustomColorPicker.IsSupported ? new Themes[]
-        {
+        private Themes[] Options = ThemeExtension.Current == null ?
+        [
+            Themes.Automatic,
+            Themes.Custom
+        ] :
+        [
             Themes.Automatic,
             Themes.Light,
             Themes.Dark,
             Themes.Custom
-        } : new Themes[]
-        {
-            Themes.Automatic,
-            Themes.Light,
-            Themes.Dark
-        };
+        ];
 
         private VxState<Color> _selectedColor;
         private VxState<bool> _isCustomColor;
@@ -106,58 +105,55 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             var content = new List<View>();
 
-            if (ThemeExtension.Current != null)
+            content.Add(new TextBlock
             {
-                content.Add(new TextBlock
-                {
-                    Text = PowerPlannerResources.GetString("Settings_Appearance_Title"),
-                    FontSize = Theme.Current.SubtitleFontSize,
-                    FontWeight = FontWeights.SemiBold,
-                    Margin = new Thickness(0, 0, 0, 6)
-                });
+                Text = PowerPlannerResources.GetString("Settings_Appearance_Title"),
+                FontSize = Theme.Current.SubtitleFontSize,
+                FontWeight = FontWeights.SemiBold,
+                Margin = new Thickness(0, 0, 0, 6)
+            });
 
-                // Light/dark/auto theme selector
-                content.Add(new ComboBox
+            // Light/dark/auto theme selector
+            content.Add(new ComboBox
+            {
+                Items = Options,
+                ItemTemplate = v => new TextBlock
                 {
-                    Items = Options,
-                    ItemTemplate = v => new TextBlock
-                    {
-                        Text = ((Themes)v).ToLocalizedString()
-                    },
-                    SelectedItem = VxValue.Create<object>(_theme.Value, v => _theme.Value = (Themes)v)
-                });
+                    Text = ((Themes)v).ToLocalizedString()
+                },
+                SelectedItem = VxValue.Create<object>(_theme.Value, v => _theme.Value = (Themes)v)
+            });
 
-                if (_theme.Value == Themes.Custom)
+            if (_theme.Value == Themes.Custom)
+            {
+                content.Add(new AdaptiveGridPanel
                 {
-                    content.Add(new AdaptiveGridPanel
+                    MinColumnWidth = 150,
+                    ColumnSpacing = 12,
+                    Children =
                     {
-                        MinColumnWidth = 150,
-                        ColumnSpacing = 12,
-                        Children =
+                        new CustomColorPicker
                         {
-                            new CustomColorPicker
-                            {
-                                Header = "Chrome color",
-                                Color = VxValue.Create(_customChromeColor.Value, v => _customChromeColor.Value = v),
-                                Margin = new Thickness(0, 12, 0, 0)
-                            },
+                            Header = "Chrome color",
+                            Color = VxValue.Create(_customChromeColor.Value, v => _customChromeColor.Value = v),
+                            Margin = new Thickness(0, 12, 0, 0)
+                        },
 
-                            new CustomColorPicker
-                            {
-                                Header = "Background color",
-                                Color = VxValue.Create(_customBackgroundColor.Value, v => _customBackgroundColor.Value = v),
-                                Margin = new Thickness(0, 12, 0, 0)
-                            },
+                        new CustomColorPicker
+                        {
+                            Header = "Background color",
+                            Color = VxValue.Create(_customBackgroundColor.Value, v => _customBackgroundColor.Value = v),
+                            Margin = new Thickness(0, 12, 0, 0)
+                        },
 
-                            new CustomColorPicker
-                            {
-                                Header = "Foreground color",
-                                Color = VxValue.Create(_customForegroundColor.Value, v => _customForegroundColor.Value = v),
-                                Margin = new Thickness(0, 12, 0, 0)
-                            }
+                        new CustomColorPicker
+                        {
+                            Header = "Foreground color",
+                            Color = VxValue.Create(_customForegroundColor.Value, v => _customForegroundColor.Value = v),
+                            Margin = new Thickness(0, 12, 0, 0)
                         }
-                    });
-                }
+                    }
+                });
             }
 
             // Theme color section (only when logged in)
@@ -229,12 +225,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                 if (_isCustomColor.Value)
                 {
-                    content.Add(CustomColorPicker.IsSupported ? new CustomColorPicker
-                    {
-                        Header = "Custom color",
-                        Color = VxValue.Create(_selectedColor.Value, v => _selectedColor.Value = v),
-                        Margin = new Thickness(0, 12, 0, 0)
-                    } : new ColorPicker
+                    content.Add(new CustomColorPicker
                     {
                         Header = "Custom color",
                         Color = VxValue.Create(_selectedColor.Value, v => _selectedColor.Value = v),
@@ -346,12 +337,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     Margin = new Thickness(0, 6, 0, 0)
                 });
 
-                content.Add(CustomColorPicker.IsSupported ? new CustomColorPicker
-                {
-                    Header = PowerPlannerResources.GetString("AddClassPage_ColorPickerEditClassColor.Header"),
-                    Color = VxValue.Create(_noClassColor.Value, v => _noClassColor.Value = v),
-                    Margin = new Thickness(0, 18, 0, 0)
-                } : new ColorPicker
+                content.Add(new CustomColorPicker
                 {
                     Header = PowerPlannerResources.GetString("AddClassPage_ColorPickerEditClassColor.Header"),
                     Color = VxValue.Create(_noClassColor.Value, v => _noClassColor.Value = v),
@@ -376,7 +362,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 Margin = new Thickness(0, 18, 0, 0)
             });
 
-            if (IsThemeDirty)
+            // UWP relaunches on theme change
+            if (IsThemeDirty && VxPlatform.Current == Platform.Uwp)
             {
                 content.Add(new TextBlock
                 {
@@ -434,8 +421,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             try
             {
+                bool changedTheme = false;
                 bool changedThemeColor = false;
                 bool changedNoClassColor = false;
+
+                // Save light/dark theme if changed
+                if (IsThemeDirty)
+                {
+                    Helpers.Settings.ThemeOverride = _theme.Value;
+                    if (_theme.Value == Themes.Custom)
+                    {
+                        Helpers.Settings.CustomForegroundColor = _customForegroundColor.Value;
+                        Helpers.Settings.CustomBackgroundColor = _customBackgroundColor.Value;
+                        Helpers.Settings.CustomChromeColor = _customChromeColor.Value;
+                    }
+
+                    TelemetryExtension.Current?.TrackEvent("ChangedTheme", new Dictionary<string, string>()
+                    {
+                        { "Theme", _theme.Value.ToString() }
+                    });
+
+                    changedTheme = true;
+                }
 
                 // Save theme color if changed
                 if (IsColorDirty && _account != null)
@@ -444,7 +451,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     byte[] colorBytes = new byte[] { color.R, color.G, color.B };
 
                     await _account.SetPrimaryThemeColorAsync(colorBytes, uploadSettings: false);
-                    ThemeColorApplier.Apply(_account);
 
                     TelemetryExtension.Current?.TrackEvent("ChangedThemeColor", new Dictionary<string, string>()
                     {
@@ -452,6 +458,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     });
 
                     changedThemeColor = true;
+                }
+
+                // If changed theme or theme color, need to apply theme
+                if (changedTheme || changedThemeColor)
+                {
+                    ThemeColorApplier.Apply(_account);
                 }
 
                 // Save no class color if changed
@@ -487,24 +499,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     _ = Sync.SyncSettings(_account, changedSettings);
                 }
 
-                // Save light/dark theme if changed (triggers relaunch)
-                if (IsThemeDirty)
+                // If we need a relaunch
+                if (changedTheme)
                 {
-                    Helpers.Settings.ThemeOverride = _theme.Value;
-                    if (_theme.Value == Themes.Custom)
+                    ThemeExtension.Current?.ApplyThemeAndRelaunchIfNeeded();
+
+                    if (VxPlatform.Current == Platform.Uwp)
                     {
-                        Helpers.Settings.CustomForegroundColor = _customForegroundColor.Value;
-                        Helpers.Settings.CustomBackgroundColor = _customBackgroundColor.Value;
-                        Helpers.Settings.CustomChromeColor = _customChromeColor.Value;
+                        // UWP relaunches, so this shouldn't get hit
+                        return;
                     }
 
-                    TelemetryExtension.Current?.TrackEvent("ChangedTheme", new Dictionary<string, string>()
-                    {
-                        { "Theme", _theme.Value.ToString() }
-                    });
-
-                    ThemeExtension.Current.Relaunch();
-                    return; // Relaunch will close everything
+                    // Otherwise, continue with removing the view model and closing the popup
                 }
 
                 RemoveViewModel();
