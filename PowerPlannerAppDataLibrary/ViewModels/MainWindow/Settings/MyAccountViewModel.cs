@@ -238,7 +238,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public static MyAccountViewModel Load(BaseViewModel parent)
         {
-            MainWindowViewModel windowViewModel = parent.FindAncestor<MainWindowViewModel>();
+            MainWindowViewModel windowViewModel = parent.FindAncestorOrSelf<MainWindowViewModel>();
 
             if (windowViewModel == null)
             {

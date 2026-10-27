@@ -32,7 +32,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     ancestor = ancestor.Parent;
                 }
 
-                throw new NullReferenceException("Couldn't find MainScreenViewModel");
+                return null;
             }
         }
 

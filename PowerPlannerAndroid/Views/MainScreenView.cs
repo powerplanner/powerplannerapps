@@ -33,34 +33,6 @@ namespace PowerPlannerAndroid.Views
         public MainScreenView(ViewGroup root) : base(Resource.Layout.MainScreen, root)
         {
             _popupsPresenter = FindViewById<PopupsPresenter>(Resource.Id.MainScreenPopupsPresenter);
-            NativeDroidAppWindow.WindowInsetsChanged += new WeakEventHandler<WindowInsetsCompat>(NativeDroidAppWindow_WindowInsetsChanged).Handler;
-        }
-
-        private void NativeDroidAppWindow_WindowInsetsChanged(object sender, WindowInsetsCompat e)
-        {
-            UpdateNookInsets();
-        }
-
-        private void UpdateNookInsets()
-        {
-            try
-            {
-                if (ViewModel != null && NativeDroidAppWindow.WindowInsets != null)
-                {
-                    var insets = NativeDroidAppWindow.WindowInsets.GetInsets(WindowInsetsCompat.Type.SystemBars() | WindowInsetsCompat.Type.DisplayCutout());
-                    if (insets != null)
-                    {
-                        ViewModel.UpdateNookInsets(new Vx.Views.Thickness
-                        {
-                            Left = ThemeHelper.FromPxPrecise(Context, insets.Left),
-                            Top = ThemeHelper.FromPxPrecise(Context, insets.Top),
-                            Right = ThemeHelper.FromPxPrecise(Context, insets.Right),
-                            Bottom = ThemeHelper.FromPxPrecise(Context, insets.Bottom)
-                        });
-                    }
-                }
-            }
-            catch { }
         }
 
         public View GetSnackbarAnchorView()
@@ -78,7 +50,6 @@ namespace PowerPlannerAndroid.Views
 
             if (ViewModel != null)
             {
-                UpdateNookInsets();
                 var renderedView = ViewModel.Render();
                 renderedView.LayoutParameters = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MatchParent, FrameLayout.LayoutParams.MatchParent);
                 mainContentView.AddView(renderedView);

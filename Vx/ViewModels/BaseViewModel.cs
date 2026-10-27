@@ -795,6 +795,30 @@ namespace BareMvvm.Core.ViewModels
             return isValid;
         }
 
+        private Thickness _platformNookInsets = new Thickness();
+
+        /// <summary>
+        /// Raw insets reported by the platform view, for view models that cover the whole screen (popups).
+        /// </summary>
+        protected Thickness PlatformNookInsets => _platformNookInsets;
+
+        public virtual Thickness NookInsets => PlatformNookInsets;
+
+        public void UpdateNookInsets(Thickness newInsets)
+        {
+            if (_platformNookInsets != newInsets)
+            {
+                _platformNookInsets = newInsets;
+                MarkDirty();
+                OnNookInsetsChanged();
+            }
+        }
+
+        protected virtual void OnNookInsetsChanged()
+        {
+            // Override to handle nook insets changing
+        }
+
         private class AsyncUserInteraction
         {
             public BaseViewModel SourceViewModel { get; private set; }

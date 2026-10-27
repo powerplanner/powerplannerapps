@@ -15,8 +15,6 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 {
     public class ClassDetailsViewController : BareMvvmUIViewController<ClassDetailsViewModel>
     {
-        private object _tabBarHeightListener;
-
         public ClassDetailsViewController()
         {
             Title = PowerPlannerResources.GetString("ClassPage_PivotItemDetails.Header");
@@ -29,12 +27,7 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
             var rendered = ViewModel.Render();
             rendered.TranslatesAutoresizingMaskIntoConstraints = false;
             View.Add(rendered);
-
-            MainScreenViewController.ListenToTabBarHeightChanged(ref _tabBarHeightListener, delegate
-            {
-                rendered.RemoveAllConstraints();
-                rendered.StretchWidthAndHeight(View, 0, 0, 0, (float)MainScreenViewController.TAB_BAR_HEIGHT);
-            });
+            rendered.StretchWidthAndHeight(View);
         }
     }
 }

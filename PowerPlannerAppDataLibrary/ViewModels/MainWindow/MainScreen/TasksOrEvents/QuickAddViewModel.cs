@@ -6,13 +6,66 @@ using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.ViewItems;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
-    public class QuickAddViewModel : BaseMainScreenViewModelChild
+    public class QuickAddViewModel : PopupComponentViewModel
     {
         public QuickAddViewModel(BaseViewModel parent) : base(parent)
         {
+            Title = R.S("QuickAddPage.Title");
+        }
+
+        protected override View Render()
+        {
+            if (!IsLoaded)
+            {
+                return new LinearLayout();
+            }
+
+            bool noClasses = MainScreenViewModel.Classes == null || MainScreenViewModel.Classes.Count == 0;
+
+            return new LinearLayout
+            {
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(
+                    Theme.Current.PageMargin + NookInsets.Left,
+                    Theme.Current.PageMargin,
+                    Theme.Current.PageMargin + NookInsets.Right,
+                    Theme.Current.PageMargin + NookInsets.Bottom),
+                Children =
+                {
+                    noClasses ? new TextBlock
+                    {
+                        Text = "No classes",
+                        TextAlignment = HorizontalAlignment.Center,
+                        FontSize = Theme.Current.SubtitleFontSize
+                    } : null,
+
+                    noClasses ? new TextBlock
+                    {
+                        Text = "You don't have any classes. Make sure you've opened a semester that has classes.",
+                        TextAlignment = HorizontalAlignment.Center,
+                        FontSize = Theme.Current.SubtitleFontSize,
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        Margin = new Thickness(0, 6, 0, 0)
+                    } : null,
+
+                    noClasses ? null : new AccentButton
+                    {
+                        Text = R.S("String_AddTask"),
+                        Click = AddTask
+                    },
+
+                    noClasses ? null : new AccentButton
+                    {
+                        Text = R.S("String_AddEvent"),
+                        Click = AddEvent,
+                        Margin = new Thickness(0, 12, 0, 0)
+                    }
+                }
+            };
         }
 
         public void AddTask()
@@ -27,12 +80,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         private async void AddItem(TaskOrEventType type)
         {
-            if (MainScreenViewModel.Classes == null || MainScreenViewModel.Classes.Count == 0)
-            {
-                await new PortableMessageDialog("You don't have any classes. Make sure you've opened a semester that has classes.", "No classes").ShowAsync();
-                return;
-            }
-
             MainScreenViewModel.ShowPopup(AddTaskOrEventViewModel.CreateForAdd(MainScreenViewModel, new AddTaskOrEventViewModel.AddParameter()
             {
                 SemesterIdentifier = MainScreenViewModel.CurrentSemesterId,

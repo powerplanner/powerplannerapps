@@ -55,6 +55,8 @@ using PowerPlannerUWP.BackgroundTasks;
 using PowerPlannerAppDataLibrary.ViewModels;
 using System.Diagnostics.CodeAnalysis;
 using Vx.Uwp;
+using BareMvvm.Core.ViewModels;
+using InterfacesUWP.Views;
 
 namespace PowerPlannerUWP
 {
@@ -119,11 +121,10 @@ namespace PowerPlannerUWP
         {
             return new Dictionary<Type, Func<object, object>>
             {
-                { typeof(YearsViewModel), viewModel => new ComponentView { ViewModel = (YearsViewModel)viewModel } }, // Don't show Years as a popup on Windows
-                { typeof(ClassWhatIfViewModel), viewModel => new ComponentView { ViewModel = (ClassWhatIfViewModel)viewModel } }, // Don't show What If as a popup on Windows
-                { typeof(ShowImagesViewModel), viewModel => new ComponentView { ViewModel = (ShowImagesViewModel)viewModel } }, // Don't show ShowImages as a popup on Windows (we have integrated titlebar back button)
-                { typeof(PopupComponentViewModel), viewModel => new PopupComponentView { ViewModel = (PopupComponentViewModel)viewModel } },
-                { typeof(ComponentViewModel), viewModel => new ComponentView { ViewModel = (ComponentViewModel)viewModel } } // Popup must be first since Popup is a subclass
+                { typeof(YearsViewModel), viewModel => new ViewHostGeneric(true) { ViewModel = (YearsViewModel)viewModel } }, // Don't show Years as a popup on Windows
+                { typeof(ClassWhatIfViewModel), viewModel => new ViewHostGeneric(true) { ViewModel = (ClassWhatIfViewModel)viewModel } }, // Don't show What If as a popup on Windows
+                { typeof(ShowImagesViewModel), viewModel => new ViewHostGeneric(true) { ViewModel = (ShowImagesViewModel)viewModel } }, // Don't show ShowImages as a popup on Windows (we have integrated titlebar back button)
+                { typeof(PopupComponentViewModel), viewModel => new PopupComponentView { ViewModel = (PopupComponentViewModel)viewModel } }
             };
         }
 
@@ -132,18 +133,13 @@ namespace PowerPlannerUWP
             return new Dictionary<Type, Func<object, object>>()
             {
                 // Main views
-                { typeof(InitialSyncViewModel), viewModel => new InitialSyncView { ViewModel = (InitialSyncViewModel)viewModel } },
                 { typeof(ClassViewModel), viewModel => new ClassView { ViewModel = (ClassViewModel)viewModel } },
-                { typeof(LoginViewModel), viewModel => new LoginView { ViewModel = (LoginViewModel)viewModel } },
                 { typeof(DayViewModel), viewModel => new MainContentDayView { ViewModel = (DayViewModel)viewModel } },
                 { typeof(MainScreenViewModel), viewModel => new MainScreenView { ViewModel = (MainScreenViewModel)viewModel } },
                 { typeof(PremiumVersionViewModel), viewModel => new PremiumVersionView { ViewModel = (PremiumVersionViewModel)viewModel } },
                 { typeof(PromoOtherPlatformsViewModel), viewModel => new PromoOtherPlatformsView { ViewModel = (PromoOtherPlatformsViewModel)viewModel } },
-                { typeof(QuickAddViewModel), viewModel => new QuickAddView { ViewModel = (QuickAddViewModel)viewModel } },
                 { typeof(ScheduleViewModel), viewModel => new ScheduleView { ViewModel = (ScheduleViewModel)viewModel } },
                 { typeof(ExportSchedulePopupViewModel), viewModel => new ExportSchedulePopupView { ViewModel = (ExportSchedulePopupViewModel)viewModel } },
-                { typeof(SyncErrorsViewModel), viewModel => new SyncErrorsView { ViewModel = (SyncErrorsViewModel)viewModel } },
-                { typeof(WelcomeViewModel), viewModel => new WelcomeView { ViewModel = (WelcomeViewModel)viewModel } },
 
                 // Settings views
                 { typeof(TileSettingsViewModel), viewModel => new BaseSettingsSplitView { ViewModel = (TileSettingsViewModel)viewModel } },

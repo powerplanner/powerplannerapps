@@ -102,6 +102,11 @@ namespace InterfacesDroid.ViewModelPresenters
                 view = new PagedViewModelPresenter(root.Context);
             }
 
+            else if (value is BaseViewModel baseViewModel)
+            {
+                view = new ViewHostGeneric(root, renderViewModel: true);
+            }
+
             else
             {
                 throw new NotImplementedException("ViewModel type was unknown: " + value.GetType());

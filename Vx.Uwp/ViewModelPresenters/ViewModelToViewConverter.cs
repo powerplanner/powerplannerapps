@@ -77,6 +77,11 @@ namespace InterfacesUWP.ViewModelPresenters
                 view = new PagedViewModelPresenter { ViewModel = pagedViewModel };
             }
 
+            else if (value is BaseViewModel baseViewModel)
+            {
+                view = new Views.ViewHostGeneric(renderViewModel: true) { ViewModel = baseViewModel };
+            }
+
             else
             {
                 throw new NotImplementedException("ViewModel type was unknown: " + value.GetType());

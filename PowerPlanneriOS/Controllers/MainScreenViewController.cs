@@ -23,18 +23,6 @@ namespace PowerPlanneriOS.Controllers
 {
     public class MainScreenViewController : PagedViewModelWithPopupsPresenter
     {
-        public static nfloat TAB_BAR_HEIGHT = 0;
-
-        /// <summary>
-        /// Must provide a strong reference storage point in your child view controller so that the action will be persisted correctly
-        /// </summary>
-        /// <param name="action"></param>
-        /// <returns></returns>
-        public static void ListenToTabBarHeightChanged(ref object strongReferenceStorage, Action action)
-        {
-            action.Invoke();
-        }
-
         ~MainScreenViewController()
         {
             System.Diagnostics.Debug.WriteLine("Disposed main screen view controller");

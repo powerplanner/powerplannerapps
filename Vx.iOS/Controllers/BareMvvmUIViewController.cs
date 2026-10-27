@@ -1,17 +1,17 @@
-﻿using System;
+﻿using BareMvvm.Core.ViewModels;
+using Foundation;
+using InterfacesiOS.App;
+using InterfacesiOS.Binding;
+using InterfacesiOS.Helpers;
+using InterfacesiOS.ViewModelPresenters;
+using InterfacesiOS.Views;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
-
-using Foundation;
-using UIKit;
-using BareMvvm.Core.ViewModels;
-using InterfacesiOS.App;
-using System.ComponentModel;
 using ToolsPortable;
-using InterfacesiOS.Binding;
-using InterfacesiOS.Views;
-using InterfacesiOS.Helpers;
+using UIKit;
 
 namespace InterfacesiOS.Controllers
 {
@@ -55,10 +55,12 @@ namespace InterfacesiOS.Controllers
     }
 #endif
 
-    public abstract class BareMvvmUIViewController<T> : UIViewController, ViewModelPresenters.IViewModelHost where T : BaseViewModel
+    public class BareMvvmUIViewController<T> : UIViewController, ViewModelPresenters.IViewModelHost where T : BaseViewModel
     {
-        public BareMvvmUIViewController()
+        private bool _renderViewModel;
+        public BareMvvmUIViewController(bool renderViewModel = false)
         {
+            _renderViewModel = renderViewModel;
             base.View.BackgroundColor = Vx.iOS.VxiOSExtensions.ToUI(Vx.Views.Theme.Current.BackgroundColor);
 
             _shouldReturnCondition = new UITextFieldCondition(ShouldReturn);
@@ -82,6 +84,8 @@ namespace InterfacesiOS.Controllers
 
                 _viewModel = value;
                 BindingHost.DataContext = value;
+                UpdateNookInsets();
+                RenderViewModel();
                 OnViewModelSetOverride();
                 TriggerViewModelLoaded(value);
             }
@@ -91,6 +95,49 @@ namespace InterfacesiOS.Controllers
         {
             get { return ViewModel; }
             set { ViewModel = (T)value; }
+        }
+
+        private void RenderViewModel()
+        {
+            if (_renderViewModel && ViewModel != null)
+            {
+                var renderedComponent = Vx.iOS.VxiOSExtensions.Render(ViewModel);
+                renderedComponent.TranslatesAutoresizingMaskIntoConstraints = false;
+                View.Add(renderedComponent);
+                Vx.iOS.BareUIHelper.StretchWidthAndHeight(renderedComponent, View);
+            }
+        }
+
+        /// <summary>
+        /// This method only exists on iOS 11+, not sure if this class will still work on iOS 10/9, but not sure how to dynamically overload a method...
+        /// </summary>
+        public override void ViewSafeAreaInsetsDidChange()
+        {
+            if (ViewModel != null)
+            {
+                UpdateNookInsets();
+            }
+        }
+
+        private void UpdateNookInsets()
+        {
+            if (ViewModel == null)
+            {
+                return;
+            }
+
+            // Use the WINDOW's safe-area insets rather than this view's. The view's insets depend on
+            // where it sits in the hierarchy (a view that doesn't reach the screen edge reports 0),
+            // whereas the window always reports the true device insets (notch, home indicator, etc.).
+            var insets = GetWindowSafeAreaInsets();
+            ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)insets.Left, (float)insets.Top, (float)insets.Right, (float)insets.Bottom));
+        }
+
+
+        private UIEdgeInsets GetWindowSafeAreaInsets()
+        {
+            var window = View?.Window ?? PagedViewModelPresenter.GetKeyWindow();
+            return window?.SafeAreaInsets ?? UIEdgeInsets.Zero;
         }
 
         public virtual void OnViewModelSetOverride()
