@@ -93,8 +93,7 @@ namespace PowerPlannerAndroid.App
             {
                 // Main views
                 { typeof(MainScreenViewModel), root => new MainScreenView(root) },
-                { typeof(ClassViewModel), root => new ClassView(root) },
-                { typeof(PremiumVersionViewModel), root => new PremiumVersionView(root) }
+                { typeof(ClassViewModel), root => new ClassView(root) }
             };
         }
 

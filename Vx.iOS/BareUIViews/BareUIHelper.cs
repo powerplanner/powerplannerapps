@@ -463,38 +463,6 @@ namespace InterfacesiOS.Views
             divider.SetHeight(34);
         }
 
-        public static void AddUnderVisiblity<TDataContext, T>(this UIStackView stackView, UIView view, Binding.BindingHost bindingHost, string propertyName, Func<TDataContext, T> getValue, bool invert = false)
-        {
-            BareUIVisibilityContainer container = new BareUIVisibilityContainer()
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false,
-                Child = view
-            };
-            bindingHost.SetVisibilityBinding(container, propertyName, getValue, invert);
-            stackView.AddArrangedSubview(container);
-            container.StretchWidth(stackView);
-        }
-
-        public static void AddUnderLazyVisibility<TDataContext>(this UIStackView stackView, Binding.BindingHost bindingHost, string propertyName, Func<TDataContext, bool> getValue, Func<UIView> createView)
-        {
-            BareUIVisibilityContainer container = new BareUIVisibilityContainer()
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false
-            };
-
-            bindingHost.SetBinding(propertyName, getValue, (isVisible) =>
-            {
-                if (isVisible && container.Child == null)
-                {
-                    container.Child = createView();
-                }
-            });
-
-            bindingHost.SetVisibilityBinding(container, propertyName, getValue);
-            stackView.AddArrangedSubview(container);
-            container.StretchWidth(stackView);
-        }
-
         public static UIView FindFocusedTextBox(this UIView view)
         {
             return view.Descendants().FirstOrDefault(i => (i is UITextField || i is UITextView) && i.IsFirstResponder);

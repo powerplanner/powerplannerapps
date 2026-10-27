@@ -29,16 +29,10 @@ using InterfacesUWP.App;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using InterfacesUWP.AppWindows;
 using PowerPlannerAppDataLibrary.Windows;
@@ -136,7 +130,6 @@ namespace PowerPlannerUWP
                 { typeof(ClassViewModel), viewModel => new ClassView { ViewModel = (ClassViewModel)viewModel } },
                 { typeof(DayViewModel), viewModel => new MainContentDayView { ViewModel = (DayViewModel)viewModel } },
                 { typeof(MainScreenViewModel), viewModel => new MainScreenView { ViewModel = (MainScreenViewModel)viewModel } },
-                { typeof(PremiumVersionViewModel), viewModel => new PremiumVersionView { ViewModel = (PremiumVersionViewModel)viewModel } },
                 { typeof(PromoOtherPlatformsViewModel), viewModel => new PromoOtherPlatformsView { ViewModel = (PromoOtherPlatformsViewModel)viewModel } },
                 { typeof(ScheduleViewModel), viewModel => new ScheduleView { ViewModel = (ScheduleViewModel)viewModel } },
                 { typeof(ExportSchedulePopupViewModel), viewModel => new ExportSchedulePopupView { ViewModel = (ExportSchedulePopupViewModel)viewModel } },

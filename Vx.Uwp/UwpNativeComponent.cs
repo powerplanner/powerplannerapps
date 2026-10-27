@@ -17,7 +17,6 @@ namespace Vx.Uwp
         public SizeF ComponentSize => new SizeF((float)this.ActualWidth, (float)this.ActualHeight);
 
         public event EventHandler<SizeF> ComponentSizeChanged;
-        public event EventHandler ThemeChanged;
         public event EventHandler<bool> MouseOverChanged;
 
         public UwpNativeComponent(VxComponent component)

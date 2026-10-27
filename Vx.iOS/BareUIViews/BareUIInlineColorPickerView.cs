@@ -56,7 +56,6 @@ namespace InterfacesiOS.Views
             SelectedColor = (m_picker.SelectedItem as ColorItem).Color;
         }
 
-        private ModalCustomColorPickerViewController m_modalCustomPicker;
         private async void ShowCustomColorPicker()
         {
             var resp = await new ModalCustomColorPickerViewController(m_controller.View, SelectedColor).ShowAsync();

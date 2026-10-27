@@ -54,7 +54,6 @@ namespace Vx.iOS.Views
             ShowCustomColorPicker();
         }
 
-        private ModalCustomColorPickerViewController m_modalCustomPicker;
         private async void ShowCustomColorPicker()
         {
             // Need to wait till previous modal is dismissed before showing this one

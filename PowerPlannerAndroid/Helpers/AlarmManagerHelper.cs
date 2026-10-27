@@ -40,7 +40,8 @@ namespace PowerPlannerAndroid.Helpers
             if (exact)
             {
                 // Plain Set() is inexact and gets deferred by Doze/App Standby, so time-sensitive alarms need the exact + allow-while-idle variants
-                if (Build.VERSION.SdkInt < BuildVersionCodes.S || alarmManager.CanScheduleExactAlarms())
+                // Before API 31, exact alarms are always allowed, but starting in API 31, the user can revoke the permission for exact alarms, so we need to check if we can schedule them first
+                if (!OperatingSystem.IsAndroidVersionAtLeast(31) || alarmManager.CanScheduleExactAlarms())
                 {
                     try
                     {

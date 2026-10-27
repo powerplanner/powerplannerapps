@@ -143,24 +143,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             Sync.StartSyncAccount(Account);
         }
 
-        public void OpenSettings(bool asPopup = false)
+        public void OpenSettings()
         {
-            if (true)
-            {
-                ShowPopup(new MinimalSettingsViewModel(Parent, Account));
-                return;
-            }
-
-            var mainWindowViewModel = this.FindAncestor<MainWindowViewModel>();
-
-            if (asPopup)
-            {
-                mainWindowViewModel.ShowPopup(new SettingsViewModel(mainWindowViewModel));
-            }
-            else
-            {
-                mainWindowViewModel.Navigate(new SettingsViewModel(mainWindowViewModel));
-            }
+            ShowPopup(new MinimalSettingsViewModel(Parent, Account));
         }
 
         private bool _isSyncing = true;

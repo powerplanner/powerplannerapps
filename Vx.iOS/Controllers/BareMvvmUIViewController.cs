@@ -377,47 +377,5 @@ namespace InterfacesiOS.Controllers
         {
             return false;
         }
-
-        /// <summary>
-        /// Adds a text field
-        /// </summary>
-        /// <param name="textField"></param>
-        /// <param name="textBindingPropertyName"></param>
-        /// <param name="firstResponder">Whether this text box should get the first focus on the page, causing the keyboard to appear</param>
-        protected void AddTextField(UIStackView stackView, UITextField textField, string textBindingPropertyName = null, Func<T, string> getValue = null, Action<T, string> setValue = null, bool firstResponder = false)
-        {
-            textField.TranslatesAutoresizingMaskIntoConstraints = false;
-            textField.AdjustsFontSizeToFitWidth = true;
-
-            if (textBindingPropertyName != null)
-            {
-                BindingHost.SetTextFieldTextBinding(textField, textBindingPropertyName, getValue, setValue);
-            }
-
-            stackView.AddArrangedSubview(textField);
-            textField.StretchWidth(stackView, left: 16, right: 16);
-            textField.SetHeight(44);
-
-            RegisterTextField(textField, firstResponder);
-        }
-
-        protected void RegisterTextField(UITextField textField, bool firstResponder = false)
-        {
-            if (firstResponder)
-            {
-                textField.BecomeFirstResponder();
-                // The following would dismiss when scrolling
-                //textField.EditingDidBegin += delegate
-                //{
-                //    _scrollView.Scrolled += delegate
-                //    {
-                //        textField.ResignFirstResponder();
-                //    };
-                //};
-            }
-
-            textField.ShouldReturn = _shouldReturnCondition;
-            _textFieldsWithShouldReturnCondition.Add(textField);
-        }
     }
 }
