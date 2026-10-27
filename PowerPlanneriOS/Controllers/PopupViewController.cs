@@ -45,8 +45,10 @@ namespace PowerPlanneriOS.Controllers
                 OnBack = BackButtonClicked
             };
             var renderedToolbar = Toolbar.Render();
+            renderedToolbar.TranslatesAutoresizingMaskIntoConstraints = false;
             base.View.Add(renderedToolbar);
             renderedToolbar.StretchWidth(base.View);
+            renderedToolbar.SetHeight(Vx.Views.Toolbar.ToolbarHeight);
 
             View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[statusBar][navBar][contentView]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
                 "statusBar", statusBarView,
