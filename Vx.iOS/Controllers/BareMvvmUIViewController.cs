@@ -131,13 +131,8 @@ namespace InterfacesiOS.Controllers
             // whereas the window always reports the true device insets (notch, home indicator, etc.).
             var insets = GetWindowSafeAreaInsets();
             ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)insets.Left, (float)insets.Top, (float)insets.Right, (float)insets.Bottom));
-            OnNookInsetsUpdatedOverride();
         }
 
-        protected virtual void OnNookInsetsUpdatedOverride()
-        {
-            // Nothing
-        }
 
         private UIEdgeInsets GetWindowSafeAreaInsets()
         {

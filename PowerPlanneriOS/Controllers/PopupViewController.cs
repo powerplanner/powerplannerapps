@@ -37,6 +37,8 @@ namespace PowerPlanneriOS.Controllers
             base.View.Add(_contentView);
             _contentView.StretchWidth(base.View);
 
+            var statusBarView = UIStatusBarView.CreateAndAddTo(View);
+
             // Add the toolbar
             Toolbar = new Vx.Views.Toolbar
             {
@@ -46,16 +48,12 @@ namespace PowerPlanneriOS.Controllers
             renderedToolbar.TranslatesAutoresizingMaskIntoConstraints = false;
             base.View.Add(renderedToolbar);
             renderedToolbar.StretchWidth(base.View);
+            renderedToolbar.SetHeight(Vx.Views.Toolbar.ToolbarHeight);
 
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[navBar][contentView]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[statusBar][navBar][contentView]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+                "statusBar", statusBarView,
                 "navBar", renderedToolbar,
                 "contentView", _contentView));
-        }
-
-        protected override void OnNookInsetsUpdatedOverride()
-        {
-            Toolbar.NookInsets = ViewModel?.NookInsets ?? new Vx.Views.Thickness(0);
-            Toolbar.RenderOnDemand();
         }
 
         public override string Title
