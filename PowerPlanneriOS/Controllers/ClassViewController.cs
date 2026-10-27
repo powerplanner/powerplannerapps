@@ -16,6 +16,7 @@ using System.Text;
 using ToolsPortable;
 using UIKit;
 using Vx.iOS;
+using Vx.Views;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -128,6 +129,20 @@ namespace PowerPlanneriOS.Controllers
             BackButtonText = PowerPlannerResources.GetString("String_Back");
 
             base.OnViewModelLoadedOverride();
+        }
+
+        private Thickness _originalNookInsets;
+        public override Thickness NookInsets
+        {
+            get
+            {
+                if (ViewModel?.MainScreenViewModel != null)
+                {
+                    return ViewModel.MainScreenViewModel.ContentNookInsets;
+                }
+                return _originalNookInsets;
+            }
+            protected set => _originalNookInsets = value;
         }
 
         protected override void OnViewReturnedTo()

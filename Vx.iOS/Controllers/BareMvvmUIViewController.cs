@@ -70,6 +70,8 @@ namespace InterfacesiOS.Controllers
 #endif
         }
 
+        public virtual Vx.Views.Thickness NookInsets { get; protected set; } = new Vx.Views.Thickness(0);
+
         public BindingHost BindingHost { get; private set; } = new BindingHost();
         private T _viewModel;
         public T ViewModel
@@ -113,26 +115,34 @@ namespace InterfacesiOS.Controllers
         /// </summary>
         public override void ViewSafeAreaInsetsDidChange()
         {
-            if (ViewModel != null)
-            {
-                UpdateNookInsets();
-            }
+            UpdateNookInsets();
         }
 
         private void UpdateNookInsets()
         {
-            if (ViewModel == null)
-            {
-                return;
-            }
-
             // Use the WINDOW's safe-area insets rather than this view's. The view's insets depend on
             // where it sits in the hierarchy (a view that doesn't reach the screen edge reports 0),
             // whereas the window always reports the true device insets (notch, home indicator, etc.).
             var insets = GetWindowSafeAreaInsets();
-            ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)insets.Left, (float)insets.Top, (float)insets.Right, (float)insets.Bottom));
+            NookInsets = new Vx.Views.Thickness((float)insets.Left, (float)insets.Top, (float)insets.Right, (float)insets.Bottom);
+
+            UpdateNookInsetsOnViewModel(NookInsets);
+
+            OnNookInsetsUpdatedOverride();
         }
 
+        protected virtual void UpdateNookInsetsOnViewModel(Vx.Views.Thickness nookInsets)
+        {
+            if (ViewModel != null)
+            {
+                ViewModel.UpdateNookInsets(nookInsets);
+            }
+        }
+
+        protected virtual void OnNookInsetsUpdatedOverride()
+        {
+            // Nothing
+        }
 
         private UIEdgeInsets GetWindowSafeAreaInsets()
         {
