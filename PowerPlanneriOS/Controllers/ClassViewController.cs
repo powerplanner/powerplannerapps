@@ -1,20 +1,20 @@
-﻿using System;
+﻿using Foundation;
+using InterfacesiOS.Binding;
+using InterfacesiOS.Views;
+using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes;
+using PowerPlanneriOS.Controllers.ClassViewControllers;
+using PowerPlanneriOS.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-using Foundation;
-using UIKit;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
-using InterfacesiOS.Binding;
-using PowerPlannerAppDataLibrary.ViewItems;
-using InterfacesiOS.Views;
-using PowerPlanneriOS.Controllers.ClassViewControllers;
 using ToolsPortable;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes;
-using PowerPlanneriOS.Helpers;
-using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerAppDataLibrary;
+using UIKit;
 using Vx.iOS;
 
 namespace PowerPlanneriOS.Controllers
@@ -182,34 +182,80 @@ namespace PowerPlanneriOS.Controllers
 
         private void UpdatePage(UIViewController currentController)
         {
+            var editClass = new Vx.Views.MenuItem
+            {
+                Text = R.S("String_EditClass"),
+                Glyph = MaterialDesign.MaterialDesignIcons.Edit,
+                Click = ViewModel.EditClassWithDetails
+            };
+
+            var deleteClass = new Vx.Views.MenuItem
+            {
+                Text = R.S("String_DeleteClass"),
+                Glyph = MaterialDesign.MaterialDesignIcons.Delete,
+                Click = async () =>
+                {
+                    if (await PowerPlannerApp.ConfirmDeleteAsync(PowerPlannerResources.GetString("String_ConfirmDeleteClassMessage"), PowerPlannerResources.GetString("String_ConfirmDeleteClassHeader"), useConfirmationCheckbox: true))
+                    {
+                        ViewModel.DeleteClass();
+                    }
+                }
+            };
+
             if (currentController == _detailsViewController)
             {
                 ViewModel.CurrentPage = ClassViewModel.ClassPages.Details;
-                NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonEditDetails };
+                Toolbar.PrimaryCommands = new List<Vx.Views.MenuItem>
+                {
+                    editClass
+                };
+                Toolbar.SecondaryCommands = new List<Vx.Views.MenuItem>
+                {
+                    deleteClass
+                };
             }
             else if (currentController == _timesViewController)
             {
                 ViewModel.CurrentPage = ClassViewModel.ClassPages.Times;
-                NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonEditTimes };
+                Toolbar.PrimaryCommands = new List<Vx.Views.MenuItem>
+                {
+                    new Vx.Views.MenuItem
+                    {
+                        Text = R.S("String_EditTimes"),
+                        Glyph = MaterialDesign.MaterialDesignIcons.Edit,
+                        Click = ViewModel.EditTimes
+                    }
+                };
+                Toolbar.SecondaryCommands = new List<Vx.Views.MenuItem>
+                {
+                    editClass,
+                    deleteClass
+                };
             }
             else if (currentController == _tasksViewController)
             {
                 ViewModel.CurrentPage = ClassViewModel.ClassPages.Tasks;
-                NavItem.RightBarButtonItems = new UIBarButtonItem[] { };
-                ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
             }
             else if (currentController == _eventsViewController)
             {
                 ViewModel.CurrentPage = ClassViewModel.ClassPages.Events;
-                NavItem.RightBarButtonItems = new UIBarButtonItem[] { };
-                ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
 
             }
             else if (currentController == _gradesViewController)
             {
                 ViewModel.CurrentPage = ClassViewModel.ClassPages.Grades;
-                NavItem.RightBarButtonItems = new UIBarButtonItem[] { };
-                ViewModel.ViewItemsGroupClass.LoadGrades();
+            }
+
+            if (currentController == _tasksViewController
+                || currentController == _eventsViewController
+                || currentController == _gradesViewController)
+            {
+                Toolbar.PrimaryCommands = new();
+                Toolbar.SecondaryCommands = new List<Vx.Views.MenuItem>
+                {
+                    editClass,
+                    deleteClass
+                };
             }
         }
 

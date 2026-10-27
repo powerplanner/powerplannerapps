@@ -18,9 +18,7 @@ namespace PowerPlanneriOS.Controllers
 {
     public abstract class PopupViewController<T> : BareMvvmUIViewController<T> where T : BaseViewModel
     {
-        protected UINavigationBar NavBar { get; private set; }
-        private UIBarButtonItem _backButton;
-        public UINavigationItem NavItem { get; private set; }
+        public Vx.Views.Toolbar Toolbar { get; private set; }
 
         private UIView _contentView;
         /// <summary>
@@ -41,38 +39,19 @@ namespace PowerPlanneriOS.Controllers
 
             var statusBarView = UIStatusBarView.CreateAndAddTo(View);
 
-            NavBar = new UINavigationBar()
+            // Add the toolbar
+            Toolbar = new Vx.Views.Toolbar
             {
-                TranslatesAutoresizingMaskIntoConstraints = false
+                OnBack = BackButtonClicked
             };
-            ColorResources.ConfigureNavBar(NavBar);
-            base.View.Add(NavBar);
-            NavBar.StretchWidth(base.View);
-
-            _backButton = new UIBarButtonItem()
-            {
-                Title = PowerPlannerResources.GetString("String_Back")
-            };
-            _backButton.Clicked += new WeakEventHandler<EventArgs>(_backButton_Clicked).Handler;
-
-            NavItem = new UINavigationItem();
-            NavItem.LeftBarButtonItem = _backButton;
-            NavBar.Items = new UINavigationItem[] { NavItem };
+            var renderedToolbar = Toolbar.Render();
+            base.View.Add(renderedToolbar);
+            renderedToolbar.StretchWidth(base.View);
 
             View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[statusBar][navBar][contentView]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
                 "statusBar", statusBarView,
-                "navBar", NavBar,
+                "navBar", renderedToolbar,
                 "contentView", _contentView));
-        }
-
-        protected virtual void BackButtonClicked()
-        {
-            ViewModel.TryRemoveViewModelViaUserInteraction();
-        }
-
-        private void _backButton_Clicked(object sender, EventArgs e)
-        {
-            BackButtonClicked();
         }
 
         public override string Title
@@ -80,56 +59,21 @@ namespace PowerPlanneriOS.Controllers
             get { return base.Title; }
             set
             {
-                NavBar.TopItem.Title = value;
+                Toolbar.Title = value;
+                Toolbar.RenderOnDemand();
                 base.Title = value;
             }
         }
 
         public string BackButtonText
         {
-            get { return _backButton.Title; }
-            set { _backButton.Title = value; }
+            get { return Toolbar.BackText; }
+            set { Toolbar.BackText = value; }
         }
 
-        public void HideBackButton()
+        protected virtual void BackButtonClicked()
         {
-            NavItem.LeftBarButtonItem = null;
-        }
-
-        private PopupRightNavBarButtonItem _positiveNavBarButton;
-        public PopupRightNavBarButtonItem PositiveNavBarButton
-        {
-            get { return _positiveNavBarButton; }
-            set
-            {
-                _positiveNavBarButton = value;
-
-                if (value != null)
-                {
-                    var uiButton = new UIBarButtonItem
-                    {
-                        Title = value.Title
-                    };
-                    uiButton.Clicked += new WeakEventHandler(value.ClickAction).Handler;
-                    NavItem.RightBarButtonItem = uiButton;
-                }
-                else
-                {
-                    NavItem.RightBarButtonItem = null;
-                }
-            }
-        }
-    }
-
-    public class PopupRightNavBarButtonItem
-    {
-        public string Title { get; set; }
-        public EventHandler<EventArgs> ClickAction { get; set; }
-
-        public PopupRightNavBarButtonItem(string title, EventHandler<EventArgs> clickAction)
-        {
-            Title = title;
-            ClickAction = clickAction;
+            ViewModel.GoBack();
         }
     }
 }

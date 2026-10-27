@@ -61,7 +61,7 @@ namespace Vx.iOS.Controllers
             _controlContainer = new UIView
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                BackgroundColor = UIColorCompat.SystemBackgroundColor
+                BackgroundColor = Vx.Views.Theme.Current.BackgroundColor.ToUI()
             };
             _controlContainer.Layer.CornerRadius = 10;
 
