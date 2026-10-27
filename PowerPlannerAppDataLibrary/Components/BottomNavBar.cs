@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Vx;
 using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.Components
@@ -58,6 +59,11 @@ namespace PowerPlannerAppDataLibrary.Components
             var title = item == NavigationManager.MainMenuSelections.Settings ? PowerPlannerResources.GetString("String_More") : MainScreenViewModel.MainMenuItemToString(item);
             var color = isThisItem ? Theme.Current.ForegroundColor : Theme.Current.SubtleForegroundColor;
 
+            if (error && VxPlatform.Current == Platform.Android)
+            {
+                glyph = MaterialDesign.MaterialDesignIcons.Error;
+            }
+
             var icon = new FontIcon
             {
                 Glyph = glyph,
@@ -73,7 +79,7 @@ namespace PowerPlannerAppDataLibrary.Components
                     Margin = new Thickness(isFirst ? NookInsets.Left + Theme.Current.SmallPageMargin : 0, 0, isLast ? NookInsets.Right + Theme.Current.SmallPageMargin : 0, BottomNookInset),
                     Children =
                     {
-                        error ? (View)new FrameLayout
+                        error && VxPlatform.Current != Platform.Android ? (View)new FrameLayout
                         {
                             Children =
                             {
