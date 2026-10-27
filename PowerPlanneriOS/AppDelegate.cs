@@ -8,19 +8,12 @@ using PowerPlanneriOS.App;
 using PowerPlannerAppDataLibrary.Windows;
 using BareMvvm.Core.App;
 using InterfacesiOS.Windows;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlanneriOS.Controllers;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
-using PowerPlanneriOS.Controllers.Settings;
-using PowerPlanneriOS.Welcome;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
-using PowerPlanneriOS.Controllers.ClassViewControllers;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlanneriOS.Extensions;
@@ -77,10 +70,6 @@ namespace PowerPlanneriOS
         {
             return new Dictionary<Type, Func<UIViewController>>()
             {
-                // Welcome views
-                { typeof(WelcomeViewModel), () => new WelcomeViewController() },
-
-                { typeof(InitialSyncViewModel), () => new InitialSyncViewController() },
                 { typeof(MainScreenViewModel), () => new MainScreenViewController() },
                 { typeof(ClassViewModel), () => new ClassViewController() },
 
