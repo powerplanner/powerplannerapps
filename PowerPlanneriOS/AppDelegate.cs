@@ -199,6 +199,7 @@ namespace PowerPlanneriOS
             ImagePickerExtension.Current = new iOSImagePickerExtension();
             NetworkInfoExtension.Current = new iOSNetworkInfoExtension();
             ReviewAppExtension.Current = new iOSReviewAppExtension();
+            ThemeExtension.Current = new iOSThemeExtension();
 
 #if !DEBUG
             // On release, use the system language selector (in simulator the system settings doesn't support this).
@@ -456,6 +457,7 @@ namespace PowerPlanneriOS
 
         internal async void RegisterWindowForScene(UIWindow window, UIApplicationShortcutItem shortcutItem)
         {
+            iOSThemeExtension.ApplyTheme(window);
             this.Window = window;
             await InitializeWindow(window, ConvertShortcutItem(shortcutItem));
         }
@@ -464,7 +466,9 @@ namespace PowerPlanneriOS
         private async void RegisterWindow(ShortcutAction? shortcutAction)
         {
 #pragma warning disable CA1422 // UIWindow(CGRect) is obsoleted on iOS 26.0, but needed for pre-scene-based lifecycle
-            this.Window = new UIWindow(UIScreen.MainScreen.Bounds);
+            var window = new UIWindow(UIScreen.MainScreen.Bounds);
+            iOSThemeExtension.ApplyTheme(window);
+            this.Window = window;
 #pragma warning restore CA1422
             await InitializeWindow(this.Window, shortcutAction);
         }
@@ -473,8 +477,6 @@ namespace PowerPlanneriOS
         {
             try
             {
-                window.BackgroundColor = UIColorCompat.SystemBackgroundColor;
-                window.TintColor = ColorResources.PowerPlannerAccentBlue;
                 // Fallback to an empty VC if the launch screen storyboard isn't available (e.g. Mac Catalyst)
                 window.RootViewController = UIStoryboard.FromName("LaunchScreen", null)?.InstantiateInitialViewController()
                     ?? new UIViewController();
