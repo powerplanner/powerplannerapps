@@ -9,11 +9,6 @@
         android:id="@+id/MainContentView"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"/>
-	
-	<FrameLayout
-        android:id="@+id/SnackbarAnchorView"
-		android:layout_width="match_parent"
-		android:layout_height="12dp"/>
 
 	<InterfacesDroid.ViewModelPresenters.PopupsPresenter
 		android:id="@+id/MainScreenPopupsPresenter"

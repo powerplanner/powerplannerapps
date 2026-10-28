@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BareMvvm.Core.App;
 using BareMvvm.Core.Snackbar;
 using CoreGraphics;
 using Foundation;
 using ToolsPortable;
 using UIKit;
+using Vx.iOS;
+using Vx.Views;
 
 namespace InterfacesiOS.Views
 {
     public class BareSnackbarPresenter : UIView
     {
-        public static UIColor ButtonTextColor { get; set; } = UIColor.SystemBlue;
-        public static nfloat BottomOffset { get; set; } = 0;
-
         public BareSnackbarManager SnackbarManager { get; private set; }
 
         public BareSnackbarPresenter(BareSnackbarManager manager)
@@ -65,23 +65,25 @@ namespace InterfacesiOS.Views
 
         private void ShowSnackbar(BareSnackbar snackbar)
         {
+            var insets = PortableApp.Current?.GetCurrentWindow()?.ViewModel?.GetFinalContent()?.GetSnackbarInsets() ?? new Vx.Views.Thickness(Vx.Views.Theme.Current.PageMargin);
+
             UIView snackbarContainer = new UIView()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                BackgroundColor = UIColor.Black,
+                BackgroundColor = Theme.Current.ChromeColor.ToUI(),
                 Alpha = 0
             };
             snackbarContainer.Layer.CornerRadius = 5;
             this.AddSubview(snackbarContainer);
-            snackbarContainer.StretchWidth(this, left: 12, right: 12);
-            snackbarContainer.PinToBottom(this, bottom: 12 + (int)BottomOffset);
+            snackbarContainer.StretchWidth(this, left: insets.Left, right: insets.Right);
+            snackbarContainer.PinToBottom(this, bottom: (int)insets.Bottom);
 
             UILabel label = new UILabel()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 Text = snackbar.Message,
                 Font = UIFont.PreferredCaption1,
-                TextColor = UIColor.White
+                TextColor = Theme.Current.ForegroundColor.ToUI()
             };
             snackbarContainer.AddSubview(label);
             label.StretchHeight(snackbarContainer, top: 12, bottom: 12);
@@ -98,7 +100,7 @@ namespace InterfacesiOS.Views
                 };
                 button.TitleLabel.Font = UIFont.PreferredCaption1.Bold();
                 button.SetTitle(snackbar.ButtonText, UIControlState.Normal);
-                button.SetTitleColor(ButtonTextColor, UIControlState.Normal);
+                button.SetTitleColor(Theme.Current.AccentColor.ToUI(), UIControlState.Normal);
                 snackbarContainer.AddSubview(button);
                 button.StretchHeight(snackbarContainer, top: 12, bottom: 12);
                 button.TouchUpInside += delegate

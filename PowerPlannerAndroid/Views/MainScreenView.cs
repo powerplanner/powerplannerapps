@@ -26,18 +26,13 @@ using InterfacesDroid.Windows;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class MainScreenView : InterfacesDroid.Views.PopupViewHost<MainScreenViewModel>, InterfacesDroid.Views.IGetSnackbarAnchorView
+    public class MainScreenView : InterfacesDroid.Views.PopupViewHost<MainScreenViewModel>
     {
         private PopupsPresenter _popupsPresenter;
 
         public MainScreenView(ViewGroup root) : base(Resource.Layout.MainScreen, root)
         {
             _popupsPresenter = FindViewById<PopupsPresenter>(Resource.Id.MainScreenPopupsPresenter);
-        }
-
-        public View GetSnackbarAnchorView()
-        {
-            return FindViewById(Resource.Id.SnackbarAnchorView);
         }
 
         public override void OnViewModelLoadedOverride()

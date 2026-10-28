@@ -1,4 +1,5 @@
-﻿using BareMvvm.Core.Snackbar;
+﻿using BareMvvm.Core.App;
+using BareMvvm.Core.Snackbar;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,6 +28,20 @@ namespace InterfacesUWP.Snackbar
             this.InitializeComponent();
 
             DataContext = Manager;
+            Manager.OnShow += Manager_OnShow;
+        }
+
+        private void Manager_OnShow(object sender, BareSnackbar e)
+        {
+            var insets = PortableApp.Current?.GetCurrentWindow()?.ViewModel?.GetFinalContent()?.GetSnackbarInsets();
+            if (insets != null)
+            {
+                Container.Margin = new Thickness(
+                    insets.Value.Left,
+                    insets.Value.Top,
+                    insets.Value.Right,
+                    insets.Value.Bottom);
+            }
         }
 
         private void ButtonAction_Click(object sender, RoutedEventArgs e)

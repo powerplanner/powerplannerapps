@@ -250,15 +250,18 @@ namespace PowerPlanneriOS.Controllers
             else if (currentController == _tasksViewController)
             {
                 ViewModel.CurrentPage = ClassViewModel.ClassPages.Tasks;
+                ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
             }
             else if (currentController == _eventsViewController)
             {
                 ViewModel.CurrentPage = ClassViewModel.ClassPages.Events;
+                ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
 
             }
             else if (currentController == _gradesViewController)
             {
                 ViewModel.CurrentPage = ClassViewModel.ClassPages.Grades;
+                ViewModel.ViewItemsGroupClass.LoadGrades();
             }
 
             if (currentController == _tasksViewController

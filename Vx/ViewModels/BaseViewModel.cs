@@ -766,6 +766,21 @@ namespace BareMvvm.Core.ViewModels
             NavigatedFrom?.Invoke(this, new EventArgs());
         }
 
+        public virtual Thickness GetSnackbarInsetsForThisViewModelOnly()
+        {
+            return NookInsets.Combine(new Thickness(Theme.Current.PageMargin));
+        }
+
+        public virtual Thickness GetSnackbarInsets()
+        {
+            if (Parent == null)
+            {
+                return GetSnackbarInsetsForThisViewModelOnly();
+            }
+
+            return Parent.GetSnackbarInsets();
+        }
+
         protected bool ValidateAllInputs(IEnumerable<TextField> fields, bool showValidationErrorMessage = true, Dictionary<TextField, Action<TextField>> customValidators = null)
         {
             bool isValid = true;

@@ -102,6 +102,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             base.Initialize();
         }
 
+        public override Thickness GetSnackbarInsetsForThisViewModelOnly()
+        {
+            var insets = base.GetSnackbarInsetsForThisViewModelOnly();
+            return new Thickness(
+                insets.Left,
+                insets.Top,
+                FloatingActionButton.DefaultSize + Theme.Current.PageMargin * 2,
+                insets.Bottom);
+        }
+
         private static readonly float PageMargin = VxPlatform.Current == Platform.Uwp ? 12 : Theme.Current.PageMargin;
 
         protected override View Render()
