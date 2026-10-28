@@ -50,7 +50,7 @@ jobs:
 
   build:
     needs: set-version
-    runs-on: macos-latest
+    runs-on: xcode-27
     env:
       BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
       BUILD_CONFIGURATION: Release
