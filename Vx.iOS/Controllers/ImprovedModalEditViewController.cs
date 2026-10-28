@@ -230,7 +230,7 @@ namespace Vx.iOS.Controllers
                 };
             }
 
-            pickerView.Select(Array.FindIndex(_items.OfType<object>().ToArray(), i => i == _initialValue), 0, false);
+            pickerView.Select(Array.FindIndex(_items.OfType<object>().ToArray(), i => object.Equals(i, _initialValue)), 0, false);
 
             return pickerView;
         }
