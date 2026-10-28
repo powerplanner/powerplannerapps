@@ -67,7 +67,7 @@ Instructions...
 1. In Terminal, `cd` to the `PowerPlanneriOS` directory.
 1. Run `dotnet run -f net10.0-ios`
 1. The simulator should launch!
-1. To specify a specific simulator, in XCode go to Window -> Devices and Simulators, and in the Simulators list, right click one from the left and click Copy Identifier. Then, use the command `dotnet run -f net10.0-ios /p:_DeviceName=:v2:udid=185937CD-80A5-4A2D-A198-C4C9A4530C45` using the identifier you copied.
+1. To specify a specific simulator, in XCode go to Product -> Destination -> Manage Devices, and in the Simulators list, click one from the left, click the Info button on the right, and copy the UDID. Then, use the command `dotnet run -f net10.0-ios /p:_DeviceName=:v2:udid=185937CD-80A5-4A2D-A198-C4C9A4530C45` using the identifier you copied.
 
 #### Known iOS issues
 
