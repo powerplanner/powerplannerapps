@@ -14,18 +14,6 @@ namespace InterfacesDroid.Helpers
 {
     public static class DateHelper
     {
-        private static readonly DateTime EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
-        public static DateTime FromMilliseconds(long milliseconds)
-        {
-            return EPOCH.AddMilliseconds(milliseconds).ToLocalTime();
-        }
-
-        public static long ToMilliseconds(DateTime dateTime)
-        {
-            return (long)(dateTime - EPOCH).TotalMilliseconds;
-        }
-
         public static string ToShortTimeString(DateTime date)
         {
             var timeFormat = Android.Text.Format.DateFormat.GetTimeFormat(Application.Context);

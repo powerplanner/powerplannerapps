@@ -69,6 +69,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         }
 #endif
 
+        public override Thickness GetSnackbarInsetsForThisViewModelOnly()
+        {
+            // If no floating action button
+            if (DisplayState == DisplayStates.CompactCalendar || DisplayState == DisplayStates.FullCalendar)
+            {
+                return base.GetSnackbarInsetsForThisViewModelOnly();
+            }
+
+            var insets = base.GetSnackbarInsetsForThisViewModelOnly();
+            return new Thickness(
+                insets.Left,
+                insets.Top,
+                FloatingActionButton.DefaultSize + Theme.Current.PageMargin * 2,
+                insets.Bottom);
+        }
+
         private void Initialize(Guid localAccountId, ViewItemSemester semester)
         {
             var acct = MainScreenViewModel.CurrentAccount;

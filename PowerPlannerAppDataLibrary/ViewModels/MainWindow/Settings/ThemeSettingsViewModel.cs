@@ -46,11 +46,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         };
 
         private VxState<Themes> _theme = new VxState<Themes>(Helpers.Settings.ThemeOverride);
-        private Themes[] Options = ThemeExtension.Current == null ?
-        [
-            Themes.Automatic,
-            Themes.Custom
-        ] :
+        private Themes[] Options = 
         [
             Themes.Automatic,
             Themes.Light,

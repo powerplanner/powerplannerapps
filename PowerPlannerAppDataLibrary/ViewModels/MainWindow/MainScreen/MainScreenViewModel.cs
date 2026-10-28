@@ -89,6 +89,33 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             };
         }
 
+        public override Thickness GetSnackbarInsetsForThisViewModelOnly()
+        {
+            var contentInsets = Content?.GetSnackbarInsetsForThisViewModelOnly() ?? new Thickness(Theme.Current.PageMargin).Combine(NookInsets);
+
+            if (IsCompactMode)
+            {
+                return new Thickness(
+                    NookInsets.Left + Theme.Current.PageMargin,
+                    NookInsets.Top + Theme.Current.PageMargin,
+                    NookInsets.Right + Theme.Current.PageMargin,
+                    BottomNavBar.FinalHeight(NookInsets) + Theme.Current.PageMargin)
+                    .CombineMax(contentInsets);
+            }
+
+            return new Thickness(
+                SidebarWidth + Theme.Current.PageMargin,
+                NookInsets.Top + Theme.Current.PageMargin,
+                NookInsets.Right + Theme.Current.PageMargin,
+                NookInsets.Bottom + Theme.Current.PageMargin)
+                .CombineMax(contentInsets);
+        }
+
+        public override Thickness GetSnackbarInsets()
+        {
+            return GetSnackbarInsetsForThisViewModelOnly();
+        }
+
         protected override void Initialize()
         {
             base.Initialize();

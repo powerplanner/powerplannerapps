@@ -33,7 +33,6 @@ namespace PowerPlanneriOS.Controllers
             }
 
             UpdateRightBarButtonItems();
-            UpdateNookInsets();
 
             _nativeComponent = ViewModel.Render(AfterViewChanged);
             _nativeComponent.TranslatesAutoresizingMaskIntoConstraints = false;
@@ -53,7 +52,25 @@ namespace PowerPlanneriOS.Controllers
 
         private void UpdateRightBarButtonItems()
         {
-            NavItem.RightBarButtonItems = GetRightBarButtonItems().ToArray();
+            if (ViewModel.Commands != null)
+            {
+                Toolbar.PrimaryCommands = ViewModel.Commands.OfType<Vx.Views.MenuItem>().ToList();
+            }
+            else
+            {
+                Toolbar.PrimaryCommands = new();
+            }
+
+            if (ViewModel.SecondaryCommands != null)
+            {
+                Toolbar.SecondaryCommands = ViewModel.SecondaryCommands.OfType<Vx.Views.MenuItem>().ToList();
+            }
+            else
+            {
+                Toolbar.SecondaryCommands = new();
+            }
+
+            Toolbar.RenderOnDemand();
         }
 
         private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -71,36 +88,9 @@ namespace PowerPlanneriOS.Controllers
             }
         }
 
-        private IEnumerable<UIBarButtonItem> GetRightBarButtonItems()
+        protected override void UpdateNookInsetsOnViewModel(Thickness nookInsets)
         {
-            if (ViewModel.SecondaryCommands != null && ViewModel.SecondaryCommands.Length > 0)
-            {
-                yield return new UIBarButtonItem(UIImage.FromBundle("MenuVerticalIcon").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), VxiOSContextMenu.CreateMenu(ViewModel.SecondaryCommands));
-            }
-
-            if (ViewModel.Commands != null)
-            {
-                foreach (var command in ViewModel.Commands)
-                {
-                    yield return command.ToUIBarButtonItem();
-                }
-            }
-        }
-
-        /// <summary>
-        /// This method only exists on iOS 11+, not sure if this class will still work on iOS 10/9, but not sure how to dynamically overload a method...
-        /// </summary>
-        public override void ViewSafeAreaInsetsDidChange()
-        {
-            if (ViewModel != null)
-            {
-                UpdateNookInsets();
-            }
-        }
-
-        private void UpdateNookInsets()
-        {
-            ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)View.SafeAreaInsets.Left, 0, (float)View.SafeAreaInsets.Right, (float)View.SafeAreaInsets.Bottom));
+            ViewModel.UpdateNookInsets(new Vx.Views.Thickness(nookInsets.Left, 0, nookInsets.Right, nookInsets.Bottom));
         }
 
         private void AfterViewChanged(UIView view)
@@ -127,7 +117,7 @@ namespace PowerPlanneriOS.Controllers
                 }
             }
 
-            base.BackButtonClicked();
+            ViewModel.GoBack();
         }
     }
 }

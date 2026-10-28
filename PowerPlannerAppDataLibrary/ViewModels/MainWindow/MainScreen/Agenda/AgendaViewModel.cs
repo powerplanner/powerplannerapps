@@ -71,6 +71,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             base.Initialize();
         }
 
+        public override Thickness GetSnackbarInsetsForThisViewModelOnly()
+        {
+            var insets = base.GetSnackbarInsetsForThisViewModelOnly();
+            return new Thickness(
+                insets.Left,
+                insets.Top,
+                FloatingActionButton.DefaultSize + Theme.Current.PageMargin * 2,
+                insets.Bottom);
+        }
+
         protected override View Render()
         {
             if (!IsLoaded)

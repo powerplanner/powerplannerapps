@@ -33,26 +33,6 @@ namespace BareMvvm.Core.ViewModels
             (BackStack as INotifyCollectionChanged).CollectionChanged += PagedViewModel_CollectionChanged;
         }
 
-        /// <summary>
-        /// Safe-area insets ("nook" insets) reported by the platform view, so content can avoid
-        /// notches/home indicators. Mirrors ComponentViewModel.NookInsets.
-        /// </summary>
-        public Thickness NookInsets { get; protected set; }
-
-        public void UpdateNookInsets(Thickness newInsets)
-        {
-            if (NookInsets != newInsets)
-            {
-                NookInsets = newInsets;
-                OnNookInsetsChanged();
-                MarkDirty();
-            }
-        }
-
-        protected virtual void OnNookInsetsChanged()
-        {
-        }
-
         private void PagedViewModel_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdateRequestedBackButtonVisibility();

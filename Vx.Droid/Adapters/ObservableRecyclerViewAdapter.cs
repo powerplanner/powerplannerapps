@@ -10,7 +10,6 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Collections;
-using InterfacesDroid.DataTemplates;
 using System.Collections.Specialized;
 using ToolsPortable;
 using InterfacesDroid.Views;

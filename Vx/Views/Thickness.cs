@@ -80,5 +80,14 @@ namespace Vx.Views
                 Right + other.Right,
                 Bottom + other.Bottom);
         }
+
+        public Thickness CombineMax(Thickness other)
+        {
+            return new Thickness(
+                Math.Max(Left, other.Left),
+                Math.Max(Top, other.Top),
+                Math.Max(Right, other.Right),
+                Math.Max(Bottom, other.Bottom));
+        }
     }
 }

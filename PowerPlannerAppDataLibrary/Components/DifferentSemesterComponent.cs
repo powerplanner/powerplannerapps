@@ -30,6 +30,7 @@ namespace PowerPlannerAppDataLibrary.Components
                         CornerRadius = 6,
                         Padding = new Thickness(12),
                         Tapped = OnOpenSemester,
+                        Margin = new Thickness(6),
                         Content = new LinearLayout
                         {
                             Children =
@@ -38,8 +39,9 @@ namespace PowerPlannerAppDataLibrary.Components
                                 {
                                     Text = PowerPlannerResources.GetString("DifferentSemesterOverlayControl_TextBlockHeader.Text"),
                                     TextColor = Theme.Current.BackgroundColor,
-                                    TextAlignment = HorizontalAlignment.Center
-                                }.TitleStyle(),
+                                    TextAlignment = HorizontalAlignment.Center,
+                                    FontSize = Theme.Current.SubtitleFontSize
+                                },
 
                                 new TextBlock
                                 {

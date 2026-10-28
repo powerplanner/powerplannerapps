@@ -34,6 +34,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             SemesterItemsViewGroup = SemesterItemsViewGroup.Load(localAccountId, semester);
         }
 
+        public override Thickness GetSnackbarInsetsForThisViewModelOnly()
+        {
+            var insets = base.GetSnackbarInsetsForThisViewModelOnly();
+            return new Thickness(
+                insets.Left,
+                insets.Top,
+                FloatingActionButton.DefaultSize + Theme.Current.PageMargin * 2,
+                insets.Bottom);
+        }
+
         protected override View Render()
         {
             var baseView = RenderBase();

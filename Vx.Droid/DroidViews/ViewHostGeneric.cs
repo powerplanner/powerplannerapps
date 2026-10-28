@@ -1,18 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.View;
 using BareMvvm.Core.ViewModels;
+using InterfacesDroid.Helpers;
+using InterfacesDroid.Themes;
 using InterfacesDroid.ViewModelPresenters;
+using InterfacesDroid.Windows;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
 using ToolsPortable;
+using Vx.Droid;
 
 namespace InterfacesDroid.Views
 {
@@ -56,24 +60,88 @@ namespace InterfacesDroid.Views
     }
 #endif
 
-    public abstract class ViewHostGeneric : InflatedViewWithBindingHost, IViewModelHost
+    public class ViewHostGeneric : InflatedViewWithBindingHost, IViewModelHost
     {
         public BaseViewModel ViewModel
         {
             get { return DataContext as BaseViewModel; }
-            set { DataContext = value; OnViewModelSetOverride(); TriggerViewModelLoaded(value); }
+            set
+            {
+                DataContext = value;
+
+                if (value != null)
+                {
+                    UpdateNookInsets();
+                }
+
+                if (_renderViewModel && value != null)
+                {
+                    var nativeView = ViewModel.Render();
+                    nativeView.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
+                    AddView(nativeView);
+
+                    if (ViewModel.ImportantForAutofill)
+                    {
+                        AutofillHelper.EnableForAll(nativeView);
+                    }
+                }
+
+                OnViewModelSetOverride();
+                TriggerViewModelLoaded(value);
+            }
         }
 
         public ViewHostGeneric(int resourceId, ViewGroup root) : base(resourceId, root)
         {
+            Initialize();
             OnViewCreated();
+        }
+
+        public ViewHostGeneric(ViewGroup root) : base(root.Context) { Initialize(); }
+
+        private bool _renderViewModel;
+
+        public ViewHostGeneric(ViewGroup root, bool renderViewModel) : base(root.Context)
+        {
+            _renderViewModel = renderViewModel;
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            NativeDroidAppWindow.WindowInsetsChanged += new WeakEventHandler<WindowInsetsCompat>(NativeDroidAppWindow_WindowInsetsChanged).Handler;
 
 #if DEBUG
             ActiveViewHosts.Track(this);
 #endif
         }
 
-        public ViewHostGeneric(ViewGroup root) : base(root.Context) { }
+        private void NativeDroidAppWindow_WindowInsetsChanged(object sender, WindowInsetsCompat e)
+        {
+            UpdateNookInsets();
+        }
+
+        private void UpdateNookInsets()
+        {
+            try
+            {
+                if (ViewModel != null && NativeDroidAppWindow.WindowInsets != null)
+                {
+                    var insets = NativeDroidAppWindow.WindowInsets.GetInsets(WindowInsetsCompat.Type.SystemBars() | WindowInsetsCompat.Type.DisplayCutout());
+                    if (insets != null)
+                    {
+                        ViewModel.UpdateNookInsets(new Vx.Views.Thickness
+                        {
+                            Left = ThemeHelper.FromPxPrecise(Context, insets.Left),
+                            Top = ThemeHelper.FromPxPrecise(Context, insets.Top),
+                            Right = ThemeHelper.FromPxPrecise(Context, insets.Right),
+                            Bottom = ThemeHelper.FromPxPrecise(Context, insets.Bottom)
+                        });
+                    }
+                }
+            }
+            catch { }
+        }
 
         public virtual void OnViewModelSetOverride()
         {

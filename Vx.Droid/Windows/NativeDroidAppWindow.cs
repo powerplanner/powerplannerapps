@@ -17,6 +17,7 @@ using BareMvvm.Core.Snackbar;
 using Google.Android.Material.Snackbar;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.View;
+using InterfacesDroid.Themes;
 
 namespace InterfacesDroid.Windows
 {
@@ -24,6 +25,7 @@ namespace InterfacesDroid.Windows
     {
         private GenericViewModelPresenter _presenter;
         private CoordinatorLayout _coordinatorLayout;
+        private CoordinatorLayout _snackbarContainer;
 
         public event EventHandler<CancelEventArgs> BackPressed;
 
@@ -44,9 +46,15 @@ namespace InterfacesDroid.Windows
             };
 
             // CoordinatorLayout is needed so snackbars can be swipeable
+
             _coordinatorLayout = new CoordinatorLayout(activity);
+
             ViewCompat.SetOnApplyWindowInsetsListener(_coordinatorLayout, this);
             _coordinatorLayout.AddView(_presenter);
+
+            _snackbarContainer = new CoordinatorLayout(activity);
+            _coordinatorLayout.AddView(_snackbarContainer);
+
             activity.SetContentView(_coordinatorLayout);
 
             activity.BackPressed += Activity_BackPressed;
@@ -73,13 +81,18 @@ namespace InterfacesDroid.Windows
         {
             try
             {
-                var nativeSnackbar = Snackbar.Make(_coordinatorLayout, snackbar.Message, snackbar.Duration);
-
-                var anchorView = _presenter.GetSnackbarAnchorView();
-                if (anchorView != null)
+                var insets = _presenter.ViewModel?.GetFinalContent()?.GetSnackbarInsets() ?? new Vx.Views.Thickness();
+                _snackbarContainer.LayoutParameters = new CoordinatorLayout.LayoutParams(
+                    CoordinatorLayout.LayoutParams.MatchParent,
+                    CoordinatorLayout.LayoutParams.MatchParent)
                 {
-                    nativeSnackbar.SetAnchorView(anchorView);
-                }
+                    LeftMargin = ThemeHelper.AsPx(this.Activity, insets.Left),
+                    TopMargin = ThemeHelper.AsPx(this.Activity, insets.Top),
+                    RightMargin = ThemeHelper.AsPx(this.Activity, insets.Right),
+                    BottomMargin = ThemeHelper.AsPx(this.Activity, insets.Bottom)
+                };
+
+                var nativeSnackbar = Snackbar.Make(_snackbarContainer, snackbar.Message, snackbar.Duration);
 
                 if (snackbar.ButtonText != null)
                 {

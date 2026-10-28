@@ -1,17 +1,17 @@
-﻿using System;
+﻿using BareMvvm.Core.ViewModels;
+using Foundation;
+using InterfacesiOS.App;
+using InterfacesiOS.Binding;
+using InterfacesiOS.Helpers;
+using InterfacesiOS.ViewModelPresenters;
+using InterfacesiOS.Views;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
-
-using Foundation;
-using UIKit;
-using BareMvvm.Core.ViewModels;
-using InterfacesiOS.App;
-using System.ComponentModel;
 using ToolsPortable;
-using InterfacesiOS.Binding;
-using InterfacesiOS.Views;
-using InterfacesiOS.Helpers;
+using UIKit;
 
 namespace InterfacesiOS.Controllers
 {
@@ -55,10 +55,12 @@ namespace InterfacesiOS.Controllers
     }
 #endif
 
-    public abstract class BareMvvmUIViewController<T> : UIViewController, ViewModelPresenters.IViewModelHost where T : BaseViewModel
+    public class BareMvvmUIViewController<T> : UIViewController, ViewModelPresenters.IViewModelHost where T : BaseViewModel
     {
-        public BareMvvmUIViewController()
+        private bool _renderViewModel;
+        public BareMvvmUIViewController(bool renderViewModel = false)
         {
+            _renderViewModel = renderViewModel;
             base.View.BackgroundColor = Vx.iOS.VxiOSExtensions.ToUI(Vx.Views.Theme.Current.BackgroundColor);
 
             _shouldReturnCondition = new UITextFieldCondition(ShouldReturn);
@@ -67,6 +69,8 @@ namespace InterfacesiOS.Controllers
             ActiveViewControllers.Track(this);
 #endif
         }
+
+        public virtual Vx.Views.Thickness NookInsets { get; protected set; } = new Vx.Views.Thickness(0);
 
         public BindingHost BindingHost { get; private set; } = new BindingHost();
         private T _viewModel;
@@ -82,6 +86,8 @@ namespace InterfacesiOS.Controllers
 
                 _viewModel = value;
                 BindingHost.DataContext = value;
+                UpdateNookInsets();
+                RenderViewModel();
                 OnViewModelSetOverride();
                 TriggerViewModelLoaded(value);
             }
@@ -91,6 +97,57 @@ namespace InterfacesiOS.Controllers
         {
             get { return ViewModel; }
             set { ViewModel = (T)value; }
+        }
+
+        private void RenderViewModel()
+        {
+            if (_renderViewModel && ViewModel != null)
+            {
+                var renderedComponent = Vx.iOS.VxiOSExtensions.Render(ViewModel);
+                renderedComponent.TranslatesAutoresizingMaskIntoConstraints = false;
+                View.Add(renderedComponent);
+                Vx.iOS.BareUIHelper.StretchWidthAndHeight(renderedComponent, View);
+            }
+        }
+
+        /// <summary>
+        /// This method only exists on iOS 11+, not sure if this class will still work on iOS 10/9, but not sure how to dynamically overload a method...
+        /// </summary>
+        public override void ViewSafeAreaInsetsDidChange()
+        {
+            UpdateNookInsets();
+        }
+
+        private void UpdateNookInsets()
+        {
+            // Use the WINDOW's safe-area insets rather than this view's. The view's insets depend on
+            // where it sits in the hierarchy (a view that doesn't reach the screen edge reports 0),
+            // whereas the window always reports the true device insets (notch, home indicator, etc.).
+            var insets = GetWindowSafeAreaInsets();
+            NookInsets = new Vx.Views.Thickness((float)insets.Left, (float)insets.Top, (float)insets.Right, (float)insets.Bottom);
+
+            UpdateNookInsetsOnViewModel(NookInsets);
+
+            OnNookInsetsUpdatedOverride();
+        }
+
+        protected virtual void UpdateNookInsetsOnViewModel(Vx.Views.Thickness nookInsets)
+        {
+            if (ViewModel != null)
+            {
+                ViewModel.UpdateNookInsets(nookInsets);
+            }
+        }
+
+        protected virtual void OnNookInsetsUpdatedOverride()
+        {
+            // Nothing
+        }
+
+        private UIEdgeInsets GetWindowSafeAreaInsets()
+        {
+            var window = View?.Window ?? PagedViewModelPresenter.GetKeyWindow();
+            return window?.SafeAreaInsets ?? UIEdgeInsets.Zero;
         }
 
         public virtual void OnViewModelSetOverride()
@@ -319,48 +376,6 @@ namespace InterfacesiOS.Controllers
         protected virtual bool HandleKeyboardAction(UIReturnKeyType returnKeyType)
         {
             return false;
-        }
-
-        /// <summary>
-        /// Adds a text field
-        /// </summary>
-        /// <param name="textField"></param>
-        /// <param name="textBindingPropertyName"></param>
-        /// <param name="firstResponder">Whether this text box should get the first focus on the page, causing the keyboard to appear</param>
-        protected void AddTextField(UIStackView stackView, UITextField textField, string textBindingPropertyName = null, Func<T, string> getValue = null, Action<T, string> setValue = null, bool firstResponder = false)
-        {
-            textField.TranslatesAutoresizingMaskIntoConstraints = false;
-            textField.AdjustsFontSizeToFitWidth = true;
-
-            if (textBindingPropertyName != null)
-            {
-                BindingHost.SetTextFieldTextBinding(textField, textBindingPropertyName, getValue, setValue);
-            }
-
-            stackView.AddArrangedSubview(textField);
-            textField.StretchWidth(stackView, left: 16, right: 16);
-            textField.SetHeight(44);
-
-            RegisterTextField(textField, firstResponder);
-        }
-
-        protected void RegisterTextField(UITextField textField, bool firstResponder = false)
-        {
-            if (firstResponder)
-            {
-                textField.BecomeFirstResponder();
-                // The following would dismiss when scrolling
-                //textField.EditingDidBegin += delegate
-                //{
-                //    _scrollView.Scrolled += delegate
-                //    {
-                //        textField.ResignFirstResponder();
-                //    };
-                //};
-            }
-
-            textField.ShouldReturn = _shouldReturnCondition;
-            _textFieldsWithShouldReturnCondition.Add(textField);
         }
     }
 }

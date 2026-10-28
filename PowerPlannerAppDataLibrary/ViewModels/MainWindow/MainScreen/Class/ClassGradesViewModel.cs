@@ -48,6 +48,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             await base.LoadAsyncOverride();
         }
 
+        public override Thickness GetSnackbarInsetsForThisViewModelOnly()
+        {
+            var insets = base.GetSnackbarInsetsForThisViewModelOnly();
+            return new Thickness(
+                insets.Left,
+                insets.Top,
+                FloatingActionButton.DefaultSize + Theme.Current.PageMargin * 2,
+                insets.Bottom);
+        }
+
         private void WeightCategories_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             try

@@ -83,8 +83,7 @@ namespace PowerPlannerAndroid.App
         {
             return new Dictionary<Type, Func<ViewGroup, View>>()
             {
-                { typeof(PopupComponentViewModel), root => new PopupComponentView(root) },
-                { typeof(ComponentViewModel), root => new ComponentView(root) } // This must be after Popup since Popup is a subclass
+                { typeof(PopupComponentViewModel), root => new PopupComponentView(root) }
             };
         }
 
@@ -92,16 +91,9 @@ namespace PowerPlannerAndroid.App
         {
             return new Dictionary<Type, Func<ViewGroup, View>>()
             {
-                // Welcome views
-                { typeof(WelcomeViewModel), root => new WelcomeView(root) },
-
                 // Main views
-                { typeof(InitialSyncViewModel), root => new InitialSyncView(root) },
                 { typeof(MainScreenViewModel), root => new MainScreenView(root) },
-                { typeof(ClassViewModel), root => new ClassView(root) },
-                { typeof(PremiumVersionViewModel), root => new PremiumVersionView(root) },
-                { typeof(SyncErrorsViewModel), root => new SyncErrorsView(root) },
-                { typeof(QuickAddViewModel), root => new QuickAddView(root) }
+                { typeof(ClassViewModel), root => new ClassView(root) }
             };
         }
 

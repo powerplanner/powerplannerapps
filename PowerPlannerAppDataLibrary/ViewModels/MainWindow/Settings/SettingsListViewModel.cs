@@ -612,7 +612,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         /// </summary>
         public static Action<SettingsListViewModel> OpenLiveTiles { get; set; }
 
-        public async void OpenHelp()
+        public static async void OpenHelp()
         {
             try
             {

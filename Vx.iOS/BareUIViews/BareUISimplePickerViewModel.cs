@@ -8,6 +8,7 @@ using UIKit;
 using System.Collections;
 using System.Collections.Specialized;
 using ToolsPortable;
+using Vx.iOS;
 
 namespace InterfacesiOS.Views
 {
@@ -92,5 +93,16 @@ namespace InterfacesiOS.Views
         {
             return ItemsSource.OfType<object>().ElementAt((int)row).ToString();
         }
+
+        public override NSAttributedString GetAttributedTitle(UIPickerView pickerView, nint row, nint component)
+        {
+            var attributes = new UIStringAttributes
+            {
+                ForegroundColor = Vx.Views.Theme.Current.ForegroundColor.ToUI()
+            };
+
+            return new NSAttributedString(GetTitle(pickerView, row, component), attributes);
+        }
+
     }
 }

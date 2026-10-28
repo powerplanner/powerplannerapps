@@ -1,24 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using AndroidX.ViewPager.Widget;
+using Google.Android.Material.Tabs;
 using InterfacesDroid.Views;
 using Java.Lang;
+using PowerPlannerAndroid.Helpers;
 using PowerPlannerAndroid.ViewHosts;
 using PowerPlannerAppDataLibrary;
-using Google.Android.Material.Tabs;
-using AndroidX.ViewPager.Widget;
-using Vx.Droid;
-using PowerPlannerAndroid.Helpers;
+using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Vx.Droid;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -269,7 +269,13 @@ namespace PowerPlannerAndroid.Views
             {
                 Text = R.S("String_DeleteClass"),
                 Glyph = MaterialDesign.MaterialDesignIcons.Delete,
-                Click = PromptDeleteClass
+                Click = async () =>
+                {
+                    if (await PowerPlannerApp.ConfirmDeleteAsync(PowerPlannerResources.GetString("String_ConfirmDeleteClassMessage"), PowerPlannerResources.GetString("String_ConfirmDeleteClassHeader"), useConfirmationCheckbox: true))
+                    {
+                        ViewModel.DeleteClass();
+                    }
+                }
             };
 
             switch (_viewPager.CurrentItem)
@@ -313,19 +319,6 @@ namespace PowerPlannerAndroid.Views
             }
 
             Toolbar.RenderOnDemand();
-        }
-
-        private void PromptDeleteClass()
-        {
-            var builder = new AlertDialog.Builder(Context);
-
-            builder
-                .SetTitle(PowerPlannerResources.GetString("String_ConfirmDeleteClassHeader"))
-                .SetMessage(PowerPlannerResources.GetString("String_ConfirmDeleteClassMessage"))
-                .SetPositiveButton(PowerPlannerResources.GetMenuItemDelete(), delegate { ViewModel.DeleteClass(); })
-                .SetNegativeButton(PowerPlannerResources.GetStringCancel(), delegate { });
-
-            builder.Create().Show();
         }
     }
 }

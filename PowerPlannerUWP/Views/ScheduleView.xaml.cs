@@ -216,10 +216,11 @@ namespace PowerPlannerUWP.Views
 
             if (arranger.IsDifferentSemester)
             {
-                var diffSemesterOverlay = new DifferentSemesterOverlayControl();
+                var diffSemesterOverlay = new DifferentSemesterComponent
+                {
+                    OnOpenSemester = ViewModel.MainScreenViewModel.OpenOrShowYears
+                }.Render();
                 Grid.SetColumn(diffSemesterOverlay, col);
-                diffSemesterOverlay.VerticalAlignment = VerticalAlignment.Top;
-                diffSemesterOverlay.Height = 300;
                 grid.Children.Add(diffSemesterOverlay);
             }
 

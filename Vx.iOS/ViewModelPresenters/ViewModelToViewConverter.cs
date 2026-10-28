@@ -1,7 +1,8 @@
-﻿using System;
+﻿using BareMvvm.Core.ViewModels;
+using InterfacesiOS.Controllers;
+using System;
 using System.Collections.Generic;
 using UIKit;
-using BareMvvm.Core.ViewModels;
 
 namespace InterfacesiOS.ViewModelPresenters
 {
@@ -68,6 +69,11 @@ namespace InterfacesiOS.ViewModelPresenters
             else if (viewModel is PagedViewModel)
             {
                 view = new PagedViewModelPresenter();
+            }
+
+            else if (viewModel is BaseViewModel baseViewModel)
+            {
+                view = new BareMvvmUIViewController<BaseViewModel>(true);
             }
 
             else

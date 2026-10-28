@@ -12,7 +12,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
-    public partial class InitialSyncViewModel : PagedViewModelWithPopups
+    public partial class InitialSyncViewModel : BaseViewModel
     {
         public readonly AccountDataItem Account;
         private EventHandler<SyncQueuedEventArgs> _syncQueuedEventHandler;
@@ -34,6 +34,107 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             catch { }
         }
 
+        protected override View Render()
+        {
+            var icon = new ImageView
+            {
+                Source = new UriImageSource
+                {
+                    UwpUri = Theme.Current.IsDarkTheme ? "ms-appx:///Assets/Logo.png" : "ms-appx:///Assets/LogoDark.png",
+                    IosBundleName = Theme.Current.IsDarkTheme ? "PowerPlannerIcon" : "PowerPlannerIconDark",
+                    AndroidResourceName = Theme.Current.IsDarkTheme ? "logo" : "logodark"
+                },
+                Height = 100,
+                Width = 100,
+                Margin = new Thickness(0, IsSyncing ? 0 : 24, 0, 0)
+            };
+
+            return new Border
+            {
+                BackgroundColor = Theme.Current.BackgroundColor,
+                Content = new FrameLayout
+                {
+                    Children =
+                    {
+                        new LinearLayout
+                        {
+                            Children =
+                            {
+                                icon,
+
+                                IsSyncing ? new ProgressBar
+                                {
+                                    IsIndeterminate = true,
+                                    Margin = new Thickness(0, 12, 0, 0),
+                                    Width = 100,
+                                    Color = Theme.Current.ForegroundColor
+                                } : null,
+
+                                new TextBlock
+                                {
+                                    Text = IsSyncing ? R.S("LoginPage_String_SyncingAccount") : R.S("String_SyncError"),
+                                    Margin = new Thickness(0, 6, 0, 0),
+                                    FontSize = Theme.Current.SubtitleFontSize,
+                                    HorizontalAlignment = HorizontalAlignment.Center
+                                },
+
+                                IsSyncing ? null : new AccentButton
+                                {
+                                    Text = "Try again",
+                                    Click = TryAgain,
+                                    HorizontalAlignment = HorizontalAlignment.Center,
+                                    Margin = new Thickness(0, 6, 0, 0)
+                                },
+
+                                IsSyncing || string.IsNullOrWhiteSpace(Error) ? null : new ScrollView
+                                {
+                                    Content = new TextBlock
+                                    {
+                                        Text = Error,
+                                        WrapText = true,
+                                        IsTextSelectionEnabled = true
+                                    },
+                                    Height = 100,
+                                    Margin = new Thickness(0, 12, 0, 0)
+                                }
+                            },
+                            Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 0, Theme.Current.PageMargin + NookInsets.Right, 0),
+                            VerticalAlignment = VerticalAlignment.Center
+                        },
+
+                        IsSyncing ? null : new TransparentContentButton
+                        {
+                            Margin = new Thickness(Theme.Current.PageMargin - Theme.Current.SmallPageMargin).Combine(NookInsets),
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            VerticalAlignment = VerticalAlignment.Top,
+                            Click = () => OpenSettings(),
+                            Content = new LinearLayout
+                            {
+                                Orientation = Orientation.Horizontal,
+                                Margin = new Thickness(Theme.Current.SmallPageMargin),
+                                Children =
+                                {
+                                    new FontIcon
+                                    {
+                                        Glyph = MaterialDesign.MaterialDesignIcons.Settings,
+                                        FontSize = 20
+                                    },
+
+                                    new TextBlock
+                                    {
+                                        Text = R.S("MainMenuItem_Settings"),
+                                        WrapText = false,
+                                        VerticalAlignment = VerticalAlignment.Center,
+                                        Margin = new Thickness(6, 0, 0, 0)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
         public void TryAgain()
         {
             IsSyncing = true;
@@ -42,18 +143,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             Sync.StartSyncAccount(Account);
         }
 
-        public void OpenSettings(bool asPopup = false)
+        public void OpenSettings()
         {
-            var mainWindowViewModel = this.FindAncestor<MainWindowViewModel>();
-
-            if (asPopup)
-            {
-                mainWindowViewModel.ShowPopup(new SettingsViewModel(mainWindowViewModel));
-            }
-            else
-            {
-                mainWindowViewModel.Navigate(new SettingsViewModel(mainWindowViewModel));
-            }
+            ShowPopup(new MinimalSettingsViewModel(Parent, Account));
         }
 
         private bool _isSyncing = true;

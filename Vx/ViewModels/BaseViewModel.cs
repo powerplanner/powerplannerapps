@@ -766,6 +766,21 @@ namespace BareMvvm.Core.ViewModels
             NavigatedFrom?.Invoke(this, new EventArgs());
         }
 
+        public virtual Thickness GetSnackbarInsetsForThisViewModelOnly()
+        {
+            return NookInsets.Combine(new Thickness(Theme.Current.PageMargin));
+        }
+
+        public virtual Thickness GetSnackbarInsets()
+        {
+            if (Parent == null)
+            {
+                return GetSnackbarInsetsForThisViewModelOnly();
+            }
+
+            return Parent.GetSnackbarInsets();
+        }
+
         protected bool ValidateAllInputs(IEnumerable<TextField> fields, bool showValidationErrorMessage = true, Dictionary<TextField, Action<TextField>> customValidators = null)
         {
             bool isValid = true;
@@ -793,6 +808,30 @@ namespace BareMvvm.Core.ViewModels
             }
 
             return isValid;
+        }
+
+        private Thickness _platformNookInsets = new Thickness();
+
+        /// <summary>
+        /// Raw insets reported by the platform view, for view models that cover the whole screen (popups).
+        /// </summary>
+        protected Thickness PlatformNookInsets => _platformNookInsets;
+
+        public virtual Thickness NookInsets => PlatformNookInsets;
+
+        public void UpdateNookInsets(Thickness newInsets)
+        {
+            if (_platformNookInsets != newInsets)
+            {
+                _platformNookInsets = newInsets;
+                MarkDirty();
+                OnNookInsetsChanged();
+            }
+        }
+
+        protected virtual void OnNookInsetsChanged()
+        {
+            // Override to handle nook insets changing
         }
 
         private class AsyncUserInteraction

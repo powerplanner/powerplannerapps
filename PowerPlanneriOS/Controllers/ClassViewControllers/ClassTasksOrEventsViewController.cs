@@ -22,8 +22,6 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 {
     public class ClassTasksOrEventsViewController : BareMvvmUIViewController<ClassTasksOrEventsViewModel>
     {
-        private object _tabBarHeightListener;
-
         public override void OnViewModelSetOverride()
         {
             base.OnViewModelSetOverride();
@@ -31,12 +29,7 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
             var rendered = ViewModel.Render();
             rendered.TranslatesAutoresizingMaskIntoConstraints = false;
             View.Add(rendered);
-
-            MainScreenViewController.ListenToTabBarHeightChanged(ref _tabBarHeightListener, delegate
-            {
-                rendered.RemoveAllConstraints();
-                rendered.StretchWidthAndHeight(View, 0, 0, 0, (float)MainScreenViewController.TAB_BAR_HEIGHT);
-            });
+            rendered.StretchWidthAndHeight(View);
         }
     }
 }

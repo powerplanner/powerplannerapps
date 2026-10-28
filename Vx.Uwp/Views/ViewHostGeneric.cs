@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Uwp;
 using Windows.UI.Xaml.Controls;
 
 namespace InterfacesUWP.Views
@@ -51,8 +52,11 @@ namespace InterfacesUWP.Views
 
     public partial class ViewHostGeneric : Page
     {
-        public ViewHostGeneric()
+        private bool _renderViewModel;
+        public ViewHostGeneric(bool renderViewModel = false)
         {
+            _renderViewModel = renderViewModel;
+
 #if DEBUG
             ActiveViewHosts.Track(this);
             GC.Collect();
@@ -74,8 +78,18 @@ namespace InterfacesUWP.Views
             {
                 OnViewFocused();
             }
+
+            RenderViewModel();
             
             OnViewModelSetOverride();
+        }
+
+        protected virtual void RenderViewModel()
+        {
+            if (_renderViewModel)
+            {
+                Content = ViewModel.Render();
+            }
         }
 
         private void ViewModel_ViewLostFocus(object sender, EventArgs e)

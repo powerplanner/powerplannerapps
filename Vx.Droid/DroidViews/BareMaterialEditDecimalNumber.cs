@@ -47,9 +47,6 @@ namespace InterfacesDroid.Views
             // We don't initialize here, for some reason both this and another constructor gets called
         }
 
-        /// <summary>
-        /// Note that this code is duplicated in <see cref="BareEditDecimalNumber"/>
-        /// </summary>
         private void Initialize()
         {
             SetMinimumWidth(ThemeHelper.AsPx(Context, 50));

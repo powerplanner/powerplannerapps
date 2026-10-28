@@ -457,21 +457,6 @@ namespace Vx.iOS
             }
         }
 
-        //public static readonly UIColor InputDividerColor = UIColorCompat.SeparatorColor;
-        //public static readonly UIColor InputSectionDividerColor = UIColorCompat.SystemGroupedBackgroundColor;
-
-        //public static void AddDivider(this UIStackView stackView, bool fullWidth = false)
-        //{
-        //    var divider = new UIView()
-        //    {
-        //        TranslatesAutoresizingMaskIntoConstraints = false,
-        //        BackgroundColor = InputDividerColor
-        //    };
-        //    stackView.AddArrangedSubview(divider);
-        //    divider.StretchWidth(stackView, left: fullWidth ? 0 : 16);
-        //    divider.SetHeight(1f);
-        //}
-
         public static void AddSpacing(this UIStackView stackView, float spacingHeight)
         {
             var spacing = new UIView()
@@ -481,75 +466,5 @@ namespace Vx.iOS
             stackView.AddArrangedSubview(spacing);
             spacing.SetHeight(spacingHeight);
         }
-
-        //public static void AddSectionDivider(this UIStackView stackView)
-        //{
-        //    var divider = new UIView()
-        //    {
-        //        TranslatesAutoresizingMaskIntoConstraints = false,
-        //        BackgroundColor = InputSectionDividerColor
-        //    };
-        //    divider.Layer.BorderColor = InputSectionDividerColor.CGColor;
-        //    divider.Layer.BorderWidth = 1;
-        //    stackView.AddArrangedSubview(divider);
-        //    divider.StretchWidth(stackView, left: -1, right: -1);
-        //    divider.SetHeight(35);
-        //}
-
-        //public static void AddTopSectionDivider(this UIStackView stackView)
-        //{
-        //    AddSectionDividerWithoutBorder(stackView);
-        //    stackView.AddDivider(fullWidth: true);
-        //}
-
-        //public static void AddBottomSectionDivider(this UIStackView stackView)
-        //{
-        //    stackView.AddDivider(fullWidth: true);
-        //    AddSectionDividerWithoutBorder(stackView);
-        //}
-
-        //private static void AddSectionDividerWithoutBorder(UIStackView stackView)
-        //{
-        //    var divider = new UIView()
-        //    {
-        //        TranslatesAutoresizingMaskIntoConstraints = false,
-        //        BackgroundColor = InputSectionDividerColor
-        //    };
-        //    stackView.AddArrangedSubview(divider);
-        //    divider.StretchWidth(stackView);
-        //    divider.SetHeight(34);
-        //}
-
-        //public static void AddUnderVisiblity(this UIStackView stackView, UIView view, Binding.BindingHost bindingHost, string propertyName, bool invert = false)
-        //{
-        //    BareUIVisibilityContainer container = new BareUIVisibilityContainer()
-        //    {
-        //        TranslatesAutoresizingMaskIntoConstraints = false,
-        //        Child = view
-        //    };
-        //    bindingHost.SetVisibilityBinding(container, propertyName, invert);
-        //    stackView.AddArrangedSubview(container);
-        //    container.StretchWidth(stackView);
-        //}
-
-        //public static void AddUnderLazyVisibility(this UIStackView stackView, Binding.BindingHost bindingHost, string propertyName, Func<UIView> createView)
-        //{
-        //    BareUIVisibilityContainer container = new BareUIVisibilityContainer()
-        //    {
-        //        TranslatesAutoresizingMaskIntoConstraints = false
-        //    };
-
-        //    bindingHost.SetBinding<bool>(propertyName, (isVisible) =>
-        //    {
-        //        if (isVisible && container.Child == null)
-        //        {
-        //            container.Child = createView();
-        //        }
-        //    });
-
-        //    bindingHost.SetVisibilityBinding(container, propertyName);
-        //    stackView.AddArrangedSubview(container);
-        //    container.StretchWidth(stackView);
-        //}
     }
 }

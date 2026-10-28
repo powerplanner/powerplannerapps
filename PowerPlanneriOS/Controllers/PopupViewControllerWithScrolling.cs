@@ -108,33 +108,6 @@ namespace PowerPlanneriOS.Controllers
             stackView.AddDivider(fullWidth);
         }
 
-        /// <summary>
-        /// Adds a text field
-        /// </summary>
-        /// <param name="textField"></param>
-        /// <param name="textBindingPropertyName"></param>
-        /// <param name="firstResponder">Whether this text box should get the first focus on the page, causing the keyboard to appear</param>
-        protected void AddTextField(UITextField textField, string textBindingPropertyName = null, Func<T, string> getValue = null, Action<T, string> setValue = null, bool firstResponder = false)
-        {
-            AddTextField(StackView, textField, textBindingPropertyName: textBindingPropertyName, getValue: getValue, setValue: setValue, firstResponder: firstResponder);
-        }
-
-        protected void AddTextField(BareUITextField textField, string textFieldBindingPropertyName = null, Func<T, TextField> getValue = null, bool firstResponder = false)
-        {
-            if (textFieldBindingPropertyName != null)
-            {
-                BindingHost.SetTextFieldBinding(textField, textFieldBindingPropertyName, getValue);
-            }
-
-            // We don't bind again here, already did binding (note need to cast to UITextField so it calls the right method)
-            AddTextField(textField as UITextField, firstResponder: firstResponder);
-        }
-
-        protected void AddUnderVisiblity<TValue>(UIView view, string propertyName, Func<T, TValue> getValue)
-        {
-            StackView.AddUnderVisiblity(view, BindingHost, propertyName, getValue);
-        }
-
         private UIView _loadingIndicatorView;
         private UIActivityIndicatorView _loadingIndicator;
         private UILabel _loadingIndicatorLabel;

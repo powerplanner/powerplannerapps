@@ -18,8 +18,6 @@ namespace Vx.iOS.Views
         private UIView _swatch;
         private UILabel _value;
 
-        private ModalCustomColorPickerViewController _modalCustomPicker;
-
         public iOSCustomColorPicker()
         {
             _header = new UILabel() { TextColor = Theme.Current.ForegroundColor.ToUI() };

@@ -32,6 +32,7 @@
 
     <Grid>
         <ItemsControl
+            x:Name="Container"
             ItemsSource="{x:Bind Manager.DisplayedSnackbars}"
             VerticalAlignment="Bottom"
             HorizontalAlignment="Stretch"
