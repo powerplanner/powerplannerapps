@@ -90,11 +90,7 @@ namespace PowerPlannerAppDataLibrary.Components
             var titlebar = new Toolbar
             {
                 Title = Title,
-                OnClose = OnClose,
-
-                // In-place popups (e.g. Mac Catalyst) want the Vx toolbar style rather than the
-                // native iOS nav bar.
-                ForceUseVx = true
+                OnClose = OnClose
             };
             if (PrimaryCommands != null)
             {

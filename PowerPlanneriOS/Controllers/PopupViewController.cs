@@ -42,7 +42,12 @@ namespace PowerPlanneriOS.Controllers
             // Add the toolbar
             Toolbar = new Vx.Views.Toolbar
             {
-                OnBack = BackButtonClicked
+                OnBack = BackButtonClicked,
+
+                // On iOS we make the toolbar higher in popups since it has extreme rounded corners
+                #if !MACCATALYST
+                ToolbarHeight = Vx.Views.Toolbar.TOOLBAR_IN_POPUP_HEIGHT
+                #endif
             };
             var renderedToolbar = Toolbar.Render();
             renderedToolbar.TranslatesAutoresizingMaskIntoConstraints = false;

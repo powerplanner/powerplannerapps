@@ -9,7 +9,8 @@ namespace Vx.Views
 {
     public partial class Toolbar : VxComponent
     {
-        public static readonly int ToolbarHeight = 48;
+        public static readonly float TOOLBAR_HEIGHT = 48;
+        public static readonly float TOOLBAR_IN_POPUP_HEIGHT = 56;
         public string Title { get; set; }
         /// <summary>
         /// CustomTitle is only supported on UWP right now
@@ -22,6 +23,7 @@ namespace Vx.Views
         public List<MenuItem> PrimaryCommands { get; set; } = new List<MenuItem>();
         public List<MenuItem> SecondaryCommands { get; set; } = new List<MenuItem>();
         public Thickness NookInsets { get; set; }
+        public float ToolbarHeight { get; set; } = TOOLBAR_HEIGHT;
 
         /// <summary>
         /// This is only supported on iOS.
@@ -34,12 +36,6 @@ namespace Vx.Views
         public Action OnClose { get; set; }
 
         /// <summary>
-        /// When true, forces the toolbar to render using the cross-platform Vx <see cref="Vx.Components.OnlyForNativeLibraries.ToolbarComponent"/>
-        /// instead of the native platform toolbar. Useful for in-place popups (e.g. Mac Catalyst) that want the Vx toolbar style. Only affects iOS.
-        /// </summary>
-        public bool ForceUseVx { get; set; }
-
-        /// <summary>
         /// iOS reverses the primary commands, so the first one is displayed on the right. If you have relational-specific commands,
         /// like Previous and Next, use this to determine if you should reveres those command orders.
         /// </summary>
@@ -50,6 +46,9 @@ namespace Vx.Views
             // On iOS, the platform convention is a centered title with the close button on the
             // left and the remaining commands on the right.
             bool isIOS = VxPlatform.Current == Platform.iOS;
+            float edgeInset = isIOS ? 12 : 0;
+            float leftEdgeInset = 0;
+            float rightEdgeInset = edgeInset;
 
             var layout = new LinearLayout
             {
@@ -61,11 +60,16 @@ namespace Vx.Views
             if (OnBack != null)
             {
                 layout.Children.Add(RenderButton(MaterialDesign.MaterialDesignIcons.ArrowBack, PortableLocalizedResources.GetString("String_Back"), () => OnBack()));
+                leftEdgeInset = isIOS ? 4 : 0;
             }
 
             if (isIOS && OnClose != null)
             {
-                layout.Children.Add(RenderButton(MaterialDesign.MaterialDesignIcons.Close, PortableLocalizedResources.GetString("String_Close"), OnClose));
+                layout.Children.Add(RenderButton(
+                    MaterialDesign.MaterialDesignIcons.Close,
+                    PortableLocalizedResources.GetString("String_Close"),
+                    OnClose));
+                leftEdgeInset = 4;
             }
 
             layout.Children.Add(
@@ -93,7 +97,7 @@ namespace Vx.Views
                 }
             }
 
-            if (SecondaryCommands.Any(i => i != null))
+            if (SecondaryCommands.Any())
             {
                 layout.Children.Add(
                     RenderMenuButton(
@@ -111,14 +115,14 @@ namespace Vx.Views
                         OnClose));
             }
 
-            if (NookInsets.Top > 0 || NookInsets.Left > 0 || NookInsets.Right > 0)
+            if (NookInsets.Top > 0 || NookInsets.Left > 0 || NookInsets.Right > 0 || leftEdgeInset > 0 || rightEdgeInset > 0)
             {
                 return new Border
                 {
                     BackgroundColor = BackgroundColor,
                     Content = layout,
                     Height = ToolbarHeight + NookInsets.Top,
-                    Padding = new Thickness(NookInsets.Left, NookInsets.Top, NookInsets.Right, 0)
+                    Padding = new Thickness(NookInsets.Left + leftEdgeInset, NookInsets.Top, NookInsets.Right + rightEdgeInset, 0)
                 };
             }
 
@@ -129,7 +133,7 @@ namespace Vx.Views
         {
             return new TransparentContentButton
             {
-                Width = ToolbarHeight,
+                Width = TOOLBAR_HEIGHT,
                 Content = new FontIcon
                 {
                     FontSize = 20,
@@ -149,7 +153,7 @@ namespace Vx.Views
         {
             return new TransparentContentMenuButton
             {
-                Width = ToolbarHeight,
+                Width = TOOLBAR_HEIGHT,
                 Content = new FontIcon
                 {
                     FontSize = 20,
