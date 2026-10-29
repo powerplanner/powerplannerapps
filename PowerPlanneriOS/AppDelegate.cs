@@ -77,42 +77,6 @@ namespace PowerPlanneriOS
             };
         }
 
-        public override void OnActivated(UIApplication application)
-        {
-            base.OnActivated(application);
-
-            try
-            {
-                foreach (var window in PowerPlannerApp.Current.Windows.OfType<MainAppWindow>())
-                {
-                    var dontWait = window.GetViewModel().HandleBeingReturnedTo();
-                }
-            }
-
-            catch { }
-        }
-
-        public override void DidEnterBackground(UIApplication application)
-        {
-            base.DidEnterBackground(application);
-
-            try
-            {
-                foreach (var window in PowerPlannerApp.Current.Windows.OfType<MainAppWindow>())
-                {
-                    window.GetViewModel().HandleBeingLeft();
-                }
-            }
-
-            catch { }
-
-            try
-            {
-                TelemetryExtension.Current?.SuspendingApp();
-            }
-            catch { }
-        }
-
         public override void WillTerminate(UIApplication application)
         {
             base.WillTerminate(application);
@@ -122,17 +86,6 @@ namespace PowerPlanneriOS
                 TelemetryExtension.Current?.SuspendingApp();
             }
             catch { }
-        }
-
-        public override void PerformActionForShortcutItem(UIApplication application, UIApplicationShortcutItem shortcutItem, UIOperationHandler completionHandler)
-        {
-            ShortcutAction? action = ConvertShortcutItem(shortcutItem);
-            if (action != null)
-            {
-                HandleShortcutAction(action.Value);
-            }
-
-            completionHandler(action != null);
         }
 
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
@@ -236,10 +189,6 @@ namespace PowerPlanneriOS
             }
 
             bool result = base.FinishedLaunching(application, launchOptions);
-
-#if !MACCATALYST
-            RegisterWindow(shortcutAction);
-#endif
 
             return result;
         }
@@ -448,7 +397,6 @@ namespace PowerPlanneriOS
         public static bool _hasActivatedWindow;
         public static Func<MainWindowViewModel, Task> _handleLaunchAction;
 
-#if MACCATALYST
         [Export("application:configurationForConnectingSceneSession:options:")]
         public override UISceneConfiguration GetConfiguration(UIApplication application, UISceneSession connectingSceneSession, UISceneConnectionOptions options)
         {
@@ -460,17 +408,6 @@ namespace PowerPlanneriOS
             iOSThemeExtension.ApplyTheme(window);
             this.Window = window;
             await InitializeWindow(window, ConvertShortcutItem(shortcutItem));
-        }
-#endif
-
-        private async void RegisterWindow(ShortcutAction? shortcutAction)
-        {
-#pragma warning disable CA1422 // UIWindow(CGRect) is obsoleted on iOS 26.0, but needed for pre-scene-based lifecycle
-            var window = new UIWindow(UIScreen.MainScreen.Bounds);
-            iOSThemeExtension.ApplyTheme(window);
-            this.Window = window;
-#pragma warning restore CA1422
-            await InitializeWindow(this.Window, shortcutAction);
         }
 
         private async Task InitializeWindow(UIWindow window, ShortcutAction? shortcutAction)
@@ -516,6 +453,15 @@ namespace PowerPlanneriOS
                     UIAlertControllerStyle.Alert);
                 alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                 window.RootViewController?.PresentViewController(alert, true, null);
+            }
+        }
+
+        public void HandleShortcutItem(UIApplicationShortcutItem shortcutItem)
+        {
+            var shortcutAction = ConvertShortcutItem(shortcutItem);
+            if (shortcutAction != null)
+            {
+                HandleShortcutAction(shortcutAction.Value);
             }
         }
 
