@@ -32,7 +32,7 @@ on:
 
 jobs:
   set-version:
-    runs-on: windows-latest
+    runs-on: ubuntu-slim
     environment:
       name: ${{ github.event_name == 'workflow_dispatch' && 'build-no-approval' || 'build-approval' }}
     outputs:
@@ -147,7 +147,7 @@ jobs:
 
   publish-internal:
     needs: [set-version, build]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     env:
       BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
     steps:
@@ -167,7 +167,7 @@ jobs:
 
   promote-to-production:
     needs: publish-internal
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     environment: production
     concurrency:
       group: android-promote-to-production

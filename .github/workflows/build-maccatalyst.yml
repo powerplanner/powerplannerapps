@@ -37,7 +37,7 @@ on:
 
 jobs:
   set-version:
-    runs-on: macos-latest
+    runs-on: ubuntu-slim
     environment:
       name: ${{ github.event_name == 'workflow_dispatch' && 'build-no-approval' || 'build-approval' }}
     outputs:
@@ -73,10 +73,10 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.402'
+          dotnet-version: '10.0.402.1'
 
       - name: Install Mac Catalyst workload
-        run: dotnet workload install ios android maccatalyst --version 10.0.402
+        run: dotnet workload install ios android maccatalyst --version 10.0.402.1
 
       - name: Write secrets.json
         shell: bash
