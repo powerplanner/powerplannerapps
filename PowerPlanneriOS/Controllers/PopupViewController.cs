@@ -55,6 +55,12 @@ namespace PowerPlanneriOS.Controllers
                 "contentView", _contentView));
         }
 
+        protected override Vx.Views.Thickness GetNookInsets()
+        {
+            var insets = base.View.SafeAreaInsets;
+            return new Vx.Views.Thickness((float)insets.Left, (float)insets.Top, (float)insets.Right, (float)insets.Bottom);
+        }
+
         protected override void OnNookInsetsUpdatedOverride()
         {
             Toolbar.NookInsets = new Vx.Views.Thickness(NookInsets.Left, 0, NookInsets.Right, 0);
