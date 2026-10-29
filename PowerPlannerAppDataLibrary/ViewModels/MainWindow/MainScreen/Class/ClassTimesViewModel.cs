@@ -52,7 +52,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             var linLayout = new LinearLayout
             {
-                Margin = new Thickness(VxPlatform.Current == Platform.Uwp ? 12 : Theme.Current.PageMargin)
+                Margin = new Thickness(VxPlatform.Current == Platform.Uwp ? 12 : Theme.Current.PageMargin).Combine(NookInsets)
             };
 
             foreach (var group in TimesGroupedByDay)
@@ -92,7 +92,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             {
                 return new LinearLayout
                 {
-                    Margin = new Thickness(Theme.Current.PageMargin),
+                    Margin = new Thickness(Theme.Current.PageMargin).Combine(NookInsets),
                     VerticalAlignment = VerticalAlignment.Center,
                     Children =
                     {

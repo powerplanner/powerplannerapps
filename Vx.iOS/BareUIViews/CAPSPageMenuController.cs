@@ -104,6 +104,11 @@ namespace InterfacesiOS.Views
                 "menuScrollView", _menuScrollView,
                 "controllerScrollView", _controllerScrollView);
 
+            // Pages are exactly one view wide, and any safe area handling belongs to the pages themselves. Letting the scroll views
+            // adjust their content insets for the safe area would allow panning past the last page and shift the page offsets.
+            _controllerScrollView.ContentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.Never;
+            _menuScrollView.ContentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.Never;
+
             // Set up controller scroll view
             _controllerScrollView.PagingEnabled = true;
             _controllerScrollView.AlwaysBounceHorizontal = _configuration.EnableHorizontalBounce;
@@ -479,18 +484,7 @@ namespace InterfacesiOS.Views
                             _lastControllerScrollViewContentOffset = scrollView.ContentOffset.X;
                         }
 
-                        nfloat ratio = 1;
-
-                        // Calculate ratio between scroll views
-                        ratio = (_menuScrollView.ContentSize.Width - this.View.Frame.Width) / (_controllerScrollView.ContentSize.Width - this.View.Frame.Width);
-
-                        if (_menuScrollView.ContentSize.Width > this.View.Frame.Width)
-                        {
-                            var offset = _menuScrollView.ContentOffset;
-                            offset.X = _controllerScrollView.ContentOffset.X * ratio;
-                            offset.Y = 0;
-                            _menuScrollView.SetContentOffset(offset, animated: false);
-                        }
+                        UpdateMenuScrollViewOffset();
 
                         // Calculate current page
                         nfloat width = this.View.Frame.Size.Width;
@@ -553,17 +547,7 @@ namespace InterfacesiOS.Views
                 }
                 else
                 {
-                    nfloat ratio = 1;
-
-                    ratio = (_menuScrollView.ContentSize.Width - this.View.Frame.Width) / (_controllerScrollView.ContentSize.Width - this.View.Frame.Width);
-
-                    if (_menuScrollView.ContentSize.Width > this.View.Frame.Width)
-                    {
-                        var offset = _menuScrollView.ContentOffset;
-                        offset.X = _controllerScrollView.ContentOffset.X * ratio;
-                        offset.Y = 0;
-                        _menuScrollView.SetContentOffset(offset, animated: false);
-                    }
+                    UpdateMenuScrollViewOffset();
                 }
             }
             else
@@ -749,6 +733,73 @@ namespace InterfacesiOS.Views
             }
         }
 
+        public override void ViewSafeAreaInsetsDidChange()
+        {
+            base.ViewSafeAreaInsetsDidChange();
+
+            UpdateMenuScrollViewInsets();
+        }
+
+        /// <summary>
+        /// The tabs render into the left/right safe area (e.g. a display cutout or hinge), but the menu can be scrolled
+        /// far enough that the first and last items sit inside the safe area rather than beneath the cutout.
+        /// </summary>
+        private void UpdateMenuScrollViewInsets()
+        {
+            nfloat left = 0, right = 0;
+            if (!_configuration.UseMenuLikeSegmentedControl)
+            {
+                var safeArea = this.View.SafeAreaInsets;
+                left = safeArea.Left;
+                right = safeArea.Right;
+            }
+
+            var insets = new UIEdgeInsets(0, left, 0, right);
+            if (_menuScrollView.ContentInset != insets)
+            {
+                _menuScrollView.ContentInset = insets;
+            }
+
+            UpdateMenuScrollViewOffset();
+        }
+
+        /// <summary>
+        /// Scrolls the menu proportionally to the controller scroll view, so the first page shows the first item at the
+        /// left safe area edge and the last page shows the last item at the right safe area edge.
+        /// </summary>
+        private void UpdateMenuScrollViewOffset()
+        {
+            if (_configuration.UseMenuLikeSegmentedControl)
+            {
+                return;
+            }
+
+            nfloat viewWidth = this.View.Frame.Width;
+            var insets = _menuScrollView.ContentInset;
+            nfloat menuRange = _menuScrollView.ContentSize.Width + insets.Left + insets.Right - viewWidth;
+            nfloat controllerRange = _controllerScrollView.ContentSize.Width - viewWidth;
+
+            nfloat x;
+            if (menuRange <= 0)
+            {
+                // Everything fits within the safe area, so just keep it out of the left inset
+                x = -insets.Left;
+            }
+            else if (controllerRange <= 0)
+            {
+                return;
+            }
+            else
+            {
+                x = -insets.Left + _controllerScrollView.ContentOffset.X / controllerRange * menuRange;
+            }
+
+            if (_menuScrollView.ContentOffset.X != x || _menuScrollView.ContentOffset.Y != 0)
+            {
+                _menuScrollView.SetContentOffset(new CGPoint(x, 0), animated: false);
+            }
+        }
+
         public override void ViewDidLayoutSubviews()
         {
             // If size changed
@@ -847,15 +898,7 @@ namespace InterfacesiOS.Views
                 y: 0),
                 animated: false);
 
-            nfloat ratio = (_menuScrollView.ContentSize.Width - this.View.Frame.Width) / (_controllerScrollView.ContentSize.Width - this.View.Frame.Width);
-
-            if (_menuScrollView.ContentSize.Width > this.View.Frame.Width)
-            {
-                var offset = _menuScrollView.ContentOffset;
-                offset.X = _controllerScrollView.ContentOffset.X * ratio;
-                offset.Y = 0;
-                _menuScrollView.SetContentOffset(offset, animated: false);
-            }
+            UpdateMenuScrollViewInsets();
 
             // Hsoi 2015-02-05 - Running on iOS 7.1 complained: "'NSInternalInconsistencyException', reason: 'Auto Layout
             // still required after sending -viewDidLayoutSubviews to the view controller. ViewController's implementation

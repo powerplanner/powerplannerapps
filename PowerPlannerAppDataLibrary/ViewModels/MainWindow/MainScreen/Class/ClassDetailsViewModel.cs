@@ -31,7 +31,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             return new ScrollView(new LinearLayout
             {
-                Margin = new Thickness(VxPlatform.Current == Platform.Uwp ? 12 : Theme.Current.PageMargin),
+                Margin = new Thickness(VxPlatform.Current == Platform.Uwp ? 12 : Theme.Current.PageMargin).Combine(NookInsets),
                 Children =
                 {
                     !string.IsNullOrWhiteSpace(Class.Details) ? new HyperlinkTextBlock
