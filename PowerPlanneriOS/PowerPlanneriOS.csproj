@@ -18,7 +18,7 @@
     <None Include="Info-Mac.plist" Link="Info.plist" />
   </ItemGroup>
   <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
-    <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>17.0</SupportedOSPlatformVersion>
     <CodeSignEntitlements>Entitlements-Mac.plist</CodeSignEntitlements>
     <MTouchLink>SdkOnly</MTouchLink>
     <!-- The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
