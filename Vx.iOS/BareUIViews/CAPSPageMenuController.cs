@@ -57,8 +57,8 @@ namespace InterfacesiOS.Views
         public int CurrentPageIndex { get; set; } = 0;
         private int _lastPageIndex = 0;
 
-        private bool _currentOrientationIsPortrait = true;
-        private bool _didLayoutSubviewsAfterRotation = false;
+        // True while ViewDidLayoutSubviews is resizing/repositioning, so the scroll events it triggers aren't treated as user scrolling
+        private bool _isApplyingLayout = false;
         private bool _didScrollAlready = false;
 
         private nfloat _lastControllerScrollViewContentOffset = 0;
@@ -77,15 +77,19 @@ namespace InterfacesiOS.Views
 
             _controllers.AddRange(viewControllers);
 
+            // Set the initial page synchronously (rather than via an animated move while the view still has zero width)
+            // so the first page and the selected tab are correct from the very first layout
+            if (initialPageIndex > 0 && initialPageIndex < _controllers.Count)
+            {
+                CurrentPageIndex = initialPageIndex;
+                _lastPageIndex = initialPageIndex;
+                _startingPageForScroll = initialPageIndex;
+            }
+
             SetUpUserInterface();
             if (_menuScrollView.Subviews.Length == 0)
             {
                 ConfigureUserInterface();
-            }
-
-            if (initialPageIndex > 0)
-            {
-                _ = MoveToPageAsync(initialPageIndex);
             }
         }
 
@@ -99,6 +103,11 @@ namespace InterfacesiOS.Views
             NSDictionary viewsDictionary = new NSDictionary(
                 "menuScrollView", _menuScrollView,
                 "controllerScrollView", _controllerScrollView);
+
+            // Pages are exactly one view wide, and any safe area handling belongs to the pages themselves. Letting the scroll views
+            // adjust their content insets for the safe area would allow panning past the last page and shift the page offsets.
+            _controllerScrollView.ContentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.Never;
+            _menuScrollView.ContentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.Never;
 
             // Set up controller scroll view
             _controllerScrollView.PagingEnabled = true;
@@ -180,6 +189,8 @@ namespace InterfacesiOS.Views
 
             _controllerScrollView.Scrolled += new WeakEventHandler(_controllerScrollView_Scrolled).Handler;
             _controllerScrollView.DecelerationEnded += new WeakEventHandler(_controllerScrollView_DecelerationEnded).Handler;
+            _controllerScrollView.DraggingStarted += new WeakEventHandler(_controllerScrollView_DraggingStarted).Handler;
+            _controllerScrollView.DraggingEnded += new WeakEventHandler<DraggingEventArgs>(_controllerScrollView_DraggingEnded).Handler;
 
             // When the user taps the status bar, the scroll view beneath the touch which is closest to the status bar will be scrolled to top,
             // but only if its `scrollsToTop` property is YES, its delegate does not return NO from `shouldScrollViewScrollToTop`, and it is not already at the top.
@@ -208,11 +219,11 @@ namespace InterfacesiOS.Views
 
             foreach (var controller in _controllers)
             {
-                if (index == 0)
+                if ((int)index == CurrentPageIndex)
                 {
-                    // Add first two controllers to scrollview and as child view controller
+                    // Add the initial controller to the scroll view and as child view controller
                     controller.ViewWillAppear(true);
-                    AddPageAtIndex(0);
+                    AddPageAtIndex(CurrentPageIndex);
                     controller.ViewDidAppear(true);
                 }
 
@@ -255,18 +266,13 @@ namespace InterfacesiOS.Views
                         context: null);
 
                     _totalMenuItemWidthIfDifferentWidths += itemWidthRect.Width;
-                    _menuItemWidths.Append(itemWidthRect.Width);
+                    _menuItemWidths.Add(itemWidthRect.Width);
                 }
                 else
                 {
                     if (_configuration.CenterMenuItems && index == 0)
                     {
-                        _startingMenuMargin = ((this.View.Frame.Width - ((_controllers.Count * _configuration.MenuItemWidth) + (_controllers.Count - 1) * _configuration.MenuMargin)) / 2) -_configuration.MenuMargin;
-
-                        if (_startingMenuMargin < 0)
-                        {
-                            _startingMenuMargin = 0;
-                        }
+                        _startingMenuMargin = CalculateStartingMenuMargin();
 
                         menuItemFrame = new CGRect(
                             x: _startingMenuMargin + _configuration.MenuMargin,
@@ -306,83 +312,99 @@ namespace InterfacesiOS.Views
             }
 
             // Set selected color for title label of selected menu item
-            if (_menuItems.Count > 0)
-            {
-                if (_menuItems[CurrentPageIndex].TitleLabel != null)
-                {
-                    _menuItems[CurrentPageIndex].TitleLabel.TextColor = _configuration.SelectedMenuItemLabelColor;
-                }
-            }
+            UpdateMenuItemColors(CurrentPageIndex);
 
             // Configure selection indicator view
-            CGRect selectionIndicatorFrame;
-
-            if (_configuration.UseMenuLikeSegmentedControl)
-            {
-                selectionIndicatorFrame = new CGRect(
-                    x: 0,
-                    y: _configuration.MenuHeight - _configuration.SelectionIndicatorHeight,
-                    width: this.View.Frame.Width / _controllers.Count,
-                    height: _configuration.SelectionIndicatorHeight);
-            }
-            else if (_configuration.MenuItemWidthBasedOnTitleTextWidth)
-            {
-                selectionIndicatorFrame = new CGRect(
-                    x: _configuration.MenuMargin,
-                    y: _configuration.MenuHeight - _configuration.SelectionIndicatorHeight,
-                    width: _configuration.MenuItemWidth,
-                    height: _configuration.SelectionIndicatorHeight);
-            }
-            else
-            {
-                if (_configuration.CenterMenuItems)
-                {
-                    selectionIndicatorFrame = new CGRect(
-                        x: _startingMenuMargin + _configuration.MenuMargin,
-                        y: _configuration.MenuHeight - _configuration.SelectionIndicatorHeight,
-                        width: _configuration.MenuItemWidth,
-                        height: _configuration.SelectionIndicatorHeight);
-                }
-                else
-                {
-                    selectionIndicatorFrame = new CGRect(
-                        x: _configuration.MenuMargin,
-                        y: _configuration.MenuHeight - _configuration.SelectionIndicatorHeight,
-                        width: _configuration.MenuItemWidth,
-                        height: _configuration.SelectionIndicatorHeight);
-                }
-            }
-
-            _selectionIndicatorView = new UIView(selectionIndicatorFrame);
+            _selectionIndicatorView = new UIView(GetSelectionIndicatorFrame(CurrentPageIndex));
             _selectionIndicatorView.BackgroundColor = _configuration.SelectionIndicatorColor;
             _menuScrollView.AddSubview(_selectionIndicatorView);
         }
 
+        private nfloat CalculateStartingMenuMargin()
+        {
+            var margin = ((this.View.Frame.Width - ((_controllers.Count * _configuration.MenuItemWidth) + (_controllers.Count - 1) * _configuration.MenuMargin)) / 2) - _configuration.MenuMargin;
+            return margin < 0 ? 0 : margin;
+        }
+
+        private CGRect GetSelectionIndicatorFrame(int pageIndex)
+        {
+            nfloat width = _configuration.MenuItemWidth;
+            nfloat x;
+
+            if (_configuration.UseMenuLikeSegmentedControl)
+            {
+                width = this.View.Frame.Width / _controllers.Count;
+                x = pageIndex * width;
+            }
+            else if (_configuration.MenuItemWidthBasedOnTitleTextWidth)
+            {
+                x = _configuration.MenuMargin;
+                if (pageIndex < _menuItemWidths.Count)
+                {
+                    width = _menuItemWidths[pageIndex];
+                }
+
+                for (int i = 0; i < pageIndex && i < _menuItemWidths.Count; i++)
+                {
+                    x += _configuration.MenuMargin + _menuItemWidths[i];
+                }
+            }
+            else
+            {
+                x = _configuration.MenuItemWidth * pageIndex + _configuration.MenuMargin * (pageIndex + 1) + _startingMenuMargin;
+            }
+
+            return new CGRect(
+                x: x,
+                y: _configuration.MenuHeight - _configuration.SelectionIndicatorHeight,
+                width: width,
+                height: _configuration.SelectionIndicatorHeight);
+        }
+
+        private void UpdateMenuItemColors(int selectedPageIndex)
+        {
+            for (int i = 0; i < _menuItems.Count; i++)
+            {
+                var label = _menuItems[i].TitleLabel;
+                if (label != null)
+                {
+                    label.TextColor = i == selectedPageIndex ? _configuration.SelectedMenuItemLabelColor : _configuration.UnselectedMenuItemLabelColor;
+                }
+            }
+        }
+
+        private void _controllerScrollView_DraggingStarted(object sender, EventArgs e)
+        {
+            // The user took over from a menu item tap animation
+            if (_didTapMenuItemToScroll)
+            {
+                _tapTimerCancellationSource?.Cancel();
+                _didTapMenuItemToScroll = false;
+                _didScrollAlready = false;
+            }
+        }
+
+        private void _controllerScrollView_DraggingEnded(object sender, DraggingEventArgs e)
+        {
+            // If it won't decelerate, DecelerationEnded never fires
+            if (!e.Decelerate)
+            {
+                EndScrolling();
+            }
+        }
+
         private void _controllerScrollView_Scrolled(object sender, EventArgs e)
         {
-            if (!_didLayoutSubviewsAfterRotation)
+            if (!_isApplyingLayout)
             {
                 var scrollView = _controllerScrollView;
 
                 if (scrollView.ContentOffset.X >= 0 && scrollView.ContentOffset.X <= (_controllers.Count - 1) * this.View.Frame.Width)
                 {
-                    var windowScene = this.View.Window?.WindowScene;
-                    UIInterfaceOrientation sceneOrientation;
-                    if (OperatingSystem.IsIOSVersionAtLeast(26) && windowScene != null)
-                    {
-                        sceneOrientation = windowScene.EffectiveGeometry.InterfaceOrientation;
-                    }
-                    else if (windowScene != null)
-                    {
-#pragma warning disable CA1422 // Validated by OS version check above
-                        sceneOrientation = windowScene.InterfaceOrientation;
-#pragma warning restore CA1422
-                    }
-                    else
-                    {
-                        sceneOrientation = UIInterfaceOrientation.Portrait;
-                    }
-                    if ((_currentOrientationIsPortrait && sceneOrientation.IsPortrait()) || (!_currentOrientationIsPortrait && sceneOrientation.IsLandscape()))
+                    // Note: this deliberately doesn't compare device vs scene orientation. Those can disagree
+                    // (foldables, Stage Manager/windowed scenes, iOS 26+ effective geometry), which caused the
+                    // page/selection tracking below to be skipped entirely.
+                    if (this.View.Frame.Width > 0)
                     {
                         // Check if scroll direction changed
                         if (!_didTapMenuItemToScroll)
@@ -462,18 +484,7 @@ namespace InterfacesiOS.Views
                             _lastControllerScrollViewContentOffset = scrollView.ContentOffset.X;
                         }
 
-                        nfloat ratio = 1;
-
-                        // Calculate ratio between scroll views
-                        ratio = (_menuScrollView.ContentSize.Width - this.View.Frame.Width) / (_controllerScrollView.ContentSize.Width - this.View.Frame.Width);
-
-                        if (_menuScrollView.ContentSize.Width > this.View.Frame.Width)
-                        {
-                            var offset = _menuScrollView.ContentOffset;
-                            offset.X = _controllerScrollView.ContentOffset.X * ratio;
-                            offset.Y = 0;
-                            _menuScrollView.SetContentOffset(offset, animated: false);
-                        }
+                        UpdateMenuScrollViewOffset();
 
                         // Calculate current page
                         nfloat width = this.View.Frame.Size.Width;
@@ -485,6 +496,12 @@ namespace InterfacesiOS.Views
                         else if (page >= _controllers.Count)
                         {
                             page = _controllers.Count - 1;
+                        }
+
+                        // While animating to a tapped menu item, the target page is already the current page
+                        if (_didTapMenuItemToScroll)
+                        {
+                            page = CurrentPageIndex;
                         }
 
                         // Update page if changed
@@ -530,24 +547,12 @@ namespace InterfacesiOS.Views
                 }
                 else
                 {
-                    nfloat ratio = 1;
-
-                    ratio = (_menuScrollView.ContentSize.Width - this.View.Frame.Width) / (_controllerScrollView.ContentSize.Width - this.View.Frame.Width);
-
-                    if (_menuScrollView.ContentSize.Width > this.View.Frame.Width)
-                    {
-                        var offset = _menuScrollView.ContentOffset;
-                        offset.X = _controllerScrollView.ContentOffset.X * ratio;
-                        offset.Y = 0;
-                        _menuScrollView.SetContentOffset(offset, animated: false);
-                    }
+                    UpdateMenuScrollViewOffset();
                 }
             }
             else
             {
-                _didLayoutSubviewsAfterRotation = false;
-
-                // Move selection indicator view when swiping
+                // Layout is repositioning the scroll view, so just keep the indicator on the current page
                 MoveSelectionIndicator(CurrentPageIndex);
             }
         }
@@ -569,6 +574,12 @@ namespace InterfacesiOS.Views
             {
                 return;
             }
+
+            _didTapMenuItemToScroll = false;
+
+            // Make sure the current page is attached, and the selection reflects it
+            AddPageAtIndex(CurrentPageIndex);
+            MoveSelectionIndicator(CurrentPageIndex);
 
             // Call DidMoveToPage delegate function
             var currentController = _controllers[CurrentPageIndex];
@@ -648,68 +659,29 @@ namespace InterfacesiOS.Views
         {
             if (pageIndex >= 0 && pageIndex < _controllers.Count)
             {
+                var frame = GetSelectionIndicatorFrame(pageIndex);
+
                 UIView.Animate(0.15, delegate
                 {
-                    nfloat selectionIndicatorWidth = this._selectionIndicatorView.Frame.Width;
-                    nfloat selectionIndicatorX = 0;
-
-                    if (this._configuration.UseMenuLikeSegmentedControl)
-                    {
-                        selectionIndicatorX = pageIndex * (this.View.Frame.Width / _controllers.Count);
-                        selectionIndicatorWidth = this.View.Frame.Width / _controllers.Count;
-                    }
-                    else if (_configuration.MenuItemWidthBasedOnTitleTextWidth)
-                    {
-                        selectionIndicatorWidth = _menuItemWidths[pageIndex];
-                        selectionIndicatorX += _configuration.MenuMargin;
-
-                        if (pageIndex > 0)
-                        {
-                            for (int i = 0; i <= pageIndex - 1; i++)
-                            {
-                                selectionIndicatorX += _configuration.MenuMargin + _menuItemWidths[i];
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (_configuration.CenterMenuItems && pageIndex == 0)
-                        {
-                            selectionIndicatorX = _startingMenuMargin + _configuration.MenuMargin;
-                        }
-                        else
-                        {
-                            selectionIndicatorX = _configuration.MenuItemWidth * pageIndex + _configuration.MenuMargin * (pageIndex + 1) + _startingMenuMargin;
-                        }
-                    }
-
-                    _selectionIndicatorView.Frame = new CGRect(
-                        x: selectionIndicatorX,
-                        y: _selectionIndicatorView.Frame.Location.Y,
-                        width: selectionIndicatorWidth,
-                        height: _selectionIndicatorView.Frame.Height);
-
-                    // Switch newly selected menu item title label to selected color and old one to unselected color
-                    if (_menuItems.Count > 0)
-                    {
-                        if (_menuItems[_lastPageIndex].TitleLabel != null && _menuItems[this.CurrentPageIndex].TitleLabel != null)
-                        {
-                            _menuItems[_lastPageIndex].TitleLabel.TextColor = _configuration.UnselectedMenuItemLabelColor;
-                            _menuItems[CurrentPageIndex].TitleLabel.TextColor = _configuration.SelectedMenuItemLabelColor;
-                        }
-                    }
+                    _selectionIndicatorView.Frame = frame;
                 });
+
+                // Switch the newly selected menu item title label to selected color and all others to unselected color
+                UpdateMenuItemColors(pageIndex);
             }
         }
 
         private void AddPageAtIndex(int index)
         {
-            // Call WillMoveToPage delegate function
-            var currentController = _controllers[index];
-            // TODO: Add a WillMoveToPage event
-
             var newVC = _controllers[index];
 
+            // Already attached, don't add it as a child twice
+            if (newVC.ParentViewController == this && newVC.View.Superview == _controllerScrollView)
+            {
+                return;
+            }
+
+            // TODO: Add a WillMoveToPage event
             newVC.WillMoveToParentViewController(this);
 
             UpdateSubControllerFrame(newVC, index);
@@ -730,7 +702,18 @@ namespace InterfacesiOS.Views
 
         private void RemovePageAtIndex(int index)
         {
+            if (index < 0 || index >= _controllers.Count)
+            {
+                return;
+            }
+
             var oldVC = _controllers[index];
+
+            // Not attached
+            if (oldVC.ParentViewController != this)
+            {
+                return;
+            }
 
             oldVC.WillMoveToParentViewController(null);
 
@@ -740,191 +723,266 @@ namespace InterfacesiOS.Views
             oldVC.DidMoveToParentViewController(null);
         }
 
-        public override void ViewDidLayoutSubviews()
+        private void AddTrackedPageAtIndex(int index)
         {
-            if (UIDevice.CurrentDevice.Orientation != UIDeviceOrientation.Unknown)
+            AddPageAtIndex(index);
+
+            if (!_pagesAddedDictionary.Contains(index))
             {
-                _currentOrientationIsPortrait = UIDevice.CurrentDevice.Orientation.IsPortrait() || UIDevice.CurrentDevice.Orientation.IsFlat();
+                _pagesAddedDictionary.Add(index);
+            }
+        }
+
+        public override void ViewSafeAreaInsetsDidChange()
+        {
+            base.ViewSafeAreaInsetsDidChange();
+
+            UpdateMenuScrollViewInsets();
+        }
+
+        /// <summary>
+        /// The tabs render into the left/right safe area (e.g. a display cutout or hinge), but the menu can be scrolled
+        /// far enough that the first and last items sit inside the safe area rather than beneath the cutout.
+        /// </summary>
+        private void UpdateMenuScrollViewInsets()
+        {
+            nfloat left = 0, right = 0;
+            if (!_configuration.UseMenuLikeSegmentedControl)
+            {
+                var safeArea = this.View.SafeAreaInsets;
+                left = safeArea.Left;
+                right = safeArea.Right;
             }
 
+            var insets = new UIEdgeInsets(0, left, 0, right);
+            if (_menuScrollView.ContentInset != insets)
+            {
+                _menuScrollView.ContentInset = insets;
+            }
+
+            UpdateMenuScrollViewOffset();
+        }
+
+        /// <summary>
+        /// Scrolls the menu proportionally to the controller scroll view, so the first page shows the first item at the
+        /// left safe area edge and the last page shows the last item at the right safe area edge.
+        /// </summary>
+        private void UpdateMenuScrollViewOffset()
+        {
+            if (_configuration.UseMenuLikeSegmentedControl)
+            {
+                return;
+            }
+
+            nfloat viewWidth = this.View.Frame.Width;
+            var insets = _menuScrollView.ContentInset;
+            nfloat menuRange = _menuScrollView.ContentSize.Width + insets.Left + insets.Right - viewWidth;
+            nfloat controllerRange = _controllerScrollView.ContentSize.Width - viewWidth;
+
+            nfloat x;
+            if (menuRange <= 0)
+            {
+                // Everything fits within the safe area, so just keep it out of the left inset
+                x = -insets.Left;
+            }
+            else if (controllerRange <= 0)
+            {
+                return;
+            }
+            else
+            {
+                x = -insets.Left + _controllerScrollView.ContentOffset.X / controllerRange * menuRange;
+            }
+
+            if (_menuScrollView.ContentOffset.X != x || _menuScrollView.ContentOffset.Y != 0)
+            {
+                _menuScrollView.SetContentOffset(new CGPoint(x, 0), animated: false);
+            }
+        }
+
+        public override void ViewDidLayoutSubviews()
+        {
             // If size changed
             if (_controllerScrollView.Frame.Width != this.View.Frame.Width
                 || _controllerScrollView.Frame.Height != this.View.Frame.Height - _configuration.MenuHeight)
             {
-                _didLayoutSubviewsAfterRotation = true;
-
-                UpdateFrames();
-
-                // Resize menu items if using as segmented control
-                if (_configuration.UseMenuLikeSegmentedControl)
+                // Scroll events raised synchronously by the changes below shouldn't be treated as user scrolling.
+                // Reset when done so the flag can never get stuck if no scroll event fires.
+                _isApplyingLayout = true;
+                try
                 {
-                    _menuScrollView.ContentSize = new CGSize(
-                        width: this.View.Frame.Width,
-                        height: _configuration.MenuHeight);
-
-                    // Resize selectionIndicator bar
-                    nfloat selectionIndicatorX = CurrentPageIndex * (this.View.Frame.Width / _controllers.Count);
-                    nfloat selectionIndicatorWidth = this.View.Frame.Width / _controllers.Count;
-
-                    // Resize menu items
-                    int index = 0;
-
-                    foreach (var item in _menuItems)
-                    {
-                        item.Frame = new CGRect(
-                            x: this.View.Frame.Width / _controllers.Count * index,
-                            y: 0,
-                            width: this.View.Frame.Width / _controllers.Count,
-                            height: _configuration.MenuHeight);
-
-                        item.TitleLabel.Frame = new CGRect(
-                            x: 0,
-                            y: 0,
-                            width: this.View.Frame.Width / _controllers.Count,
-                            height: _configuration.MenuHeight);
-
-                        item.MenuItemSeparator.Frame = new CGRect(
-                            x: item.Frame.Width - (_configuration.MenuItemSeparatorWidth / 2),
-                            y: item.MenuItemSeparator.Frame.Location.Y,
-                            width: item.MenuItemSeparator.Frame.Width,
-                            height: item.MenuItemSeparator.Frame.Height);
-
-                        index++;
-                    }
+                    ApplyLayoutAfterSizeChange();
                 }
-                else if (_configuration.CenterMenuItems)
+                finally
                 {
-                    _startingMenuMargin = ((this.View.Frame.Width - _controllers.Count * _configuration.MenuItemWidth) + (_controllers.Count - 1) * _configuration.MenuMargin) / 2 - _configuration.MenuMargin;
-
-                    if (_startingMenuMargin < 0)
-                    {
-                        _startingMenuMargin = 0;
-                    }
-
-                    nfloat selectionIndicatorX = _configuration.MenuItemWidth * CurrentPageIndex + _configuration.MenuMargin * (CurrentPageIndex + 1) + _startingMenuMargin;
-                    _selectionIndicatorView.Frame = new CGRect(
-                        x: selectionIndicatorX,
-                        y: _selectionIndicatorView.Frame.Location.Y,
-                        width: _selectionIndicatorView.Frame.Width,
-                        height: _selectionIndicatorView.Frame.Height);
-
-                    // Recalculate frame for menu items if centered
-                    int index = 0;
-
-                    foreach (var item in _menuItems)
-                    {
-                        if (index == 0)
-                        {
-                            item.Frame = new CGRect(
-                                x: _startingMenuMargin + _configuration.MenuMargin,
-                                y: 0,
-                                width: _configuration.MenuItemWidth,
-                                height: _configuration.MenuHeight);
-                        }
-                        else
-                        {
-                            item.Frame = new CGRect(
-                                x: _configuration.MenuItemWidth * index + _configuration.MenuMargin * (index + 1) + _startingMenuMargin,
-                                y: 0,
-                                width: _configuration.MenuItemWidth,
-                                height: _configuration.MenuHeight);
-                        }
-
-                        index++;
-                    }
+                    _isApplyingLayout = false;
                 }
-
-                nfloat xOffset = CurrentPageIndex * this.View.Frame.Width;
-                _controllerScrollView.SetContentOffset(new CGPoint(
-                    x: xOffset,
-                    y: 0),
-                    animated: false);
-
-                nfloat ratio = (_menuScrollView.ContentSize.Width - this.View.Frame.Width) / (_controllerScrollView.ContentSize.Width - this.View.Frame.Width);
-
-                if (_menuScrollView.ContentSize.Width > this.View.Frame.Width)
-                {
-                    var offset = _menuScrollView.ContentOffset;
-                    offset.X = _controllerScrollView.ContentOffset.X * ratio;
-                    offset.Y = 0;
-                    _menuScrollView.SetContentOffset(offset, animated: false);
-                }
-
-                // Hsoi 2015-02-05 - Running on iOS 7.1 complained: "'NSInternalInconsistencyException', reason: 'Auto Layout
-                // still required after sending -viewDidLayoutSubviews to the view controller. ViewController's implementation
-                // needs to send -layoutSubviews to the view to invoke auto layout.'"
-                //
-                // http://stackoverflow.com/questions/15490140/auto-layout-error
-                //
-                // Given the SO answer and caveats presented there, we'll call layoutIfNeeded() instead.
-                this.View.LayoutIfNeeded();
             }
 
             base.ViewDidLayoutSubviews();
         }
 
-        private async Task MoveToPageAsync(int index)
+        private void ApplyLayoutAfterSizeChange()
         {
-            if (index >= 0 && index < _controllers.Count)
+            UpdateFrames();
+
+            // Resize menu items if using as segmented control
+            if (_configuration.UseMenuLikeSegmentedControl)
             {
-                // Update page if changed
-                if (index != CurrentPageIndex)
+                _menuScrollView.ContentSize = new CGSize(
+                    width: this.View.Frame.Width,
+                    height: _configuration.MenuHeight);
+
+                // Resize menu items
+                int index = 0;
+
+                foreach (var item in _menuItems)
                 {
-                    _startingPageForScroll = index;
-                    _lastPageIndex = CurrentPageIndex;
-                    CurrentPageIndex = index;
-                    _didTapMenuItemToScroll = true;
+                    item.Frame = new CGRect(
+                        x: this.View.Frame.Width / _controllers.Count * index,
+                        y: 0,
+                        width: this.View.Frame.Width / _controllers.Count,
+                        height: _configuration.MenuHeight);
 
-                    // Add pages in between current and tapped page if necessary
-                    int smallerIndex = _lastPageIndex < CurrentPageIndex ? _lastPageIndex : CurrentPageIndex;
-                    int largerIndex = _lastPageIndex > CurrentPageIndex ? _lastPageIndex : CurrentPageIndex;
+                    item.TitleLabel.Frame = new CGRect(
+                        x: 0,
+                        y: 0,
+                        width: this.View.Frame.Width / _controllers.Count,
+                        height: _configuration.MenuHeight);
 
-                    if (smallerIndex + 1 != largerIndex)
+                    item.MenuItemSeparator.Frame = new CGRect(
+                        x: item.Frame.Width - (_configuration.MenuItemSeparatorWidth / 2),
+                        y: item.MenuItemSeparator.Frame.Location.Y,
+                        width: item.MenuItemSeparator.Frame.Width,
+                        height: item.MenuItemSeparator.Frame.Height);
+
+                    index++;
+                }
+            }
+            else if (_configuration.CenterMenuItems)
+            {
+                _startingMenuMargin = CalculateStartingMenuMargin();
+
+                // Recalculate frame for menu items if centered
+                int index = 0;
+
+                foreach (var item in _menuItems)
+                {
+                    if (index == 0)
                     {
-                        for (int i = smallerIndex + 1; i <= largerIndex - 1; i++)
-                        {
-                            if (!_pagesAddedDictionary.Contains(i))
-                            {
-                                AddPageAtIndex(i);
-                                _pagesAddedDictionary.Add(i);
-                            }
-                        }
+                        item.Frame = new CGRect(
+                            x: _startingMenuMargin + _configuration.MenuMargin,
+                            y: 0,
+                            width: _configuration.MenuItemWidth,
+                            height: _configuration.MenuHeight);
+                    }
+                    else
+                    {
+                        item.Frame = new CGRect(
+                            x: _configuration.MenuItemWidth * index + _configuration.MenuMargin * (index + 1) + _startingMenuMargin,
+                            y: 0,
+                            width: _configuration.MenuItemWidth,
+                            height: _configuration.MenuHeight);
                     }
 
-                    AddPageAtIndex(index);
+                    index++;
+                }
+            }
 
-                    // Add page from which tap is initiated so it can be removed after tap is done
+            // Reposition the selection indicator for the new size without animating
+            _selectionIndicatorView.Frame = GetSelectionIndicatorFrame(CurrentPageIndex);
+
+            nfloat xOffset = CurrentPageIndex * this.View.Frame.Width;
+            _controllerScrollView.SetContentOffset(new CGPoint(
+                x: xOffset,
+                y: 0),
+                animated: false);
+
+            UpdateMenuScrollViewInsets();
+
+            // Hsoi 2015-02-05 - Running on iOS 7.1 complained: "'NSInternalInconsistencyException', reason: 'Auto Layout
+            // still required after sending -viewDidLayoutSubviews to the view controller. ViewController's implementation
+            // needs to send -layoutSubviews to the view to invoke auto layout.'"
+            //
+            // http://stackoverflow.com/questions/15490140/auto-layout-error
+            //
+            // Given the SO answer and caveats presented there, we'll call layoutIfNeeded() instead.
+            this.View.LayoutIfNeeded();
+        }
+
+        private async Task MoveToPageAsync(int index)
+        {
+            if (index < 0 || index >= _controllers.Count)
+            {
+                return;
+            }
+
+            if (index != CurrentPageIndex)
+            {
+                _startingPageForScroll = index;
+                _lastPageIndex = CurrentPageIndex;
+                CurrentPageIndex = index;
+                _didTapMenuItemToScroll = true;
+
+                // Add pages in between current and tapped page if necessary
+                int smallerIndex = _lastPageIndex < CurrentPageIndex ? _lastPageIndex : CurrentPageIndex;
+                int largerIndex = _lastPageIndex > CurrentPageIndex ? _lastPageIndex : CurrentPageIndex;
+
+                for (int i = smallerIndex + 1; i <= largerIndex - 1; i++)
+                {
+                    AddTrackedPageAtIndex(i);
+                }
+
+                AddTrackedPageAtIndex(index);
+
+                // Track the page from which tap is initiated so it can be removed after tap is done
+                if (!_pagesAddedDictionary.Contains(_lastPageIndex))
+                {
                     _pagesAddedDictionary.Add(_lastPageIndex);
                 }
 
-                // Move controller scroll view when tapping menu item
-                double duration = _configuration.ScrollAnimationDurationOnMenuItemTap / 1000.0;
-
-                UIView.Animate(duration, delegate
-                {
-                    nfloat xOffset = index * this.View.Frame.Width;
-                    _controllerScrollView.SetContentOffset(new CGPoint(
-                        x: xOffset,
-                        y: 0), animated: false);
-                });
-
-                if (_tapTimerCancellationSource != null)
-                {
-                    _tapTimerCancellationSource.Cancel();
-                }
-
-                _tapTimerCancellationSource = new CancellationTokenSource();
-
-                await System.Threading.Tasks.Task.Delay(_configuration.ScrollAnimationDurationOnMenuItemTap);
-
-                ScrollViewDidEndTapScrollingAnimation();
+                // Update the tab immediately rather than relying on scroll events
+                MoveSelectionIndicator(index);
             }
+            else if (_didTapMenuItemToScroll)
+            {
+                // Already animating to this page
+                return;
+            }
+
+            // Move controller scroll view when tapping menu item
+            double duration = _configuration.ScrollAnimationDurationOnMenuItemTap / 1000.0;
+
+            UIView.Animate(duration, delegate
+            {
+                nfloat xOffset = index * this.View.Frame.Width;
+                _controllerScrollView.SetContentOffset(new CGPoint(
+                    x: xOffset,
+                    y: 0), animated: false);
+            });
+
+            _tapTimerCancellationSource?.Cancel();
+            var cancellationSource = new CancellationTokenSource();
+            _tapTimerCancellationSource = cancellationSource;
+
+            try
+            {
+                await System.Threading.Tasks.Task.Delay(_configuration.ScrollAnimationDurationOnMenuItemTap, cancellationSource.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                // Superseded by another tap, a drag, or disposal
+                return;
+            }
+
+            ScrollViewDidEndTapScrollingAnimation();
         }
 
         public override void DidMoveToParentViewController(UIViewController parent)
         {
             if (parent == null)
             {
+                _tapTimerCancellationSource?.Cancel();
                 _menuScrollView.RemoveGestureRecognizer(_gestureRecognizer);
 
                 foreach (var c in _controllers)

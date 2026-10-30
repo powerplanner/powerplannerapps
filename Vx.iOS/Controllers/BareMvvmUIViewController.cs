@@ -118,13 +118,18 @@ namespace InterfacesiOS.Controllers
             UpdateNookInsets();
         }
 
-        private void UpdateNookInsets()
+        protected virtual Vx.Views.Thickness GetNookInsets()
         {
             // Use the WINDOW's safe-area insets rather than this view's. The view's insets depend on
             // where it sits in the hierarchy (a view that doesn't reach the screen edge reports 0),
             // whereas the window always reports the true device insets (notch, home indicator, etc.).
             var insets = GetWindowSafeAreaInsets();
-            NookInsets = new Vx.Views.Thickness((float)insets.Left, (float)insets.Top, (float)insets.Right, (float)insets.Bottom);
+            return new Vx.Views.Thickness((float)insets.Left, (float)insets.Top, (float)insets.Right, (float)insets.Bottom);
+        }
+
+        private void UpdateNookInsets()
+        {
+            NookInsets = GetNookInsets();
 
             UpdateNookInsetsOnViewModel(NookInsets);
 

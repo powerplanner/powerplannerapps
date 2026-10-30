@@ -20,7 +20,6 @@ namespace Vx.Droid.Views
         public DroidFontIcon() : base(new TextView(VxDroidExtensions.ApplicationContext))
         {
             View.SetTypeface(_typeface, TypefaceStyle.Normal);
-            View.Gravity = GravityFlags.Center;
         }
 
         protected override void ApplyProperties(FontIcon oldView, FontIcon newView)
@@ -30,6 +29,15 @@ namespace Vx.Droid.Views
             View.Text = newView.Glyph;
             View.SetTextColor(newView.Color.ToDroid());
             View.SetTextSize(Android.Util.ComplexUnitType.Dip, newView.FontSize);
+
+            if (newView.HorizontalAlignment == HorizontalAlignment.Stretch)
+            {
+                View.Gravity = GravityFlags.Center;
+            }
+            else
+            {
+                View.Gravity = newView.HorizontalAlignment.ToGravityFlags();
+            }
         }
     }
 }

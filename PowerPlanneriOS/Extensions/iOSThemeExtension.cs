@@ -12,7 +12,7 @@ namespace PowerPlanneriOS.Extensions
     {
         public override void ApplyThemeAndRelaunchIfNeeded()
         {
-            var window = UIApplication.SharedApplication.KeyWindow;
+            var window = InterfacesiOS.App.NativeiOSApplication.Current.Window;
             ApplyTheme(window);
         }
 

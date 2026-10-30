@@ -51,7 +51,7 @@ namespace PowerPlannerUWP.Views
             Loaded += ClassView_Loaded;
             Unloaded += ClassView_Unloaded;
 
-            Root.RowDefinitions[0].Height = new GridLength(ToolbarComponent.ToolbarHeight);
+            Root.RowDefinitions[0].Height = new GridLength(ToolbarComponent.TOOLBAR_HEIGHT);
         }
 
         private ClassToolbarComponent _toolbar = new ClassToolbarComponent();

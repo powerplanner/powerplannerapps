@@ -1,4 +1,3 @@
-#if MACCATALYST
 using CoreGraphics;
 using Foundation;
 using PowerPlannerAppDataLibrary.App;
@@ -21,11 +20,13 @@ namespace PowerPlanneriOS
             if (scene is UIWindowScene windowScene)
             {
                 // Configure title bar appearance
+                #if MACCATALYST
                 windowScene.Titlebar?.TitleVisibility = UITitlebarTitleVisibility.Hidden;
                 windowScene.Titlebar?.Toolbar = null;
 
                 // Configure minimum width
                 windowScene.SizeRestrictions?.MinimumSize = new CGSize(320, 340);
+                #endif
 
                 Window ??= new UIWindow(windowScene);
                 var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
@@ -75,6 +76,12 @@ namespace PowerPlanneriOS
 
         [Export("sceneDidEnterBackground:")]
         public void DidEnterBackground(UIScene scene) { }
+
+        [Export("windowScene:performActionForShortcutItem:completionHandler:")]
+        public void PerformAction(UIWindowScene windowScene, UIApplicationShortcutItem shortcutItem, System.Action<bool> completionHandler)
+        {
+            (UIApplication.SharedApplication.Delegate as AppDelegate)?.HandleShortcutItem(shortcutItem);
+            completionHandler(true);
+        }
     }
 }
-#endif

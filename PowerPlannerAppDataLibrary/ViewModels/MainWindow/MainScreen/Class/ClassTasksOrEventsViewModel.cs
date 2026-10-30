@@ -136,7 +136,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         Click = Add,
                         HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Bottom,
-                        Margin = new Thickness(PageMargin)
+                        Margin = new Thickness(PageMargin).Combine(NookInsets)
                     }
                 }
             };
@@ -154,7 +154,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         {
                             Text = PowerPlannerResources.GetString(Type == TaskOrEventType.Task ? "ClassPage_ButtonHideOldTasksString" : "ClassPage_ButtonHideOldEventsString"),
                             HorizontalAlignment = HorizontalAlignment.Stretch,
-                            Margin = new Thickness(PageMargin),
+                            Margin = new Thickness(PageMargin + NookInsets.Left, PageMargin, PageMargin + NookInsets.Right, PageMargin),
                             Click = HidePastCompletedItems
                         },
 
@@ -182,7 +182,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                     {
                         Text = PowerPlannerResources.GetString(Type == TaskOrEventType.Task ? "ClassPage_ButtonShowOldTasksString" : "ClassPage_ButtonShowOldEventsString"),
                         HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Margin = new Thickness(PageMargin, PageMargin, PageMargin + FloatingActionButton.DefaultSize + PageMargin, PageMargin),
+                        Margin = new Thickness(PageMargin + NookInsets.Left, PageMargin, PageMargin + FloatingActionButton.DefaultSize + PageMargin + NookInsets.Right, PageMargin + NookInsets.Bottom),
                         Click = ShowPastCompletedItems
                     }
                 }

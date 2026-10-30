@@ -34,6 +34,12 @@ namespace PowerPlanneriOS.Controllers
         private UIBarButtonItem _navButtonEditDetails;
         private UIBarButtonItem _navButtonEditTimes;
 
+        public ClassViewController()
+        {
+            // Revert toolbar height to default, since this is NOT rendered as a popup on iOS
+            Toolbar.ToolbarHeight = Toolbar.TOOLBAR_HEIGHT;
+        }
+
         public override void OnViewModelLoadedOverride()
         {
             _navButtonEditDetails = new UIBarButtonItem

@@ -36,7 +36,7 @@ env:
 
 jobs:
   set-version:
-    runs-on: windows-latest
+    runs-on: ubuntu-slim
     environment:
       name: ${{ github.event_name == 'workflow_dispatch' && 'build-no-approval' || 'build-approval' }}
     outputs:

@@ -42,7 +42,12 @@ namespace PowerPlanneriOS.Controllers
             // Add the toolbar
             Toolbar = new Vx.Views.Toolbar
             {
-                OnBack = BackButtonClicked
+                OnBack = BackButtonClicked,
+
+                // On iOS we make the toolbar higher in popups since it has extreme rounded corners
+                #if !MACCATALYST
+                ToolbarHeight = Vx.Views.Toolbar.TOOLBAR_IN_POPUP_HEIGHT
+                #endif
             };
             var renderedToolbar = Toolbar.Render();
             renderedToolbar.TranslatesAutoresizingMaskIntoConstraints = false;
@@ -53,6 +58,12 @@ namespace PowerPlanneriOS.Controllers
                 "statusBar", statusBarView,
                 "navBar", renderedToolbar,
                 "contentView", _contentView));
+        }
+
+        protected override Vx.Views.Thickness GetNookInsets()
+        {
+            var insets = base.View.SafeAreaInsets;
+            return new Vx.Views.Thickness((float)insets.Left, (float)insets.Top, (float)insets.Right, (float)insets.Bottom);
         }
 
         protected override void OnNookInsetsUpdatedOverride()

@@ -17,7 +17,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
-    public partial class ClassViewModel : BaseMainScreenViewModelDescendant
+    public partial class ClassViewModel : ComponentViewModel
     {
         private string _className = "";
         /// <summary>

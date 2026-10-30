@@ -36,6 +36,7 @@ namespace PowerPlannerAppDataLibrary.Components
                     new LinearLayout
                     {
                         Orientation = Orientation.Horizontal,
+                        Margin = new Thickness(NookInsets.Left + Theme.Current.SmallPageMargin, 0, NookInsets.Right + Theme.Current.SmallPageMargin, 0),
                         Children =
                         {
                             HasClasses ? RenderItem(NavigationManager.MainMenuSelections.Calendar, MaterialDesign.MaterialDesignIcons.CalendarMonth, isFirst: HasClasses) : null,
@@ -76,7 +77,7 @@ namespace PowerPlannerAppDataLibrary.Components
                 Content = new LinearLayout
                 {
                     VerticalAlignment = VerticalAlignment.Center,
-                    Margin = new Thickness(isFirst ? NookInsets.Left + Theme.Current.SmallPageMargin : 0, 0, isLast ? NookInsets.Right + Theme.Current.SmallPageMargin : 0, BottomNookInset),
+                    Margin = new Thickness(0, 0, 0, BottomNookInset),
                     Children =
                     {
                         error && VxPlatform.Current != Platform.Android ? (View)new FrameLayout

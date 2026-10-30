@@ -334,7 +334,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 {
                     Content = new LinearLayout
                     {
-                        Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin + floatingActionButtonOffset),
+                        Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin + floatingActionButtonOffset).Combine(NookInsets),
                         Children =
                         {
                             new GradesSummaryComponent
@@ -355,7 +355,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
 
             // Add floating action button
-            return WrapInFloatingActionButtonIfNeeded(finalView, Add, new Thickness());
+            return WrapInFloatingActionButtonIfNeeded(finalView, Add, NookInsets);
         }
 
         internal static View WrapInFloatingActionButtonIfNeeded(View view, Action addAction, Thickness nookInsets)
