@@ -141,7 +141,7 @@ namespace PowerPlanneriOS.Extensions
                 {
                     { "IsPremium", isPremium.ToString() },
                     { "OwnsInAppPurchase", ownsInAppPurchase.ToString() },
-                    { "IsLifetimePremiumAccount", account != null && account.IsLifetimePremiumAccount ? "true" : "false"  }
+                    { "IsLifetimePremiumAccount", (account != null && account.IsLifetimePremiumAccount).ToString() }
                 });
             }
         }
