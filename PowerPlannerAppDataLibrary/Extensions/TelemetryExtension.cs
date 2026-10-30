@@ -13,6 +13,9 @@ namespace PowerPlannerAppDataLibrary.Extensions
 {
     public abstract class TelemetryExtension
     {
+        protected const string ACCOUNTID_LOCAL = "Local";
+        protected const string ACCOUNTID_ONLINE = "Online";
+
 #if DEBUG
         private static DebugTelemetryExtension _debugTelemetryExtension = new DebugTelemetryExtension();
         public static TelemetryExtension Current

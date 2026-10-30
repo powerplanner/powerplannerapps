@@ -97,7 +97,7 @@ namespace PowerPlannerAndroid.Extensions
             {
                 _developerLogs.Add("Metric: " + metricId + ":" + metricValue);
 
-                _client.GetMetric(metricId).TrackValue(1);
+                _client.GetMetric(metricId).TrackValue(metricValue);
             }
             catch { }
         }
@@ -130,23 +130,34 @@ namespace PowerPlannerAndroid.Extensions
         }
 
         private bool _hasStartedSession;
-        public override void UpdateCurrentUser(AccountDataItem account)
+        public override async void UpdateCurrentUser(AccountDataItem account)
         {
             base.UpdateCurrentUser(account);
 
-            // Represents a local user identity. If they use two local accounts, that means there's two users, which is typically correct.
-            _client.Context.User.Id = account != null ? account.LocalAccountId.ToString() : null;
-
-            // Represents an online user identity.
-            _client.Context.User.AuthenticatedUserId = CurrentAccountId == 0 ? null : CurrentAccountId.ToString();
-
-            // Do NOT use User.AccountId, that's meant for things like which tenant.
+            if (CurrentAccountId != 0)
+            {
+                _client.Context.User.AccountId = ACCOUNTID_ONLINE;
+                _client.Context.User.AuthenticatedUserId = CurrentAccountId.ToString();
+            }
+            else
+            {
+                _client.Context.User.AccountId = ACCOUNTID_LOCAL;
+                _client.Context.User.AuthenticatedUserId = account != null ? account.LocalAccountId.ToString() : null;
+            }
 
             if (!_hasStartedSession)
             {
                 _hasStartedSession = true;
 
-                _client.TrackEvent("StartSessionLog");
+                var ownsInAppPurchase = await PowerPlannerAppDataLibrary.App.PowerPlannerApp.Current.OwnsInAppPurchaseAsync();
+                var isPremium = ownsInAppPurchase || (account != null && account.IsLifetimePremiumAccount);
+
+                _client.TrackEvent("StartSessionLog", new Dictionary<string, string>
+                {
+                    { "IsPremium", isPremium.ToString() },
+                    { "OwnsInAppPurchase", ownsInAppPurchase.ToString() },
+                    { "IsLifetimePremiumAccount", account != null && account.IsLifetimePremiumAccount ? "true" : "false"  }
+                });
             }
         }
 
