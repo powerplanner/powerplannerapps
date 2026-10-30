@@ -127,8 +127,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
         {
             try
             {
+                TelemetryExtension.Current?.TrackEvent("PurchasingPremium");
+
                 if (await InAppPurchaseExtension.Current?.PromptPurchase())
                 {
+                    TelemetryExtension.Current?.TrackEvent("PurchasedPremium");
                     RemoveViewModel();
                 }
             }
@@ -158,12 +161,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             {
                 IsBusy = true;
 
+                if (isNewPurchase)
+                {
+                    TelemetryExtension.Current?.TrackEvent("PurchasingPremium");
+                }
+
                 bool success = isNewPurchase
                     ? await InAppPurchaseExtension.Current.PromptPurchase()
                     : await InAppPurchaseExtension.Current.PromptRestore();
 
                 if (success)
                 {
+                    if (isNewPurchase)
+                    {
+                        TelemetryExtension.Current?.TrackEvent("PurchasedPremium");
+                    }
+
                     RemoveViewModel();
                 }
             }

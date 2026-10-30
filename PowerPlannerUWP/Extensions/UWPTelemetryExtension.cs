@@ -1,8 +1,10 @@
-﻿using PowerPlannerAppDataLibrary.Extensions;
+﻿using InterfacesUWP;
+using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.Extensions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using PowerPlannerAppDataLibrary.DataLayer;
 using System.Globalization;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
@@ -11,8 +13,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using PowerPlannerAppDataLibrary;
-using InterfacesUWP;
+using Windows.Media.Protection.PlayReady;
 
 namespace PowerPlannerUWP.Extensions
 {
@@ -25,8 +26,13 @@ namespace PowerPlannerUWP.Extensions
         private static int _isSending;
 
         private readonly string _sessionId = Guid.NewGuid().ToString();
-        private string _localUserId;
+        private readonly string _localUserId = PowerPlannerAppDataLibrary.Helpers.Settings.DeviceId;
         private string _authenticatedUserId;
+
+        /// <summary>
+        /// Indicates whether the current account is local or online. This is similar to the "Tenant" value.
+        /// </summary>
+        private string _accountId = ACCOUNTID_LOCAL;
 
         static UWPTelemetryExtension()
         {
@@ -112,22 +118,34 @@ namespace PowerPlannerUWP.Extensions
         }
 
         private bool _hasStartedSession;
-        public override void UpdateCurrentUser(AccountDataItem account)
+        public override async void UpdateCurrentUser(AccountDataItem account)
         {
             base.UpdateCurrentUser(account);
 
-            // Represents a local user identity. If they use two local accounts, that means there's two users, which is typically correct.
-            _localUserId = account != null ? account.LocalAccountId.ToString() : null;
-
-            // Represents an online user identity.
-            _authenticatedUserId = CurrentAccountId == 0 ? null : CurrentAccountId.ToString();
-
-            // Do NOT use User.AccountId, that's meant for things like which tenant.
+            if (CurrentAccountId != 0)
+            {
+                _accountId = ACCOUNTID_ONLINE;
+                _authenticatedUserId = CurrentAccountId.ToString();
+            }
+            else
+            {
+                _accountId = ACCOUNTID_LOCAL;
+                _authenticatedUserId = account != null ? account.LocalAccountId.ToString() : null;
+            }
 
             if (!_hasStartedSession)
             {
                 _hasStartedSession = true;
-                TrackEvent("StartSessionLog");
+
+                var ownsInAppPurchase = await PowerPlannerAppDataLibrary.App.PowerPlannerApp.Current.OwnsInAppPurchaseAsync();
+                var isPremium = ownsInAppPurchase || (account != null && account.IsLifetimePremiumAccount);
+
+                TrackEvent("StartSessionLog", new Dictionary<string, string>
+                {
+                    { "IsPremium", isPremium.ToString() },
+                    { "OwnsInAppPurchase", ownsInAppPurchase.ToString() },
+                    { "IsLifetimePremiumAccount", (account != null && account.IsLifetimePremiumAccount).ToString() }
+                });
             }
         }
 
@@ -191,6 +209,11 @@ namespace PowerPlannerUWP.Extensions
             if (_authenticatedUserId != null)
             {
                 tags["ai.user.authUserId"] = _authenticatedUserId;
+            }
+
+            if (_accountId != null)
+            {
+                tags["ai.user.accountId"] = _accountId;
             }
 
             return tags;

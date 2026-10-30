@@ -36,7 +36,7 @@ namespace Vx.Droid.Views
             }
             else
             {
-                View.Gravity = newView.HorizontalAlignment.ToGravityFlags();
+                View.Gravity = GravityFlags.CenterVertical | newView.HorizontalAlignment.ToDroid(ViewGroup.LayoutParams.WrapContent);
             }
         }
     }

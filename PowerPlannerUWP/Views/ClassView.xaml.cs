@@ -13,7 +13,6 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerUWP.TileHelpers;
 using Vx.Uwp;
-using Vx.Components.OnlyForNativeLibraries;
 using PowerPlannerAppDataLibrary.Components;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using System.Collections;
@@ -51,7 +50,7 @@ namespace PowerPlannerUWP.Views
             Loaded += ClassView_Loaded;
             Unloaded += ClassView_Unloaded;
 
-            Root.RowDefinitions[0].Height = new GridLength(ToolbarComponent.TOOLBAR_HEIGHT);
+            Root.RowDefinitions[0].Height = new GridLength(Vx.Views.Toolbar.TOOLBAR_HEIGHT);
         }
 
         private ClassToolbarComponent _toolbar = new ClassToolbarComponent();
