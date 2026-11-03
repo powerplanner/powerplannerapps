@@ -581,7 +581,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         public class AddParameter
         {
-            public Guid SemesterIdentifier { get; set; }
+            public ViewItemSemester Semester { get; set; }
 
             public TaskOrEventType Type { get; set; }
 
@@ -634,15 +634,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 throw new NullReferenceException("CurrentAccount was null");
             }
 
-            if (addParams.Classes.Count == 0)
-            {
-                throw new InvalidOperationException("No classes");
-            }
-
             bool intelligentlyPickDate = true;
             DateTime now = DateTime.Now;
 
-            IList<ViewItemClass> classes = GetClassesWithNoClassClass(addParams.Classes);
+            IList<ViewItemClass> classes = GetClassesWithNoClassClass(addParams.Semester, addParams.Classes);
 
             ViewItemClass c = addParams.SelectedClass;
             if (c == null)
@@ -751,8 +746,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         public static AddTaskOrEventViewModel CreateForClone(BaseViewModel parent, CloneParameter cloneParams)
         {
-            IList<ViewItemClass> classes = GetClassesWithNoClassClass(cloneParams.Classes);
-
             var account = parent.FindAncestor<MainWindowViewModel>()?.CurrentAccount;
             if (account == null)
             {
@@ -784,7 +777,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 State = OperationState.Adding,
                 CloneParams = cloneParams,
                 Name = GenerateNameField(cloneParams.Item.Name),
-                Classes = GetClassesWithNoClassClass(c.Semester.Classes),
+                Classes = GetClassesWithNoClassClass(c.Semester, c.Semester.Classes),
                 Date = cloneParams.Item.DateInSchoolTime.Date,
                 Details = cloneParams.Item.Details,
                 Type = type,
@@ -833,10 +826,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             return model;
         }
 
-        private static IList<ViewItemClass> GetClassesWithNoClassClass(IList<ViewItemClass> normalClasses)
+        private static IList<ViewItemClass> GetClassesWithNoClassClass(ViewItemSemester semester, IList<ViewItemClass> normalClasses)
         {
+            if (semester == null)
+            {
+                throw new ArgumentNullException(nameof(semester));
+            }
+
+            if (normalClasses == null)
+            {
+                throw new ArgumentNullException(nameof(normalClasses));
+            }
+
             List<ViewItemClass> classes = new List<ViewItemClass>(normalClasses);
-            classes.Add(normalClasses.First().Semester.NoClassClass);
+            classes.Add(semester.NoClassClass);
             return classes;
         }
 
@@ -873,7 +876,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 State = OperationState.Editing,
                 EditParams = editParams,
                 Name = GenerateNameField(editParams.Item.Name),
-                Classes = GetClassesWithNoClassClass(c.Semester.Classes),
+                Classes = GetClassesWithNoClassClass(c.Semester, c.Semester.Classes),
                 Date = editParams.Item.DateInSchoolTime.Date,
                 Details = editParams.Item.Details,
                 Type = type,

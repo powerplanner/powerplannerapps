@@ -402,7 +402,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             MainScreenViewModel.ShowPopup(AddTaskOrEventViewModel.CreateForAdd(MainScreenViewModel, new AddTaskOrEventViewModel.AddParameter()
             {
-                SemesterIdentifier = MainScreenViewModel.CurrentSemesterId,
+                Semester = MainScreenViewModel.CurrentSemester,
                 Classes = new List<ViewItemClass>() { ClassViewModel.ViewItemsGroupClass.Class },
                 SelectedClass = ClassViewModel.ViewItemsGroupClass.Class,
                 Type = Type,
