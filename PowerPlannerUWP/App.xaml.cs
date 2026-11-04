@@ -190,6 +190,8 @@ namespace PowerPlannerUWP
                 //}
 #endif
 
+                TelemetryExtension.Current?.TrackEvent("LaunchOrActivated_" + e.Kind.ToString());
+
                 // Register background tasks
                 if (!_registeredBackgroundTasks)
                 {
@@ -267,6 +269,10 @@ namespace PowerPlannerUWP
                 else if (e is ToastNotificationActivatedEventArgs)
                 {
                     var args = e as ToastNotificationActivatedEventArgs;
+                    TelemetryExtension.Current?.TrackEvent("ToastActivated",new Dictionary<string, string>
+                    {
+                        { "Argument", args.Argument }
+                    });
 
                     await HandleArguments(mainAppWindow, args.Argument, LaunchSurface.Toast);
                 }
