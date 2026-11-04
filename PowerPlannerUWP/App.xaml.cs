@@ -247,8 +247,14 @@ namespace PowerPlannerUWP
                     }
                 }
 
+                if(e is ToastNotificationActivatedEventArgs)
+                {
+                    TelemetryExtension.Current?.TrackEvent("Launch_IsToastActivated");
+                }
+
                 if (e is LaunchActivatedEventArgs)
                 {
+                    TelemetryExtension.Current?.TrackEvent("Launch_IsNormalLaunch");
                     var launchEventArgs = e as LaunchActivatedEventArgs;
                     var launchContext = !object.Equals(launchEventArgs.TileId, "App") ? LaunchSurface.SecondaryTile : LaunchSurface.Normal;
                     if (launchContext == LaunchSurface.Normal)
@@ -468,7 +474,7 @@ namespace PowerPlannerUWP
                 }
             }
 
-            if (launchSurface != LaunchSurface.Normal)
+            if (true)
             {
                 TelemetryExtension.Current?.TrackEvent($"Launch_From{launchSurface}_{action}");
             }
