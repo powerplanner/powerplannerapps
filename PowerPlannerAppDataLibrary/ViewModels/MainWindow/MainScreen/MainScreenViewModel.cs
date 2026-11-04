@@ -215,7 +215,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
             var powerPlannerText = new TextBlock
             {
-                Text = "Popups: " + Popups.Count,
+                Text = "Power Planner",
                 WrapText = false,
                 TextColor = Theme.Current.ForegroundColor,
                 FontSize = 14,
