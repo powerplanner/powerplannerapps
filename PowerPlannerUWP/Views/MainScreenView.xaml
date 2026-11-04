@@ -24,8 +24,8 @@
 
         <!--Popups-->
         <interfacesViewPresenters:PopupsPresenter
-                ViewModel="{Binding}"
-                RequestedTheme="Default"/>
+            x:Name="PopupsPresenter"
+            RequestedTheme="Default"/>
 
     </Grid>
     

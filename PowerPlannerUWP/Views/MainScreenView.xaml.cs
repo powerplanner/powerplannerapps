@@ -40,6 +40,7 @@ namespace PowerPlannerUWP.Views
         public override void OnViewModelSetOverride()
         {
             MainContentContainer.Child = ViewModel.Render();
+            PopupsPresenter.ViewModel = ViewModel;
         }
 
         public override void OnViewModelLoadedOverride()
