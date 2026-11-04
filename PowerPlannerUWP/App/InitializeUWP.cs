@@ -63,9 +63,6 @@ namespace PowerPlannerUWP
             ThemeExtension.Current = new UWPThemeExtension();
             ReviewAppExtension.Current = new UWPReviewAppExtension();
 
-            // Register platform-specific theme color applier
-            ThemeColorApplier.PlatformThemeApplier = UwpThemeColorApplier.Apply;
-
             // Register custom Vx views
             VxUwpExtensions.RegisterCustomView(v => v is PowerPlannerAppDataLibrary.Views.CompletionSlider, v => new UwpCompletionSlider());
             VxUwpExtensions.RegisterCustomView(v => v is FloatingAddItemButton, v => new UwpFloatingAddItemButton());

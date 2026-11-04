@@ -511,6 +511,9 @@ namespace PowerPlannerUWP
                 var colors = ThemeColorGenerator.Generate(Vx.Views.Theme.Current.PrimaryColor);
                 Helpers.UwpThemeColorApplier.Apply(colors);
 
+                // Register platform-specific theme color applier
+                ThemeColorApplier.PlatformThemeApplier = UwpThemeColorApplier.Apply;
+
                 // Set up the min window size
                 view.SetPreferredMinSize(new Size(300, 300));
             }

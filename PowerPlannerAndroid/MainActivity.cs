@@ -1,30 +1,31 @@
-﻿using System;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.OS;
 using Android.Runtime;
 using Android.Views;
+using Android.Webkit;
 using Android.Widget;
-using Android.OS;
-using PowerPlannerAppDataLibrary.DataLayer;
-using System.Linq;
-using PowerPlannerAndroid.App;
-using PowerPlannerAppDataLibrary.Windows;
+using AndroidX.Core.View;
 using InterfacesDroid.Activities;
 using InterfacesDroid.Windows;
-using System.Threading.Tasks;
-using PowerPlannerAndroid.Extensions;
 using Microsoft.QueryStringDotNET;
+using Plugin.Settings;
+using PowerPlannerAndroid.App;
+using PowerPlannerAndroid.Extensions;
+using PowerPlannerAndroid.Helpers;
+using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
-using Plugin.Settings;
-using PowerPlannerAppDataLibrary;
-using ToolsPortable;
+using PowerPlannerAppDataLibrary.Windows;
+using System;
 using System.IO;
-using Android.Webkit;
-using Android.Content.PM;
-using AndroidX.Core.View;
+using System.Linq;
+using System.Threading.Tasks;
+using ToolsPortable;
 using Vx.Droid.Helpers;
-using PowerPlannerAppDataLibrary.App;
 
 namespace PowerPlannerAndroid
 {
@@ -106,6 +107,9 @@ namespace PowerPlannerAndroid
             // Register the window
             _mainAppWindow = new MainAppWindow();
             await PowerPlannerDroidApp.Current.RegisterWindowAsync(_mainAppWindow, new NativeDroidAppWindow(this));
+
+            // Register platform-specific theme color applier
+            ThemeColorApplier.PlatformThemeApplier = DroidThemeColorApplier.Apply;
 
             HandleIntent();
 
