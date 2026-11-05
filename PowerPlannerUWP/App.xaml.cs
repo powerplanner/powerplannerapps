@@ -291,11 +291,6 @@ namespace PowerPlannerUWP
                         await HandleArguments(mainAppWindow, protocolEventArgs.Uri.PathAndQuery.Substring(1), LaunchSurface.Uri);
                 }
 
-                else
-                {
-                    TelemetryExtension.Current?.TrackEvent("Launch_UnknownActivationKind");
-                }
-
                 if (mainAppWindow.GetViewModel().Content == null)
                 {
                     await mainAppWindow.GetViewModel().HandleNormalLaunchActivation();
