@@ -40,7 +40,7 @@
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.14" />
     <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.260717.1" />
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="10.0.4" />
-    <PackageReference Include="TimeZoneConverter" Version="7.2.0" />
+    <PackageReference Include="TimeZoneConverter" Version="8.0.1" />
     <PackageReference Include="TimeZoneNames" Version="7.0.0" />
     <PackageReference Include="Xam.Plugins.Settings" Version="5.0.0-beta" />
     <PackageReference Include="XliffCompiler" Version="1.2.0">

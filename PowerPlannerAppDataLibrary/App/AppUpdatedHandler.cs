@@ -109,6 +109,7 @@ namespace PowerPlannerAppDataLibrary.App
             if (v < new Version(2611, 5))
             {
                 changedText += "\n - Priorities on tasks and events!";
+                changedText += "\n - Time zone additions for Canada";
             }
 
             if (v < new Version(2610, 26))
