@@ -30,6 +30,7 @@ namespace PowerPlanneriOS.Extensions
 
                 _client.Context.Component.Version = Variables.VERSION.ToString();
                 _client.Context.Device.OperatingSystem = device.SystemName + " " + device.SystemVersion;
+                _client.Context.User.Id = Settings.DeviceId;
                 _client.Context.Device.Type = GetDeviceType();
                 _client.Context.Session.Id = Guid.NewGuid().ToString();
             }
