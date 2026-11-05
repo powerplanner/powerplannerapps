@@ -412,6 +412,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
                 Popups.Clear();
                 var newModel = AddTaskOrEventViewModel.CreateForAdd(mainScreen, new AddTaskOrEventViewModel.AddParameter()
                 {
+                    Semester = mainScreen.CurrentSemester,
                     Classes = mainScreen.Classes.ToArray(),
                     DueDate = DateTime.Today,
                     Type = type

@@ -632,6 +632,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }
         }
 
+        private MainMenuSelections GetInitialSelectedItem()
+        {
+            if (Classes != null && Classes.Count > 0)
+            {
+                return AvailableItems.First();
+            }
+
+            if (AvailableItems.Contains(MainMenuSelections.Schedule))
+            {
+                return MainMenuSelections.Schedule;
+            }
+
+            return AvailableItems.First();
+        }
+
         /// <summary>
         /// Required to be a valid semester ID
         /// </summary>
@@ -644,9 +659,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 if (alwaysNavigate)
                 {
                     // This is only called in case where we have a semester, so there'll always be available items
-                    if (SelectedItem != AvailableItems.First())
+                    if (SelectedItem != GetInitialSelectedItem())
                     {
-                        SelectedItem = AvailableItems.First();
+                        SelectedItem = GetInitialSelectedItem();
                     }
 
                     if (PowerPlannerApp.ShowYearsAsPopups && closeYearsPopup)
@@ -666,7 +681,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
             if (AvailableItems.Any())
             {
-                SelectedItem = AvailableItems.First();
+                SelectedItem = GetInitialSelectedItem();
             }
             else
             {
@@ -1602,14 +1617,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             NavigationManager.MainMenuSelections.Settings
         };
 
-        private static readonly NavigationManager.MainMenuSelections[] NO_CLASSES_ITEMS = new NavigationManager.MainMenuSelections[]
-        {
-            NavigationManager.MainMenuSelections.Schedule,
-            NavigationManager.MainMenuSelections.Classes,
-            NavigationManager.MainMenuSelections.Years,
-            NavigationManager.MainMenuSelections.Settings
-        };
-
         #endregion
 
         private bool hasNoSemester()
@@ -1655,26 +1662,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     restoreDefaultMemoryItems();
             }
 
-            else if (hasNoClasses())
-            {
-                _selectedClass = null;
-
-                if (makeAvailableItemsLike(NO_CLASSES_ITEMS))
-                    restoreDefaultMemoryItems();
-            }
-
             else
                 makeAvailableItemsLike(GetDefaultItems());
-            
-
-
-
-            // make sure the class is valid too
-            //if (SelectedItem == NavigationManager.MainMenuSelections.Classes)
-            //{
-            //    if (updateSelectedClass())
-            //        return true;
-            //}
 
             return false;
         }

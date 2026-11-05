@@ -245,16 +245,16 @@ namespace PowerPlannerUWP
                     }
                 }
 
-                if (e is LaunchActivatedEventArgs)
+                if (e.Kind == ActivationKind.Launch)
                 {
-                    var launchEventArgs = e as LaunchActivatedEventArgs;
+                    var launchEventArgs = (ILaunchActivatedEventArgs)e;
                     var launchContext = !object.Equals(launchEventArgs.TileId, "App") ? LaunchSurface.SecondaryTile : LaunchSurface.Normal;
                     if (launchContext == LaunchSurface.Normal)
                     {
                         // Track whether was launched from primary tile
-                        if (ApiInformation.IsPropertyPresent(typeof(LaunchActivatedEventArgs).FullName, nameof(LaunchActivatedEventArgs.TileActivatedInfo)))
+                        if (e is ILaunchActivatedEventArgs2 launchEventArgs2)
                         {
-                            if (launchEventArgs.TileActivatedInfo != null)
+                            if (launchEventArgs2.TileActivatedInfo != null)
                             {
                                 launchContext = LaunchSurface.PrimaryTile;
                             }
@@ -264,16 +264,16 @@ namespace PowerPlannerUWP
                     await HandleArguments(mainAppWindow, launchEventArgs.Arguments, launchContext);
                 }
 
-                else if (e is ToastNotificationActivatedEventArgs)
+                else if (e.Kind == ActivationKind.ToastNotification)
                 {
-                    var args = e as ToastNotificationActivatedEventArgs;
+                    var args = (IToastNotificationActivatedEventArgs)e;
 
                     await HandleArguments(mainAppWindow, args.Argument, LaunchSurface.Toast);
                 }
 
-                else if (e is ProtocolActivatedEventArgs)
+                else if (e.Kind == ActivationKind.Protocol)
                 {
-                    var protocolEventArgs = e as ProtocolActivatedEventArgs;
+                    var protocolEventArgs = (IProtocolActivatedEventArgs)e;
 
                     if (!string.IsNullOrWhiteSpace(protocolEventArgs.Uri.PathAndQuery) && protocolEventArgs.Uri.PathAndQuery.StartsWith("?"))
                         await HandleArguments(mainAppWindow, protocolEventArgs.Uri.PathAndQuery.Substring(1), LaunchSurface.Uri);
@@ -510,6 +510,9 @@ namespace PowerPlannerUWP
                 // using cached/default theme from SharedInitialization
                 var colors = ThemeColorGenerator.Generate(Vx.Views.Theme.Current.PrimaryColor);
                 Helpers.UwpThemeColorApplier.Apply(colors);
+
+                // Register platform-specific theme color applier
+                ThemeColorApplier.PlatformThemeApplier = UwpThemeColorApplier.Apply;
 
                 // Set up the min window size
                 view.SetPreferredMinSize(new Size(300, 300));

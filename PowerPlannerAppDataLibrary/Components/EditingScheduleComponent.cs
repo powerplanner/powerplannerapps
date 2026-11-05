@@ -111,7 +111,7 @@ namespace PowerPlannerAppDataLibrary.Components
 
             return new Border
             {
-                BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                BackgroundColor = Theme.Current.BackgroundAlt1Color,
                 CornerRadius = Theme.Current.CornerRadius,
                 Margin = new Thickness(0, 0, 0, 16),
                 Content = content

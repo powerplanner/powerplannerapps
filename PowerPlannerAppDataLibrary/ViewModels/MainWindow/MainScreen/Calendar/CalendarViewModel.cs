@@ -455,7 +455,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
             MainScreenViewModel.ShowPopup(AddTaskOrEventViewModel.CreateForAdd(MainScreenViewModel, new AddTaskOrEventViewModel.AddParameter()
             {
-                SemesterIdentifier = MainScreenViewModel.CurrentSemesterId,
+                Semester = MainScreenViewModel.CurrentSemester,
                 Classes = MainScreenViewModel.Classes,
                 SelectedClass = null,
                 Type = type,

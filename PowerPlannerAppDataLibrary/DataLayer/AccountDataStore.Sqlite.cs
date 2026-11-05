@@ -24,6 +24,17 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         private const string YearColumns = "Identifier, DateCreated, Updated, UpperIdentifier, Name, OverriddenGPA, OverriddenCredits, Details, ImageNames";
         private const string WeightCategoryColumns = "Identifier, DateCreated, Updated, UpperIdentifier, Name, WeightValue, Details, ImageNames";
 
+        private static readonly string[] Tables =
+        [
+            "DataItemMegaItem",
+            "DataItemGrade",
+            "DataItemSchedule",
+            "DataItemClass",
+            "DataItemSemester",
+            "DataItemYear",
+            "DataItemWeightCategory"
+        ];
+
         private void CreateSchema()
         {
             _db.Execute("""
@@ -256,43 +267,348 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return item;
         }
 
+        private const string SELECT_CLASSES = "SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, Details, CourseNumber, ShouldAverageGradeTotals, DoesRoundGradesUp, Color, Position, GradeScales, Credits, OverriddenGPA, OverriddenGrade, StartDate, EndDate, GpaType, PassingGrade, LastTaskTimeOption, LastEventTimeOption, LastTaskDueTime, LastEventStartTime, LastEventDurationProperty, ImageNames FROM DataItemClass";
+
         private DataItemClass[] LoadClasses(SqliteTransaction transaction = null)
         {
-            return _db.Query<ClassRow>("SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, Details, CourseNumber, ShouldAverageGradeTotals, DoesRoundGradesUp, Color, Position, GradeScales, Credits, OverriddenGPA, OverriddenGrade, StartDate, EndDate, GpaType, PassingGrade, LastTaskTimeOption, LastEventTimeOption, LastTaskDueTime, LastEventStartTime, LastEventDurationProperty, ImageNames FROM DataItemClass", transaction: transaction).Select(ToEntity).ToArray();
+            return _db.Query<ClassRow>(SELECT_CLASSES, transaction: transaction).Select(ToEntity).ToArray();
         }
 
-        private DataItemMegaItem[] LoadMegaItems(SqliteTransaction transaction = null)
+        private DataItemClass[] LoadClassesByIdentifiers(Guid[] identifiers, SqliteTransaction transaction = null)
         {
-            return _db.Query<MegaItemRow>("SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, Details, ImageNames, Date, GradeReceived, GradeTotal, IsDropped, IndividualWeight, WeightCategoryIdentifier, EndTime, Reminder, PercentComplete, MegaItemType, AppointmentLocalId"
+            if (identifiers.Length == 0)
+            {
+                return [];
+            }
+            return _db.Query<ClassRow>(SELECT_CLASSES + " WHERE " + InStatemet("Identifier", identifiers), transaction: transaction).Select(ToEntity).ToArray();
+        }
+
+        private DataItemClass[] LoadClassesByUpperIdentifiers(Guid[] upperIdentifiers, SqliteTransaction transaction = null)
+        {
+            if (upperIdentifiers.Length == 0)
+            {
+                return [];
+            }
+            return _db.Query<ClassRow>(SELECT_CLASSES + " WHERE " + InStatemet("UpperIdentifier", upperIdentifiers), transaction: transaction).Select(ToEntity).ToArray();
+        }
+
+        private Guid LoadSemesterIdForClass(Guid classId)
+        {
+            return _db.QueryFirstOrDefault<Guid>($"SELECT UpperIdentifier FROM DataItemClass WHERE Identifier = '{classId}'");
+        }
+
+        private static string MegaItemsCommandText(string where = null)
+        {
+            string cmdTxt = "SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, Details, ImageNames, Date, GradeReceived, GradeTotal, IsDropped, IndividualWeight, WeightCategoryIdentifier, EndTime, Reminder, PercentComplete, MegaItemType, AppointmentLocalId"
 #if ANDROID
                 + ", HasSentReminder"
 #endif
-                + " FROM DataItemMegaItem", transaction: transaction).Select(ToEntity).ToArray();
+                + " FROM DataItemMegaItem"
+
+                + (string.IsNullOrWhiteSpace(where) ? string.Empty : (" WHERE " + where));
+            return cmdTxt;
         }
+
+        /// <summary>
+        /// Note that we can NOT use params for In statements, so we manually construct them
+        /// </summary>
+        /// <param name="columnName"></param>
+        /// <param name="identifiers"></param>
+        /// <returns></returns>
+        private static string InStatemet(string columnName, IEnumerable<Guid> identifiers)
+        {
+            if (!identifiers.Any())
+            {
+                return "1=0";
+            }
+
+            return columnName + " IN (" + string.Join(",", identifiers.Select(i => "'" + i + "'")) + ")";
+        }
+
+        private static string InMegaItemType(IEnumerable<MegaItemType> megaItemTypes)
+        {
+            if (!megaItemTypes.Any())
+            {
+                return "1=0";
+            }
+
+            return "MegaItemType IN (" + string.Join(",", megaItemTypes.Select(i => (int)i)) + ")";
+        }
+
+        private DataItemMegaItem[] LoadSemesterItems(Guid semesterIdentifier, Guid[] classIdentifiers)
+        {
+            return _db.Query<MegaItemRow>(
+                MegaItemsCommandText(where: $@"
+                    ({InMegaItemType([MegaItemType.Holiday, MegaItemType.Task, MegaItemType.Event])} AND UpperIdentifier = '{semesterIdentifier}')
+                    OR ({InMegaItemType([MegaItemType.Homework, MegaItemType.Exam])} AND {InStatemet("UpperIdentifier", classIdentifiers)})
+                "))
+                .Select(ToEntity)
+                .ToArray();
+        }
+
+        private DataItemMegaItem[] LoadMegaItemsByIdentifiers(Guid[] identifiers, SqliteTransaction transaction = null)
+        {
+            if (identifiers.Any())
+            {
+                return _db.Query<MegaItemRow>(
+                    MegaItemsCommandText(where: InStatemet("Identifier", identifiers)),
+                    transaction: transaction).Select(ToEntity).ToArray();
+            }
+            else
+            {
+                return [];
+            }
+        }
+
+        private DataItemMegaItem[] LoadGradedMegaItems()
+        {
+            return _db.Query<MegaItemRow>(
+                MegaItemsCommandText(where: $@"
+                    {InMegaItemType([MegaItemType.Homework, MegaItemType.Exam])}
+                    AND WeightCategoryIdentifier <> '{BaseHomeworkExam.WEIGHT_CATEGORY_EXCLUDED}'"))
+                .Select(ToEntity).ToArray();
+        }
+
+        private DataItemMegaItem[] LoadGradedMegaItemsUnderClass(Guid classIdentifier)
+        {
+            return _db.Query<MegaItemRow>(
+                MegaItemsCommandText(where: $@"
+                    {InMegaItemType([MegaItemType.Homework, MegaItemType.Exam])}
+                    AND UpperIdentifier = '{classIdentifier}'
+                    AND WeightCategoryIdentifier <> '{BaseHomeworkExam.WEIGHT_CATEGORY_EXCLUDED}'"))
+                .Select(ToEntity).ToArray();
+        }
+
+        private bool LoadHasManyOldMegaItems()
+        {
+            DateTime cutoff = DateTime.Today.AddDays(-60);
+            return _db.ExecuteScalar<bool>($@"
+                SELECT 
+                    CASE 
+                        WHEN (SELECT COUNT(*) FROM (SELECT 1 FROM DataItemMegaItem LIMIT 31)) >= 31 
+                         AND EXISTS (SELECT 1 FROM DataItemMegaItem WHERE DateCreated < {cutoff.Ticks})
+                        THEN 1 
+                        ELSE 0 
+                    END AS MeetsAllConditions;");
+        }
+
+        private DataItemMegaItem[] LoadAgendaItems(Guid[] classIdentifiers, DateTime todayAsUtc)
+        {
+            return _db.Query<MegaItemRow>(
+                MegaItemsCommandText(where: $@"
+                (
+                    (
+                        (MegaItemType = {(int)MegaItemType.Homework} AND PercentComplete < 1)
+                        OR (MegaItemType = {(int)MegaItemType.Exam} AND Date >= {todayAsUtc.Ticks})
+                    )
+                    AND {InStatemet("UpperIdentifier", classIdentifiers)}
+                )
+                OR (MegaItemType = {(int)MegaItemType.Task} AND PercentComplete < 1)
+                OR (MegaItemType = {(int)MegaItemType.Event} AND Date >= {todayAsUtc.Ticks})")).Select(ToEntity).ToArray();
+        }
+
+        private DataItemMegaItem LoadHoliday(Guid identifier)
+        {
+            return _db.Query<MegaItemRow>(
+                MegaItemsCommandText(where: $"MegaItemType = {(int)MegaItemType.Holiday} AND Identifier = '{identifier}'"))
+                .Select(ToEntity)
+                .FirstOrDefault();
+        }
+
+        private DataItemMegaItem[] LoadCurrentClassItems(Guid classIdentifier, DateTime todayAsUtc)
+        {
+            return _db.Query<MegaItemRow>(
+                MegaItemsCommandText(where: $@"
+                (
+                    MegaItemType = {(int)MegaItemType.Homework}
+                    AND UpperIdentifier = '{classIdentifier}'
+                    AND (PercentComplete < 1 OR Date >= {todayAsUtc.Ticks})
+                )
+                OR
+                (
+                    MegaItemType = {(int)MegaItemType.Exam}
+                    AND UpperIdentifier = '{classIdentifier}'
+                    AND Date >= {todayAsUtc.Ticks}
+                )"))
+                .Select(ToEntity)
+                .ToArray();
+        }
+
+        private bool LoadHasPastCompletedTasks(Guid classIdentifier, DateTime todayAsUtc)
+        {
+            var baseQuery = MegaItemsCommandText(where: $@"
+                MegaItemType = {(int)MegaItemType.Homework}
+                AND UpperIdentifier = '{classIdentifier}'
+                AND PercentComplete >= 1
+                AND Date < {todayAsUtc.Ticks}");
+
+            return _db.ExecuteScalar<bool>("SELECT EXISTS (" + baseQuery + ")", new
+            {
+                ClassIdentifier = classIdentifier,
+                TodayAsUtc = todayAsUtc
+            });
+        }
+
+        private bool LoadHasPastCompletedEvents(Guid classIdentifier, DateTime todayAsUtc)
+        {
+            var baseQuery = MegaItemsCommandText(where: $@"
+                MegaItemType = {(int)MegaItemType.Exam}
+                AND UpperIdentifier = '{classIdentifier}'
+                AND Date < {todayAsUtc.Ticks}");
+
+            return _db.ExecuteScalar<bool>("SELECT EXISTS (" + baseQuery + ")");
+        }
+
+        private DataItemMegaItem[] LoadPastCompletedTasksAndEvents(Guid classIdentifier, DateTime todayAsUtc)
+        {
+            return _db.Query<MegaItemRow>(
+                MegaItemsCommandText(where: $@"
+                (
+                    MegaItemType = {(int)MegaItemType.Homework}
+                    AND UpperIdentifier = '{classIdentifier}'
+                    AND PercentComplete >= 1
+                    AND Date < {todayAsUtc.Ticks}
+                )
+                OR
+                (
+                    MegaItemType = {(int)MegaItemType.Exam}
+                    AND UpperIdentifier = '{classIdentifier}'
+                    AND Date < {todayAsUtc.Ticks}
+                )"))
+                .Select(ToEntity)
+                .ToArray();
+        }
+
+        private DataItemMegaItem[] LoadHolidays(Guid semesterIdentifier, DateTime startDate, DateTime endDate)
+        {
+            return _db.Query<MegaItemRow>(
+                MegaItemsCommandText(where: $@"
+                MegaItemType = {(int)MegaItemType.Holiday}
+                AND UpperIdentifier = '{semesterIdentifier}'
+                AND (
+                    (Date <= {startDate.Ticks} AND EndTime >= {startDate.Ticks})
+                    OR (Date >= {startDate.Ticks} AND Date <= {endDate.Ticks})
+                )"))
+                .Select(ToEntity)
+                .ToArray();
+        }
+
+        private const string SELECT_GRADES = "SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, Details, ImageNames, Date, GradeReceived, GradeTotal, IsDropped, IndividualWeight FROM DataItemGrade";
 
         private DataItemGrade[] LoadGrades(SqliteTransaction transaction = null)
         {
-            return _db.Query<GradeRow>("SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, Details, ImageNames, Date, GradeReceived, GradeTotal, IsDropped, IndividualWeight FROM DataItemGrade", transaction: transaction).Select(ToEntity).ToArray();
+            return _db.Query<GradeRow>(SELECT_GRADES, transaction: transaction).Select(ToEntity).ToArray();
         }
+
+        private DataItemGrade[] LoadGradesByIdentifiers(Guid[] identifiers, SqliteTransaction transaction = null)
+        {
+            if (identifiers.Length == 0)
+            {
+                return [];
+            }
+
+            return _db.Query<GradeRow>(SELECT_GRADES + $" WHERE {InStatemet("Identifier", identifiers)}", transaction: transaction).Select(ToEntity).ToArray();
+        }
+
+        private DataItemGrade[] LoadGradesByUpperIdentifiers(Guid[] upperIdentifiers, SqliteTransaction transaction = null)
+        {
+            if (upperIdentifiers.Length == 0)
+            {
+                return [];
+            }
+
+            return _db.Query<GradeRow>(SELECT_GRADES + $" WHERE {InStatemet("UpperIdentifier", upperIdentifiers)}", transaction: transaction).Select(ToEntity).ToArray();
+        }
+
+        private Guid[] LoadAllIdentifiersThatAreChildren(Guid[] parentIdentifiers, SqliteTransaction transaction = null)
+        {
+            var childTables = Tables.Except(new[] { "DataItemYear" });
+
+            string cmd = string.Join(" UNION ALL ", childTables.Select(table => $"SELECT Identifier FROM {table} WHERE {InStatemet("UpperIdentifier", parentIdentifiers)}"));
+
+            return _db.Query<Guid>(cmd, transaction: transaction).ToArray();
+        }
+
+        private const string SELECT_SCHEDULES = "SELECT Identifier, DateCreated, Updated, UpperIdentifier, DayOfWeek, StartTime, EndTime, Room, ScheduleType, ScheduleWeek, LocationLatitude, LocationLongitude, AppointmentLocalId, Name, Details, ImageNames FROM DataItemSchedule";
 
         private DataItemSchedule[] LoadSchedules(SqliteTransaction transaction = null)
         {
-            return _db.Query<ScheduleRow>("SELECT Identifier, DateCreated, Updated, UpperIdentifier, DayOfWeek, StartTime, EndTime, Room, ScheduleType, ScheduleWeek, LocationLatitude, LocationLongitude, AppointmentLocalId, Name, Details, ImageNames FROM DataItemSchedule", transaction: transaction).Select(ToEntity).ToArray();
+            return _db.Query<ScheduleRow>(SELECT_SCHEDULES, transaction: transaction).Select(ToEntity).ToArray();
         }
+
+        private DataItemSchedule[] LoadSchedulesByIdentifiers(Guid[] identifiers, SqliteTransaction transaction = null)
+        {
+            if (identifiers.Length == 0)
+            {
+                return [];
+            }
+            return _db.Query<ScheduleRow>(SELECT_SCHEDULES + " WHERE " + InStatemet("Identifier", identifiers), transaction: transaction).Select(ToEntity).ToArray();
+        }
+
+        private DataItemSchedule[] LoadSchedulesByUpperIdentifiers(Guid[] upperIdentifiers, SqliteTransaction transaction = null)
+        {
+            if (upperIdentifiers.Length == 0)
+            {
+                return [];
+            }
+            return _db.Query<ScheduleRow>(SELECT_SCHEDULES + " WHERE " + InStatemet("UpperIdentifier", upperIdentifiers), transaction: transaction).Select(ToEntity).ToArray();
+        }
+
+        private const string SELECT_SEMESTERS = "SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, Start, End, OverriddenGPA, OverriddenCredits, Details, ImageNames FROM DataItemSemester";
 
         private DataItemSemester[] LoadSemesters(SqliteTransaction transaction = null)
         {
-            return _db.Query<SemesterRow>("SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, Start, End, OverriddenGPA, OverriddenCredits, Details, ImageNames FROM DataItemSemester", transaction: transaction).Select(ToEntity).ToArray();
+            return _db.Query<SemesterRow>(SELECT_SEMESTERS, transaction: transaction).Select(ToEntity).ToArray();
         }
+
+        private DataItemSemester[] LoadSemestersByIdentifiers(Guid[] identifiers, SqliteTransaction transaction = null)
+        {
+            if (identifiers.Length == 0)
+            {
+                return [];
+            }
+            return _db.Query<SemesterRow>(SELECT_SEMESTERS + " WHERE " + InStatemet("Identifier", identifiers), transaction: transaction).Select(ToEntity).ToArray();
+        }
+
+        private const string SELECT_YEARS = "SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, OverriddenGPA, OverriddenCredits, Details, ImageNames FROM DataItemYear";
 
         private DataItemYear[] LoadYears(SqliteTransaction transaction = null)
         {
-            return _db.Query<YearRow>("SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, OverriddenGPA, OverriddenCredits, Details, ImageNames FROM DataItemYear", transaction: transaction).Select(ToEntity).ToArray();
+            return _db.Query<YearRow>(SELECT_YEARS, transaction: transaction).Select(ToEntity).ToArray();
         }
+
+        private DataItemYear[] LoadYearsByIdentifiers(Guid[] identifiers, SqliteTransaction transaction = null)
+        {
+            if (identifiers.Length == 0)
+            {
+                return [];
+            }
+            return _db.Query<YearRow>(SELECT_YEARS + " WHERE " + InStatemet("Identifier", identifiers), transaction: transaction).Select(ToEntity).ToArray();
+        }
+
+        private const string SELECT_WEIGHT_CATEGORIES = "SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, WeightValue, Details, ImageNames FROM DataItemWeightCategory";
 
         private DataItemWeightCategory[] LoadWeightCategories(SqliteTransaction transaction = null)
         {
-            return _db.Query<WeightCategoryRow>("SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, WeightValue, Details, ImageNames FROM DataItemWeightCategory", transaction: transaction).Select(ToEntity).ToArray();
+            return _db.Query<WeightCategoryRow>(SELECT_WEIGHT_CATEGORIES, transaction: transaction).Select(ToEntity).ToArray();
+        }
+
+        private DataItemWeightCategory[] LoadWeightCategoriesByIdentifiers(Guid[] identifiers, SqliteTransaction transaction = null)
+        {
+            if (identifiers.Length == 0)
+            {
+                return [];
+            }
+            return _db.Query<WeightCategoryRow>(SELECT_WEIGHT_CATEGORIES + " WHERE " + InStatemet("Identifier", identifiers), transaction: transaction).Select(ToEntity).ToArray();
+        }
+
+        private DataItemWeightCategory[] LoadWeightCategoriesByUpperIdentifiers(Guid[] upperIdentifiers, SqliteTransaction transaction = null)
+        {
+            if (upperIdentifiers.Length == 0)
+            {
+                return [];
+            }
+            return _db.Query<WeightCategoryRow>(SELECT_WEIGHT_CATEGORIES + " WHERE " + InStatemet("UpperIdentifier", upperIdentifiers), transaction: transaction).Select(ToEntity).ToArray();
         }
 
         private void UpsertItem(BaseDataItem item, SqliteTransaction transaction = null)
@@ -300,7 +616,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             switch (item)
             {
                 case DataItemClass value:
-                    _db.Execute($"INSERT OR REPLACE INTO DataItemClass ({ClassColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @Name, @Details, @CourseNumber, @ShouldAverageGradeTotals, @DoesRoundGradesUp, @Color, @Position, @GradeScales, @Credits, @OverriddenGPA, @OverriddenGrade, @StartDate, @EndDate, @GpaType, @PassingGrade, @LastTaskTimeOption, @LastEventTimeOption, @LastTaskDueTime, @LastEventStartTime, @LastEventDurationProperty, @ImageNames)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), value.Name, value.Details, value.CourseNumber, ShouldAverageGradeTotals = value.ShouldAverageGradeTotals ? 1 : 0, DoesRoundGradesUp = value.DoesRoundGradesUp ? 1 : 0, Color = value.RawColor, Position = (long)value.Position, GradeScales = value.RawGradeScales, value.Credits, value.OverriddenGPA, value.OverriddenGrade, StartDate = value.StartDate.Ticks, EndDate = value.EndDate.Ticks, GpaType = (long)value.GpaType, value.PassingGrade, value.LastTaskTimeOption, value.LastEventTimeOption, LastTaskDueTime = value.LastTaskDueTime?.Ticks, LastEventStartTime = value.LastEventStartTime?.Ticks, LastEventDurationProperty = value.LastEventDuration?.Ticks, ImageNames = value.RawImageNames }, transaction);
+                    _db.Execute($"INSERT OR REPLACE INTO DataItemClass ({ClassColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @Name, @Details, @CourseNumber, @ShouldAverageGradeTotals, @DoesRoundGradesUp, @Color, @Position, @GradeScales, @Credits, @OverriddenGPA, @OverriddenGrade, @StartDate, @EndDate, @GpaType, @PassingGrade, @LastTaskTimeOption, @LastEventTimeOption, @LastTaskDueTime, @LastEventStartTime, @LastEventDurationProperty, @ImageNames)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), value.Name, value.Details, value.CourseNumber, ShouldAverageGradeTotals = value.ShouldAverageGradeTotals ? 1 : 0, DoesRoundGradesUp = value.DoesRoundGradesUp ? 1 : 0, Color = (object)value.RawColor, Position = (long)value.Position, GradeScales = value.RawGradeScales, value.Credits, value.OverriddenGPA, value.OverriddenGrade, StartDate = value.StartDate.Ticks, EndDate = value.EndDate.Ticks, GpaType = (long)value.GpaType, value.PassingGrade, value.LastTaskTimeOption, value.LastEventTimeOption, LastTaskDueTime = value.LastTaskDueTime?.Ticks, LastEventStartTime = value.LastEventStartTime?.Ticks, LastEventDurationProperty = value.LastEventDuration?.Ticks, ImageNames = value.RawImageNames }, transaction: transaction);
                     break;
                 case DataItemMegaItem value:
                     _db.Execute($"INSERT OR REPLACE INTO DataItemMegaItem ({MegaItemColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @Name, @Details, @ImageNames, @Date, @GradeReceived, @GradeTotal, @IsDropped, @IndividualWeight, @WeightCategoryIdentifier, @EndTime, @Reminder, @PercentComplete, @MegaItemType, @AppointmentLocalId"
@@ -311,22 +627,22 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 #if ANDROID
                             , HasSentReminder = value.HasSentReminder ? 1 : 0
 #endif
-                        }, transaction);
+                        }, transaction: transaction);
                     break;
                 case DataItemGrade value:
-                    _db.Execute($"INSERT OR REPLACE INTO DataItemGrade ({GradeColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @Name, @Details, @ImageNames, @Date, @GradeReceived, @GradeTotal, @IsDropped, @IndividualWeight)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), value.Name, value.Details, ImageNames = value.RawImageNames, Date = value.Date.Ticks, value.GradeReceived, value.GradeTotal, IsDropped = value.IsDropped ? 1 : 0, value.IndividualWeight }, transaction);
+                    _db.Execute($"INSERT OR REPLACE INTO DataItemGrade ({GradeColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @Name, @Details, @ImageNames, @Date, @GradeReceived, @GradeTotal, @IsDropped, @IndividualWeight)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), value.Name, value.Details, ImageNames = value.RawImageNames, Date = value.Date.Ticks, value.GradeReceived, value.GradeTotal, IsDropped = value.IsDropped ? 1 : 0, value.IndividualWeight }, transaction: transaction);
                     break;
                 case DataItemSchedule value:
-                    _db.Execute($"INSERT OR REPLACE INTO DataItemSchedule ({ScheduleColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @DayOfWeek, @StartTime, @EndTime, @Room, @ScheduleType, @ScheduleWeek, @LocationLatitude, @LocationLongitude, @AppointmentLocalId, @Name, @Details, @ImageNames)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), DayOfWeek = (long)value.DayOfWeek, StartTime = value.StartTime.Ticks, EndTime = value.EndTime.Ticks, value.Room, ScheduleType = (long)value.ScheduleType, ScheduleWeek = (long)value.ScheduleWeek, value.LocationLatitude, value.LocationLongitude, value.AppointmentLocalId, value.Name, value.Details, ImageNames = value.RawImageNames }, transaction);
+                    _db.Execute($"INSERT OR REPLACE INTO DataItemSchedule ({ScheduleColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @DayOfWeek, @StartTime, @EndTime, @Room, @ScheduleType, @ScheduleWeek, @LocationLatitude, @LocationLongitude, @AppointmentLocalId, @Name, @Details, @ImageNames)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), DayOfWeek = (long)value.DayOfWeek, StartTime = value.StartTime.Ticks, EndTime = value.EndTime.Ticks, value.Room, ScheduleType = (long)value.ScheduleType, ScheduleWeek = (long)value.ScheduleWeek, value.LocationLatitude, value.LocationLongitude, value.AppointmentLocalId, value.Name, value.Details, ImageNames = value.RawImageNames }, transaction: transaction);
                     break;
                 case DataItemSemester value:
-                    _db.Execute($"INSERT OR REPLACE INTO DataItemSemester ({SemesterColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @Name, @Start, @End, @OverriddenGPA, @OverriddenCredits, @Details, @ImageNames)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), value.Name, Start = value.Start.Ticks, End = value.End.Ticks, value.OverriddenGPA, value.OverriddenCredits, value.Details, ImageNames = value.RawImageNames }, transaction);
+                    _db.Execute($"INSERT OR REPLACE INTO DataItemSemester ({SemesterColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @Name, @Start, @End, @OverriddenGPA, @OverriddenCredits, @Details, @ImageNames)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), value.Name, Start = value.Start.Ticks, End = value.End.Ticks, value.OverriddenGPA, value.OverriddenCredits, value.Details, ImageNames = value.RawImageNames }, transaction: transaction);
                     break;
                 case DataItemYear value:
-                    _db.Execute($"INSERT OR REPLACE INTO DataItemYear ({YearColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @Name, @OverriddenGPA, @OverriddenCredits, @Details, @ImageNames)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), value.Name, value.OverriddenGPA, value.OverriddenCredits, value.Details, ImageNames = value.RawImageNames }, transaction);
+                    _db.Execute($"INSERT OR REPLACE INTO DataItemYear ({YearColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @Name, @OverriddenGPA, @OverriddenCredits, @Details, @ImageNames)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), value.Name, value.OverriddenGPA, value.OverriddenCredits, value.Details, ImageNames = value.RawImageNames }, transaction: transaction);
                     break;
                 case DataItemWeightCategory value:
-                    _db.Execute($"INSERT OR REPLACE INTO DataItemWeightCategory ({WeightCategoryColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @Name, @WeightValue, @Details, @ImageNames)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), value.Name, value.WeightValue, value.Details, ImageNames = value.RawImageNames }, transaction);
+                    _db.Execute($"INSERT OR REPLACE INTO DataItemWeightCategory ({WeightCategoryColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @Name, @WeightValue, @Details, @ImageNames)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), value.Name, value.WeightValue, value.Details, ImageNames = value.RawImageNames }, transaction: transaction);
                     break;
             }
         }

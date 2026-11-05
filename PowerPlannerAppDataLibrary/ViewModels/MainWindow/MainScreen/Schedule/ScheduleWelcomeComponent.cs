@@ -87,6 +87,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             }
             else
             {
+                // Push down by height of the login button
+                content.Margin = content.Margin.Combine(new Thickness(0, 72, 0, 0));
+
                 contentContainer = new ScrollView
                 {
                     Content = content

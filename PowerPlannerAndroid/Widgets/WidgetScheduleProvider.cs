@@ -139,7 +139,7 @@ namespace PowerPlannerAndroid.Widgets
             Intent itemClickIntent = new Intent(context, typeof(MainActivity));
             itemClickIntent.SetAction(Intent.ActionView);
             itemClickIntent.PutExtra(AppWidgetManager.ExtraAppwidgetId, appWidgetId);
-            PendingIntent pendingItemClickIntent = PendingIntent.GetActivity(context, 0, itemClickIntent, PendingIntentFlags.Immutable);
+            PendingIntent pendingItemClickIntent = PendingIntent.GetActivity(context, 0, itemClickIntent, OperatingSystem.IsAndroidVersionAtLeast(31) ? PendingIntentFlags.Mutable : PendingIntentFlags.UpdateCurrent);
             views.SetPendingIntentTemplate(Resource.Id.WidgetScheduleListView, pendingItemClickIntent);
 
             return views;
