@@ -30,8 +30,6 @@ namespace PowerPlanneriOS.App
 
         protected override Task InitializeAsyncOverride()
         {
-            ThemeColorApplier.PlatformThemeApplier = iOSThemeColorApplier.Apply;
-
 #if __MACCATALYST__
             PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetAppName = delegate { return "Power Planner for Mac"; };
 #else
