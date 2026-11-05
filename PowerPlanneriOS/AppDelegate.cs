@@ -1,34 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using BareMvvm.Core.App;
 using Foundation;
-using UIKit;
 using InterfacesiOS.App;
-using PowerPlanneriOS.App;
-using PowerPlannerAppDataLibrary.Windows;
-using BareMvvm.Core.App;
 using InterfacesiOS.Windows;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
-using PowerPlanneriOS.Controllers;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlannerAppDataLibrary;
-using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlanneriOS.Extensions;
 using PowerPlannerAppDataLibrary.App;
-using System.Linq;
-using PowerPlanneriOS.Helpers;
-using UserNotifications;
-using InterfacesiOS.Helpers;
-using System.Threading.Tasks;
-using PowerPlannerAppDataLibrary.ViewModels;
-using Vx.Extensions;
-using PowerPlannerAppDataLibrary.Views;
-using PowerPlanneriOS.Views;
-using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using PowerPlannerAppDataLibrary.ViewModels;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years;
+using PowerPlannerAppDataLibrary.Views;
+using PowerPlannerAppDataLibrary.Windows;
+using PowerPlanneriOS.App;
+using PowerPlanneriOS.Controllers;
+using PowerPlanneriOS.Extensions;
+using PowerPlanneriOS.Helpers;
+using PowerPlanneriOS.Views;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using UIKit;
+using UserNotifications;
+using Vx.Extensions;
 
 namespace PowerPlanneriOS
 {
@@ -407,6 +406,7 @@ namespace PowerPlanneriOS
         {
             iOSThemeExtension.ApplyTheme(window);
             this.Window = window;
+            ThemeColorApplier.PlatformThemeApplier = iOSThemeColorApplier.Apply;
             await InitializeWindow(window, ConvertShortcutItem(shortcutItem));
         }
 

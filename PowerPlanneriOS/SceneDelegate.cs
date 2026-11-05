@@ -2,9 +2,7 @@ using CoreGraphics;
 using Foundation;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Windows;
-using PowerPlanneriOS.Helpers;
 using System.Linq;
 using UIKit;
 
@@ -33,7 +31,6 @@ namespace PowerPlanneriOS
                 Window ??= new UIWindow(windowScene);
                 var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
                 appDelegate?.RegisterWindowForScene(Window, connectionOptions.ShortcutItem);
-                ThemeColorApplier.PlatformThemeApplier = iOSThemeColorApplier.Apply;
             }
         }
 
