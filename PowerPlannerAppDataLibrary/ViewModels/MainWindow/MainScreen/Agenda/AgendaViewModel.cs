@@ -71,6 +71,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             base.Initialize();
         }
 
+        private VxState<bool> _isSearchOpen = new VxState<bool>(false);
+
         public override Thickness GetSnackbarInsetsForThisViewModelOnly()
         {
             var insets = base.GetSnackbarInsetsForThisViewModelOnly();
