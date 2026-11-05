@@ -104,6 +104,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                         IsTextSelectionEnabled = true
                     },
 
+                    Item.Priority != ViewPriority.Normal ? new TextBlock
+                    {
+                        Text = R.S("Priority_Header") + ": " + Item.Priority.ToString(),
+                        IsTextSelectionEnabled = true,
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        FontSize = Theme.Current.CaptionFontSize
+                    } : null,
+
                     !string.IsNullOrWhiteSpace(Item.Details) ? new HyperlinkTextBlock
                     {
                         Text = Item.Details,
@@ -178,7 +186,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 changes.Add(new DataItemMegaItem()
                 {
                     Identifier = Item.Identifier,
-                    Details = ViewItemChecklistItem.ProduceDetailsWithChecklist(Item.Details, Item.Checklist)
+                    Details = ViewItemChecklistItem.ProduceDetailsWithChecklist(Item.Details, Item.Checklist, Item.Priority.Value)
                 });
 
                 return PowerPlannerApp.Current.SaveChanges(changes);

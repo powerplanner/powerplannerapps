@@ -2929,6 +2929,22 @@ Física 202 - Mar, Jue 9:30-10:45 en Aula 150</target>
           <source>Restore this class</source>
           <target state="final">Restaurar esta clase</target>
         </trans-unit>
+        <trans-unit id="Priority_Header" translate="yes" xml:space="preserve">
+          <source>Priority</source>
+          <target state="final">Prioridad</target>
+        </trans-unit>
+        <trans-unit id="Priority_High" translate="yes" xml:space="preserve">
+          <source>High</source>
+          <target state="final">Alta</target>
+        </trans-unit>
+        <trans-unit id="Priority_Normal" translate="yes" xml:space="preserve">
+          <source>Normal</source>
+          <target state="final">Normal</target>
+        </trans-unit>
+        <trans-unit id="Priority_Low" translate="yes" xml:space="preserve">
+          <source>Low</source>
+          <target state="final">Baja</target>
+        </trans-unit>
       </group>
     </body>
   </file>
