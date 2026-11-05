@@ -247,14 +247,14 @@ namespace PowerPlannerUWP
 
                 if (e.Kind == ActivationKind.Launch)
                 {
-                    var launchEventArgs = (LaunchActivatedEventArgs)e;
+                    var launchEventArgs = (ILaunchActivatedEventArgs)e;
                     var launchContext = !object.Equals(launchEventArgs.TileId, "App") ? LaunchSurface.SecondaryTile : LaunchSurface.Normal;
                     if (launchContext == LaunchSurface.Normal)
                     {
                         // Track whether was launched from primary tile
-                        if (ApiInformation.IsPropertyPresent(typeof(LaunchActivatedEventArgs).FullName, nameof(LaunchActivatedEventArgs.TileActivatedInfo)))
+                        if (e is ILaunchActivatedEventArgs2 launchEventArgs2)
                         {
-                            if (launchEventArgs.TileActivatedInfo != null)
+                            if (launchEventArgs2.TileActivatedInfo != null)
                             {
                                 launchContext = LaunchSurface.PrimaryTile;
                             }
@@ -266,14 +266,14 @@ namespace PowerPlannerUWP
 
                 else if (e.Kind == ActivationKind.ToastNotification)
                 {
-                    var args = (ToastNotificationActivatedEventArgs)e;
+                    var args = (IToastNotificationActivatedEventArgs)e;
 
                     await HandleArguments(mainAppWindow, args.Argument, LaunchSurface.Toast);
                 }
 
                 else if (e.Kind == ActivationKind.Protocol)
                 {
-                    var protocolEventArgs = (ProtocolActivatedEventArgs)e;
+                    var protocolEventArgs = (IProtocolActivatedEventArgs)e;
 
                     if (!string.IsNullOrWhiteSpace(protocolEventArgs.Uri.PathAndQuery) && protocolEventArgs.Uri.PathAndQuery.StartsWith("?"))
                         await HandleArguments(mainAppWindow, protocolEventArgs.Uri.PathAndQuery.Substring(1), LaunchSurface.Uri);
