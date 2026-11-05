@@ -245,9 +245,9 @@ namespace PowerPlannerUWP
                     }
                 }
 
-                if (e is LaunchActivatedEventArgs)
+                if (e.Kind == ActivationKind.Launch)
                 {
-                    var launchEventArgs = e as LaunchActivatedEventArgs;
+                    var launchEventArgs = (LaunchActivatedEventArgs)e;
                     var launchContext = !object.Equals(launchEventArgs.TileId, "App") ? LaunchSurface.SecondaryTile : LaunchSurface.Normal;
                     if (launchContext == LaunchSurface.Normal)
                     {
@@ -264,16 +264,16 @@ namespace PowerPlannerUWP
                     await HandleArguments(mainAppWindow, launchEventArgs.Arguments, launchContext);
                 }
 
-                else if (e is ToastNotificationActivatedEventArgs)
+                else if (e.Kind == ActivationKind.ToastNotification)
                 {
-                    var args = e as ToastNotificationActivatedEventArgs;
+                    var args = (ToastNotificationActivatedEventArgs)e;
 
                     await HandleArguments(mainAppWindow, args.Argument, LaunchSurface.Toast);
                 }
 
-                else if (e is ProtocolActivatedEventArgs)
+                else if (e.Kind == ActivationKind.Protocol)
                 {
-                    var protocolEventArgs = e as ProtocolActivatedEventArgs;
+                    var protocolEventArgs = (ProtocolActivatedEventArgs)e;
 
                     if (!string.IsNullOrWhiteSpace(protocolEventArgs.Uri.PathAndQuery) && protocolEventArgs.Uri.PathAndQuery.StartsWith("?"))
                         await HandleArguments(mainAppWindow, protocolEventArgs.Uri.PathAndQuery.Substring(1), LaunchSurface.Uri);
