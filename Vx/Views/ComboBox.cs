@@ -19,10 +19,5 @@ namespace Vx.Views
         public VxValue<object> SelectedItem { get; set; }
 
         public Func<object, View> ItemTemplate { get; set; }
-
-        /// <summary>
-        /// An alternative to setting ItemTemplate, gets display text for the item.
-        /// </summary>
-        public Func<object, string> ItemDisplayText { get; set; }
     }
 }
