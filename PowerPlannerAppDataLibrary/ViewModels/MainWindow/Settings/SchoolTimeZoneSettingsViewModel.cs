@@ -7,8 +7,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TimeZoneConverter;
-using TimeZoneNames;
 using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
@@ -131,59 +129,36 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             try
             {
-                return GetAvailableTimeZones(CultureInfo.CurrentUICulture.Name);
+                return GetAvailableTimeZonesHelper();
             }
-            catch
+            catch (Exception usEx)
             {
-                try
-                {
-                    return GetAvailableTimeZones(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
-                }
-                catch
-                {
-                    try
-                    {
-                        return GetAvailableTimeZones("en-US");
-                    }
-                    catch (Exception usEx)
-                    {
-                        TelemetryExtension.Current?.TrackException(usEx);
-                        Error = "Error: Could not load the time zones.";
-                        return new List<FriendlyTimeZone>();
-                    }
-                }
+                TelemetryExtension.Current?.TrackException(usEx);
+                Error = "Error: Could not load the time zones.";
+                return new List<FriendlyTimeZone>();
             }
         }
 
-        private static List<FriendlyTimeZone> GetAvailableTimeZones(string languageCode)
+        private static List<FriendlyTimeZone> GetAvailableTimeZonesHelper()
         {
             List<FriendlyTimeZone> answer = new List<FriendlyTimeZone>();
-            Exception latestEx = null;
 
-            foreach (var tz in TZNames.GetDisplayNames(languageCode, useIanaZoneIds: true))
+            foreach (var tz in TimeZoneInfo.GetSystemTimeZones())
             {
-                // In Android, the system time zones are already in IANA format
-                if (App.PowerPlannerApp.UsesIanaTimeZoneIds)
+                if (tz.HasIanaId)
                 {
-                    try
-                    {
-                        answer.Add(new FriendlyTimeZone(TimeZoneInfo.FindSystemTimeZoneById(tz.Key), tz.Value));
-                    }
-                    catch (Exception ex)
-                    {
-                        latestEx = ex;
-                    }
+                    answer.Add(new FriendlyTimeZone(tz, tz.DisplayName));
                 }
-                else if (TZConvert.TryIanaToWindows(tz.Key, out string windowsId))
+                else if (TimeZoneInfo.TryConvertWindowsIdToIanaId(tz.Id, out string ianaId))
                 {
-                    answer.Add(new FriendlyTimeZone(TimeZoneInfo.FindSystemTimeZoneById(windowsId), tz.Value));
+                    if (TimeZoneInfo.TryFindSystemTimeZoneById(ianaId, out TimeZoneInfo tzIana))
+                    {
+                        answer.Add(new FriendlyTimeZone(tzIana, tzIana.DisplayName));
+                    }
                 }
             }
 
-            if (answer.Count <= 5 && latestEx != null)
-            {
-                throw latestEx;
-            }
+            answer = answer.DistinctBy(i => i.FriendlyName).ToList();
 
             return answer;
         }

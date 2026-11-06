@@ -1471,11 +1471,11 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     }
                     if (changedSettings.HasFlag(ChangedSetting.SchoolTimeZone) && account.SchoolTimeZone != null)
                     {
-                        if (App.PowerPlannerApp.UsesIanaTimeZoneIds)
+                        if (account.SchoolTimeZone.HasIanaId)
                         {
                             settings.SchoolTimeZone = account.SchoolTimeZone.Id;
                         }
-                        else if (TimeZoneConverter.TZConvert.TryWindowsToIana(account.SchoolTimeZone.Id, out string iana))
+                        else if (TimeZoneInfo.TryConvertWindowsIdToIanaId(account.SchoolTimeZone.Id, out string iana))
                         {
                             settings.SchoolTimeZone = iana;
                         }
