@@ -631,7 +631,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 try
                 {
-                    if (TimeZoneInfo.TryFindSystemTimeZoneById(settings.SchoolTimeZone, out TimeZoneInfo serverSchoolTimeZone))
+                    if (TimeZoneHelpers.TryFindSystemTimeZoneByIanaId(settings.SchoolTimeZone, out TimeZoneInfo serverSchoolTimeZone))
                     {
                         if (!serverSchoolTimeZone.Equals(this.SchoolTimeZone))
                         {

@@ -1,6 +1,7 @@
 ﻿using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -26,6 +27,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             if (Account.SchoolTimeZone != null)
             {
                 var matching = AvailableTimeZones.FirstOrDefault(i => i.TimeZone.Equals(Account.SchoolTimeZone));
+                if (matching == null)
+                {
+                    matching = AvailableTimeZones.FirstOrDefault(i => i.TimeZone.Id == Account.SchoolTimeZone.Id);
+                }
                 if (matching != null)
                 {
                     _selectedSchoolTimeZone = matching;
@@ -149,16 +154,23 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 {
                     answer.Add(new FriendlyTimeZone(tz, tz.DisplayName));
                 }
-                else if (TimeZoneInfo.TryConvertWindowsIdToIanaId(tz.Id, out string ianaId))
+                else if (tz.TryToIanaId(out string ianaId))
                 {
-                    if (TimeZoneInfo.TryFindSystemTimeZoneById(ianaId, out TimeZoneInfo tzIana))
+                    if (TimeZoneHelpers.TryFindSystemTimeZoneByIanaId(ianaId, out TimeZoneInfo tzIana))
                     {
-                        answer.Add(new FriendlyTimeZone(tzIana, tzIana.DisplayName));
+                        if (tzIana.DisplayName == "(UTC-08:00) Pacific Time (US & Canada)")
+                        {
+                            answer.Add(new FriendlyTimeZone(tzIana, "(UTC-08:00) Pacific Time (US)"));
+                        }
+                        else
+                        {
+                            answer.Add(new FriendlyTimeZone(tzIana, tzIana.DisplayName));
+                        }
                     }
                 }
             }
 
-            answer = answer.DistinctBy(i => i.FriendlyName).ToList();
+            answer = answer.DistinctBy(i => i.FriendlyName).OrderBy(i => i.TimeZone.BaseUtcOffset).ThenBy(i => i.FriendlyName).ToList();
 
             return answer;
         }

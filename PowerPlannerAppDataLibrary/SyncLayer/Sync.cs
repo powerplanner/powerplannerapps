@@ -1471,13 +1471,9 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     }
                     if (changedSettings.HasFlag(ChangedSetting.SchoolTimeZone) && account.SchoolTimeZone != null)
                     {
-                        if (account.SchoolTimeZone.HasIanaId)
+                        if (account.SchoolTimeZone.TryToIanaId(out string ianaId))
                         {
-                            settings.SchoolTimeZone = account.SchoolTimeZone.Id;
-                        }
-                        else if (TimeZoneInfo.TryConvertWindowsIdToIanaId(account.SchoolTimeZone.Id, out string iana))
-                        {
-                            settings.SchoolTimeZone = iana;
+                            settings.SchoolTimeZone = ianaId;
                         }
                     }
                     if (changedSettings.HasFlag(ChangedSetting.DefaultGradeScale))
