@@ -60,7 +60,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
             RgbToHsl(primary.R, primary.G, primary.B, out double h, out double s, out double l);
             // Further lighten for dark backgrounds
             s = Math.Min(s + 0.15, 1.0);
-            l = Clamp(0.58, 0.0, 1.0); // Lighter than normal accent
+            l = Clamp(0.65, 0.0, 1.0); // Lighter than normal accent
             HslToRgb(h, s, l, out int r, out int g, out int b);
             return Color.FromArgb(r, g, b);
         }

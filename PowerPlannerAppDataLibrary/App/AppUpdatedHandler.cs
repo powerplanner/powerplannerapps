@@ -106,6 +106,12 @@ namespace PowerPlannerAppDataLibrary.App
         {
             string changedText = "";
 
+            if (v < new Version(2611, 5))
+            {
+                changedText += "\n - Priorities on tasks and events!";
+                changedText += "\n - Time zone additions for Canada";
+            }
+
             if (v < new Version(2610, 26))
             {
                 changedText += "\n - Custom theme color options! Change the background colors and more! Go to Settings -> Theme, and change the theme from \"Automatic\" to \"Custom\".";

@@ -29,9 +29,12 @@ namespace PowerPlannerAppDataLibrary.Components
 
         protected override View Render()
         {
+            bool isHighPri = Item.Priority == ViewPriority.High && !Item.IsComplete;
+            var classColor = Item.Class.Color.ToColor();
+
             View content = new Border
             {
-                BackgroundColor = Item.Class.Color.ToColor(),
+                BackgroundColor = classColor.Opacity(Item.Priority == ViewPriority.Low ? 0.8 : 1.0),
                 CornerRadius = Item.IsComplete ? 0 : 6,
                 Content = new TextBlock
                 {
@@ -41,8 +44,10 @@ namespace PowerPlannerAppDataLibrary.Components
                     TextColor = Color.White,
                     Strikethrough = Item.IsComplete,
                     FontSize = Theme.Current.CaptionFontSize,
-                    FontWeight = FontWeights.SemiBold
-                }
+                    FontWeight = Item.Priority == ViewPriority.Low ? FontWeights.Normal : FontWeights.SemiBold
+                },
+                BorderColor = isHighPri ? Theme.Current.ForegroundColor : default,
+                BorderThickness = isHighPri ? new Thickness(1) : default
             };
 
             if (Item.IsComplete)
@@ -50,7 +55,7 @@ namespace PowerPlannerAppDataLibrary.Components
                 content = new LinearLayout
                 {
                     Orientation = Orientation.Horizontal,
-                    BackgroundColor = Item.Class.Color.ToColor(),
+                    BackgroundColor = classColor,
                     Opacity = 0.7f,
                     Children =
                         {

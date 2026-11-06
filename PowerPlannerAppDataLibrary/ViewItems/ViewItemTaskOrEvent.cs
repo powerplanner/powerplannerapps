@@ -170,6 +170,13 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
         }
 
+        private ViewPriority _priority;
+        public ViewPriority Priority
+        {
+            get => _priority;
+            private set => SetProperty(ref _priority, value, nameof(Priority));
+        }
+
         protected override bool SkipPopulatingDetails => true;
 
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
@@ -178,16 +185,10 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
             DataItemMegaItem i = dataItem as DataItemMegaItem;
 
-            if (ViewItemChecklistItem.ExtractChecklistFromDetails(i.Details, out string cleanedDetails, out ViewItemChecklistItem[] checklist))
-            {
-                Details = cleanedDetails;
-                Checklist = checklist;
-            }
-            else
-            {
-                Details = i.Details.Trim();
-                Checklist = Array.Empty<ViewItemChecklistItem>();
-            }
+            ViewItemChecklistItem.ExtractChecklistFromDetails(i.Details, out string cleanedDetails, out ViewItemChecklistItem[] checklist, out PowerPlannerSending.Priority priority);
+            Details = cleanedDetails;
+            Checklist = checklist;
+            Priority = ViewPriority.Get(priority);
 
             switch (i.MegaItemType)
             {
@@ -430,6 +431,13 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
 
             // Otherwise, items collide at same time (or didn't have time)
+
+            // Compare by importance
+            comp = this.Priority.CompareTo(other.Priority);
+            if (comp != 0)
+            {
+                return comp;
+            }
 
             // Compare by type
             comp = this.TryCompareByType(other);
