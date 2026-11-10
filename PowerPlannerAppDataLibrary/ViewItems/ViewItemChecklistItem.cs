@@ -19,11 +19,30 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             };
         }
 
-        public static bool ExtractChecklistFromDetails(string details, out string cleanedDetails, out ViewItemChecklistItem[] checklist)
+        private const string PRIORITY_HIGH = "❗ ";
+        private const string PRIORITY_LOW = "⬇️ ";
+
+        public static void ExtractChecklistFromDetails(string details, out string cleanedDetails, out ViewItemChecklistItem[] checklist, out PowerPlannerSending.Priority priority)
         {
             // Handle extracting checklist from details before passing to base method
             if (details != null)
             {
+                var trimmedStart = details.TrimStart();
+                if (trimmedStart.StartsWith(PRIORITY_HIGH))
+                {
+                    priority = PowerPlannerSending.Priority.High;
+                    details = trimmedStart.Substring(PRIORITY_HIGH.Length);
+                }
+                else if (trimmedStart.StartsWith(PRIORITY_LOW))
+                {
+                    priority = PowerPlannerSending.Priority.Low;
+                    details = trimmedStart.Substring(PRIORITY_LOW.Length);
+                }
+                else
+                {
+                    priority = PowerPlannerSending.Priority.Normal;
+                }
+
                 string[] lines = details.ReplaceLineEndings().Split(Environment.NewLine);
                 int countOfItems = lines.Count(i => i.StartsWith("- [ ] ") || i.StartsWith("- [x] ", StringComparison.CurrentCultureIgnoreCase));
                 if (countOfItems > 0)
@@ -59,29 +78,38 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                         }
                     }
 
-                    cleanedDetails = string.Join(Environment.NewLine, cleanedLines);
-                    return true;
+                    cleanedDetails = string.Join(Environment.NewLine, cleanedLines).Trim();
+                    return;
                 }
                 else
                 {
                     checklist = Array.Empty<ViewItemChecklistItem>();
-                    cleanedDetails = details;
-                    return false;
+                    cleanedDetails = details.Trim();
+                    return;
                 }
             }
             else
             {
                 checklist = Array.Empty<ViewItemChecklistItem>();
                 cleanedDetails = details;
-                return false;
+                priority = PowerPlannerSending.Priority.Normal;
+                return;
             }
         }
 
-        public static string ProduceDetailsWithChecklist(string details, ViewItemChecklistItem[] checklist)
+        public static string ProduceDetailsWithChecklist(string details, ViewItemChecklistItem[] checklist, PowerPlannerSending.Priority priority)
         {
             if (checklist == null || checklist.Where(i => !string.IsNullOrWhiteSpace(i.Name)).Count() == 0)
             {
-                return details;
+                if (priority != PowerPlannerSending.Priority.Normal)
+                {
+                    string priorityPrefix = priority == PowerPlannerSending.Priority.High ? PRIORITY_HIGH : PRIORITY_LOW;
+                    return priorityPrefix + details;
+                }
+                else
+                {
+                    return details;
+                }
             }
 
             StringBuilder sb = new StringBuilder();
@@ -97,6 +125,12 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 sb.Append(item.Name.ReplaceLineEndings(" "));
                 sb.Append(Environment.NewLine);
             }
+
+            if (priority != PowerPlannerSending.Priority.Normal)
+            {
+                sb.Insert(0, priority == PowerPlannerSending.Priority.High ? PRIORITY_HIGH : PRIORITY_LOW);
+            }
+
             return sb.ToString().TrimEnd();
         }
     }

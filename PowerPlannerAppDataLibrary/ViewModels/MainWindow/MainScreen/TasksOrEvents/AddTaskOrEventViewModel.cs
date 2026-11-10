@@ -286,6 +286,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 }
             }
 
+            views.Add(new ComboBox
+            {
+                Header = R.S("Priority_Header"),
+                Items = _priorities,
+                SelectedItem = VxValue.Create<object>(_priority.Value, v => _priority.Value = v as ViewPriority),
+                Margin = new Thickness(0, 18, 0, 0)
+            });
+
             views.Add(new TextBlock
             {
                 Text = R.S("String_ImageAttachments"),
@@ -785,7 +793,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone,
                 Class = c, // Assign class last, since it also assigns weight categories
                 SelectedWeightCategory = cloneParams.Item.WeightCategory,
-                _checklist = new VxState<ViewItemChecklistItem[]>(cloneParams.Item.Checklist.Select(i => i.Clone()).ToArray())
+                _checklist = new VxState<ViewItemChecklistItem[]>(cloneParams.Item.Checklist.Select(i => i.Clone()).ToArray()),
+                _priority = new VxState<ViewPriority>(cloneParams.Item.Priority)
             };
 
             // Assign existing image attachments
@@ -883,7 +892,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 ImageNames = editParams.Item.ImageNames.ToArray(),
                 IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone,
                 Class = c, // Assign class last, since it also assigns weight categories
-                _checklist = new VxState<ViewItemChecklistItem[]>(editParams.Item.Checklist.Select(i => i.Clone()).ToArray())
+                _checklist = new VxState<ViewItemChecklistItem[]>(editParams.Item.Checklist.Select(i => i.Clone()).ToArray()),
+                _priority = new VxState<ViewPriority>(editParams.Item.Priority)
             };
 
             // Assign existing image attachments
@@ -1047,6 +1057,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         private VxState<ViewItemChecklistItem[]> _checklist = new VxState<ViewItemChecklistItem[]>(new ViewItemChecklistItem[0]);
         private ViewItemChecklistItem _checklistItemToFocus = null;
+
+        private VxState<ViewPriority> _priority = new VxState<ViewPriority>(ViewPriority.Normal);
+        private static List<ViewPriority> _priorities =
+        [
+            ViewPriority.High,
+            ViewPriority.Normal,
+            ViewPriority.Low
+        ];
 
         private ViewItemWeightCategory[] _weightCategories;
         public ViewItemWeightCategory[] WeightCategories
@@ -1630,6 +1648,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                             TelemetryExtension.Current?.TrackEvent("Action_CustomizedTimeOption");
                         }
 
+                        TrackPriority(_priority.Value);
+
                         if (bulkEntry != null && RecurrenceControlViewModel != null)
                         {
                             if (!Account.HasAddedRepeating)
@@ -1810,7 +1830,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             dataItem.Name = Name.Text.Trim();
             dataItem.Date = DateTime.SpecifyKind(date, DateTimeKind.Utc).Date;
 
-            dataItem.Details = ViewItemChecklistItem.ProduceDetailsWithChecklist(Details.Trim(), _checklist);
+            dataItem.Details = ViewItemChecklistItem.ProduceDetailsWithChecklist(Details.Trim(), _checklist, _priority.Value.Value);
 
             dataItem.UpperIdentifier = Class.Identifier;
             if (Class.IsNoClassClass)
@@ -1908,6 +1928,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             }
 
             TelemetryExtension.Current.TrackMetric("TimeOption", 1, "ItemType", itemType, "TimeOption", name);
+        }
+
+        private void TrackPriority(ViewPriority priority)
+        {
+            if (priority != ViewPriority.Normal)
+            {
+                TelemetryExtension.Current.TrackMetric("PriorityOption", 1, "Priority", priority.Value.ToString());
+            }
         }
     }
 }

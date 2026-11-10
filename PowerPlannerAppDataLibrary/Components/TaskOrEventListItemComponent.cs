@@ -25,12 +25,15 @@ namespace PowerPlannerAppDataLibrary.Components
             var subtitleColor = Item.Class.Color.ToColor().Opacity(Item.IsComplete ? 0.7 : 1);
 
             float resolvedHorizontalMargin = horizontalMargin ?? (Theme.Current.PageMargin - Theme.Current.SmallPageMargin);
+            bool isHighPri = Item.Priority == ViewPriority.High && !Item.IsComplete;
 
             var answer = new Border
             {
                 Margin = new Thickness(resolvedHorizontalMargin, 3, resolvedHorizontalMargin, 3),
                 BackgroundColor = Theme.Current.BackgroundAlt1Color,
                 CornerRadius = 6,
+                BorderColor = isHighPri ? System.Drawing.Color.Red : default,
+                BorderThickness = isHighPri ? new Thickness(1) : default,
                 Tapped = () =>
                 {
                     if (InterceptOnTapped != null)
@@ -56,8 +59,8 @@ namespace PowerPlannerAppDataLibrary.Components
                             {
                                 new TextBlock
                                 {
-                                    Text = Item.Name,
-                                    FontWeight = FontWeights.SemiBold,
+                                    Text = Item.Priority == ViewPriority.Low ? Item.Priority.DisplayPrefix() + Item.Name : Item.Name,
+                                    FontWeight = Item.Priority == ViewPriority.Low ? FontWeights.Normal : FontWeights.SemiBold,
                                     WrapText = false,
                                     Strikethrough = Item.IsComplete,
                                     TextColor = !Item.IsComplete ? Theme.Current.ForegroundColor : Theme.Current.SubtleForegroundColor

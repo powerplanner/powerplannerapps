@@ -451,14 +451,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                         // Preserve checklist if it's a task or event we're editing and it has checklists
                         if (_editingGrade is ViewItemTaskOrEvent taskOrEvent)
                         {
-                            if (taskOrEvent.Checklist != null && taskOrEvent.Checklist.Length > 0)
-                            {
-                                g.Details = ViewItemChecklistItem.ProduceDetailsWithChecklist(Details.Trim(), taskOrEvent.Checklist);
-                            }
-                            else
-                            {
-                                g.Details = Details.Trim();
-                            }
+                            g.Details = ViewItemChecklistItem.ProduceDetailsWithChecklist(Details.Trim(), taskOrEvent.Checklist, taskOrEvent.Priority.Value);
                         }
                         else
                         {

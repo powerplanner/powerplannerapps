@@ -2303,4 +2303,16 @@ CSC 337 - Tue, Thu 9:30-10:45am in ILC 150</value>
   <data name="String_RestoreThisClass" xml:space="preserve">
     <value>Restore this class</value>
   </data>
+  <data name="Priority_Header" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="Priority_High" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="Priority_Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="Priority_Low" xml:space="preserve">
+    <value>Low</value>
+  </data>
 </root>
