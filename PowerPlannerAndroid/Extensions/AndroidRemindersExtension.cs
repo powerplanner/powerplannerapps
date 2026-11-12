@@ -783,10 +783,8 @@ namespace PowerPlannerAndroid.Extensions
         {
             try
             {
-                // We're getting cached versions which might change as we're using the app, but that's fine, since if items change, another
-                // ResetReminders will be incoming anyways
-                var scheduleViewItemsGroup = await ScheduleViewItemsGroup.LoadAsync(account.LocalAccountId, account.CurrentSemesterId, trackChanges: true, includeWeightCategories: false);
-                return await AgendaViewItemsGroup.LoadAsync(account.LocalAccountId, scheduleViewItemsGroup.Semester, today, trackChanges: true);
+                var scheduleViewItemsGroup = await ScheduleViewItemsGroup.LoadAsync(account.LocalAccountId, account.CurrentSemesterId, trackChanges: false, includeWeightCategories: false);
+                return await AgendaViewItemsGroup.LoadAsync(account.LocalAccountId, scheduleViewItemsGroup.Semester, today, trackChanges: false);
             }
 
             // If semester didn't exist, it throws null reference exception

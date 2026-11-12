@@ -413,7 +413,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     isSelected = false;
                 }
                 Color foregroundColor = isSelected ?
-                    Theme.Current.AccentColor
+                    Theme.Current.IsDarkTheme ? Theme.Current.AccentColor.Overlay(Theme.Current.ForegroundColor, 0.4) : Theme.Current.AccentColor
                     : Theme.Current.SubtleForegroundColor;
 
                 var linearLayout = new LinearLayout
@@ -424,7 +424,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         new Border
                         {
                             Width = 3,
-                            BackgroundColor = isSelected ? foregroundColor : Color.Transparent
+                            BackgroundColor = isSelected ? Theme.Current.AccentColor : Color.Transparent
                         },
 
                         new FontIcon
