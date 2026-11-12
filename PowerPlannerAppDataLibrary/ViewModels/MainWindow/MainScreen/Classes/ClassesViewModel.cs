@@ -11,6 +11,7 @@ using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years;
 using ToolsPortable;
 using Vx;
 using Vx.Views;
@@ -92,13 +93,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
                             }
                         }.LinearLayoutWeight(1),
 
-                        new TextButton
-                        {
-                            Text = R.S("String_ViewYearsAndSemesters"),
-                            Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin / 2f, Theme.Current.PageMargin, Theme.Current.PageMargin),
-                            HorizontalAlignment = HorizontalAlignment.Left,
-                            Click = OpenYears
-                        }
+                        RenderBottomButtons()
                     }
                 };
             }
@@ -135,6 +130,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
                     content.LinearLayoutWeight(1)
                 }
             };
+        }
+
+        private void RecoverDeletedClasses()
+        {
+            ShowPopup(new RecoverDeletedClassesViewModel(this));
         }
 
         private void OpenYears()
@@ -177,21 +177,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
         private View RenderInformationalText()
         {
-            var currentlyHasDesktopSidebar = IsDesktop && !MainScreenViewModel.IsCompactMode;
-            bool showViewYearsAndSemesters;
-            if (currentlyHasDesktopSidebar)
-            {
-                showViewYearsAndSemesters = false;
-            }
-            else if (!HasClasses)
-            {
-                showViewYearsAndSemesters = true;
-            }
-            else
-            {
-                showViewYearsAndSemesters = false;
-            }
-
             return new LinearLayout
             {
                 Children =
@@ -222,15 +207,85 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
                         }
                     }.LinearLayoutWeight(1),
 
-                    showViewYearsAndSemesters ? new TextButton
-                    {
-                        Text = R.S("String_ViewYearsAndSemesters"),
-                        Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, Theme.Current.PageMargin),
-                        HorizontalAlignment = HorizontalAlignment.Left,
-                        Click = OpenYears
-                    } : null
+                    RenderBottomButtons()
                 }
             };
+        }
+
+        private View RenderBottomButtons()
+        {
+            var currentlyHasDesktopSidebar = IsDesktop && !MainScreenViewModel.IsCompactMode;
+            bool showViewYearsAndSemesters;
+            if (currentlyHasDesktopSidebar)
+            {
+                showViewYearsAndSemesters = false;
+            }
+            else
+            {
+                showViewYearsAndSemesters = true;
+            }
+
+            bool showRecoverDeletedClasses = MainScreenViewModel.CurrentAccount.IsOnlineAccount;
+
+            if (!showViewYearsAndSemesters && !showRecoverDeletedClasses)
+            {
+                return null;
+            }
+
+            var margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin / 2f, Theme.Current.PageMargin, Theme.Current.PageMargin);
+
+            if (showViewYearsAndSemesters && showRecoverDeletedClasses)
+            {
+                return new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = margin,
+                    Children =
+                    {
+                        new TextButton
+                        {
+                            Text = R.S("String_ViewYearsAndSemesters"),
+                            Click = OpenYears
+                        },
+
+                        new TextBlock
+                        {
+                            Text = "|",
+                            WrapText = false,
+                            Margin = new Thickness(6, 0, 6, 0),
+                            TextColor = Theme.Current.SubtleForegroundColor
+                        },
+
+                        new TextButton
+                        {
+                            Text = R.S("RecoverDeletedItems_Title"),
+                            Click = RecoverDeletedClasses
+                        }
+                    }
+                };
+            }
+
+            if (showViewYearsAndSemesters)
+            {
+                return new TextButton
+                {
+                    Text = R.S("String_ViewYearsAndSemesters"),
+                    Click = OpenYears,
+                    Margin = margin,
+                    HorizontalAlignment = HorizontalAlignment.Left
+                };
+            }
+            if (showRecoverDeletedClasses)
+            {
+                return new TextButton
+                {
+                    Text = R.S("RecoverDeletedItems_Title"),
+                    Click = RecoverDeletedClasses,
+                    Margin = margin,
+                    HorizontalAlignment = HorizontalAlignment.Left
+                };
+            }
+            return null;
         }
     }
 }
