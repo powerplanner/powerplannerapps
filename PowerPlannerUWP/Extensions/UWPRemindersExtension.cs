@@ -146,17 +146,13 @@ namespace PowerPlannerUWP.Extensions
 
             try
             {
-                ScheduleViewItemsGroup viewModelSchedule = await ScheduleViewItemsGroup.LoadAsync(account.LocalAccountId, semesterId, trackChanges: true, includeWeightCategories: false);
+                ScheduleViewItemsGroup viewModelSchedule = await ScheduleViewItemsGroup.LoadAsync(account.LocalAccountId, semesterId, trackChanges: false, includeWeightCategories: false);
 
-                AgendaViewItemsGroup viewModel = await AgendaViewItemsGroup.LoadAsync(account.LocalAccountId, viewModelSchedule.Semester, DateTime.SpecifyKind(todayAsUtc, DateTimeKind.Local), trackChanges: true);
+                AgendaViewItemsGroup viewModel = await AgendaViewItemsGroup.LoadAsync(account.LocalAccountId, viewModelSchedule.Semester, DateTime.SpecifyKind(todayAsUtc, DateTimeKind.Local), trackChanges: false);
 
                 // Data we need to load and hold are...
                 // - Items due today or greater (limit it to 8 days, we'll run background tasks to reschedule)
                 // - All schedules
-                // We don't need to worry about holding a lock though, if the collections change and that breaks us, that's fine,
-                // that implies that the data has been changed anyways and another ResetReminders will come in.
-                // Therefore we should also expect to get some exceptions here.
-
                 allSchedules = viewModelSchedule.Classes.SelectMany(i => i.Schedules).ToArray();
                 itemsDueTodayOrGreater = viewModel.Items.Where(i => i.Date.Date >= DateTime.SpecifyKind(todayAsUtc, DateTimeKind.Local) && i.Date.Date <= DateTime.SpecifyKind(todayAsUtc.AddDays(8), DateTimeKind.Local)).ToArray();
             }
@@ -165,9 +161,6 @@ namespace PowerPlannerUWP.Extensions
                 // Semester wasn't found or other misc error
                 return;
             }
-
-            // Since we're no longer inside the lock and we're using a view group that tracks changes, any properties we access on the view items could change at any time.
-            // Therefore we need to take that into consideration and be careful about what we do.
 
             if (account.RemindersDayBefore)
             {

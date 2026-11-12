@@ -97,7 +97,7 @@ namespace PowerPlanneriOS.Extensions
 
                 await Task.Run(async delegate
                 {
-                    await RemoveAllNotificationsAsync(localAccountId);
+                    await RemoveAllNotificationsAsync(localAccountId, includeAllAccountNotifications: true);
                 });
             }
             catch (Exception ex)
@@ -132,22 +132,22 @@ namespace PowerPlanneriOS.Extensions
         {
             try
             {
-                // If reminders disabled, do nothing
-                if (!account.RemindersDayBefore && !account.RemindersDayOf)
+                // If reminders disabled or user denied notification permission, skip all the work,
+                // but make sure nothing that was previously scheduled is left behind
+                if ((!account.RemindersDayBefore && !account.RemindersDayOf) || !await IsAuthorizedAsync())
                 {
-                    return;
-                }
-
-                // If user denied notification permission, skip all the work
-                if (!await IsAuthorizedAsync())
-                {
+                    await Task.Run(async delegate
+                    {
+                        await RemoveAllScheduledNotificationsAsync(account.LocalAccountId);
+                    });
                     return;
                 }
 
                 await Task.Run(async delegate
                 {
                     // This gets called whenever changes are made in the account's data.
-                    AgendaViewItemsGroup agendaItems = await GetAgendaViewItemsGroup(account, DateTime.Now);
+                    DateTime now = DateTime.Now;
+                    AgendaViewItemsGroup agendaItems = await GetAgendaViewItemsGroup(account, now.Date);
 
                     // If no current semester, or no items, just clear all
                     if (agendaItems == null || agendaItems.Items.Count == 0)
@@ -155,8 +155,6 @@ namespace PowerPlanneriOS.Extensions
                         await RemoveAllNotificationsAsync(account.LocalAccountId);
                         return;
                     }
-
-                    DateTime now = DateTime.Now;
 
                     await UpdateScheduledNotificationsAsync(account, agendaItems, now);
                 });
@@ -172,8 +170,15 @@ namespace PowerPlanneriOS.Extensions
             // Just remove all, we would be overwriting them anyways
             await RemoveAllScheduledNotificationsAsync(account.LocalAccountId);
 
-            await AddScheduledDayBeforeNotifications(account, agendaItems, now);
-            await AddScheduledDayOfNotifications(account, agendaItems, now);
+            if (account.RemindersDayBefore)
+            {
+                await AddScheduledDayBeforeNotifications(account, agendaItems, now);
+            }
+
+            if (account.RemindersDayOf)
+            {
+                await AddScheduledDayOfNotifications(account, agendaItems, now);
+            }
         }
 
         private async Task AddScheduledDayBeforeNotifications(AccountDataItem account, AgendaViewItemsGroup agendaItems, DateTime now)
@@ -284,14 +289,13 @@ namespace PowerPlanneriOS.Extensions
             return item.GetDayOfReminderTime(out hadSpecificTime);
         }
 
-        private async Task<string[]> GetCurrentNotificationIdentifiersAsync(Guid localAccountId)
+        private async Task<string[]> GetCurrentNotificationIdentifiersAsync(Guid localAccountId, bool includeAllAccountNotifications)
         {
             List<string> ids = new List<string>();
-            string idStartString = GetIdentifierStartStringForAccount(localAccountId);
 
             foreach (var notif in await _notificationCenter.GetDeliveredNotificationsAsync())
             {
-                if (notif.Request.Identifier.StartsWith(idStartString))
+                if (IsMatchingIdentifier(notif.Request.Identifier, localAccountId, includeAllAccountNotifications))
                 {
                     ids.Add(notif.Request.Identifier);
                 }
@@ -300,7 +304,7 @@ namespace PowerPlanneriOS.Extensions
             return ids.ToArray();
         }
 
-        private async Task<string[]> GetScheduledNotificationIdentifiersAsync(Guid localAccountId)
+        private async Task<string[]> GetScheduledNotificationIdentifiersAsync(Guid localAccountId, bool includeAllAccountNotifications)
         {
             // This seems to randomly crash the app when running in the simulator and called multiple times, but works
             // perfectly fine on my device. So have to assume it's an issue with the simulator.
@@ -320,11 +324,10 @@ namespace PowerPlanneriOS.Extensions
             }
 
             List<string> ids = new List<string>();
-            string idStartString = GetIdentifierStartStringForAccount(localAccountId);
 
             foreach (var notif in notifs)
             {
-                if (notif.Identifier.StartsWith(idStartString))
+                if (IsMatchingIdentifier(notif.Identifier, localAccountId, includeAllAccountNotifications))
                 {
                     ids.Add(notif.Identifier);
                 }
@@ -338,29 +341,46 @@ namespace PowerPlanneriOS.Extensions
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        private async Task RemoveAllNotificationsAsync(Guid localAccountId)
+        /// <param name="includeAllAccountNotifications">If true, also removes the account's class reminders (used when the account is deleted)</param>
+        private async Task RemoveAllNotificationsAsync(Guid localAccountId, bool includeAllAccountNotifications = false)
         {
             // Remove scheduled first cause otherwise if we clear current first, a scheduled could get delivered afterwards
-            await RemoveAllScheduledNotificationsAsync(localAccountId);
-            await RemoveAllCurrentNotificationsAsync(localAccountId);
+            await RemoveAllScheduledNotificationsAsync(localAccountId, includeAllAccountNotifications);
+            await RemoveAllCurrentNotificationsAsync(localAccountId, includeAllAccountNotifications);
         }
 
-        private async Task RemoveAllScheduledNotificationsAsync(Guid localAccountId)
+        private async Task RemoveAllScheduledNotificationsAsync(Guid localAccountId, bool includeAllAccountNotifications = false)
         {
-            string[] idsToRemove = await GetScheduledNotificationIdentifiersAsync(localAccountId);
+            string[] idsToRemove = await GetScheduledNotificationIdentifiersAsync(localAccountId, includeAllAccountNotifications);
             if (idsToRemove.Length > 0)
             {
                 _notificationCenter.RemovePendingNotificationRequests(idsToRemove);
             }
         }
 
-        private async Task RemoveAllCurrentNotificationsAsync(Guid localAccountId)
+        private async Task RemoveAllCurrentNotificationsAsync(Guid localAccountId, bool includeAllAccountNotifications = false)
         {
-            string[] idsToRemove = await GetCurrentNotificationIdentifiersAsync(localAccountId);
+            string[] idsToRemove = await GetCurrentNotificationIdentifiersAsync(localAccountId, includeAllAccountNotifications);
             if (idsToRemove.Length > 0)
             {
                 _notificationCenter.RemoveDeliveredNotifications(idsToRemove);
             }
+        }
+
+        /// <summary>
+        /// By default only matches task/event reminders. Class reminders also start with the account prefix, so those must not be matched unless requested.
+        /// </summary>
+        private static bool IsMatchingIdentifier(string identifier, Guid localAccountId, bool includeAllAccountNotifications)
+        {
+            string idStartString = GetIdentifierStartStringForAccount(localAccountId);
+            if (includeAllAccountNotifications)
+            {
+                return identifier.StartsWith(idStartString);
+            }
+
+            return identifier.StartsWith(idStartString + DAY_BEFORE)
+                || identifier.StartsWith(idStartString + DAY_OF_TASK)
+                || identifier.StartsWith(idStartString + DAY_OF_EVENT);
         }
 
         private static string GetIdentifierStartStringForAccount(Guid localAccountId)
@@ -438,10 +458,10 @@ namespace PowerPlanneriOS.Extensions
         {
             try
             {
-                // We're getting cached versions which might change as we're using the app, but that's fine, since if items change, another
-                // ResetReminders will be incoming anyways
-                var scheduleViewItemsGroup = await ScheduleViewItemsGroup.LoadAsync(account.LocalAccountId, account.CurrentSemesterId, trackChanges: true, includeWeightCategories: false);
-                return await AgendaViewItemsGroup.LoadAsync(account.LocalAccountId, scheduleViewItemsGroup.Semester, today, trackChanges: true);
+                // Load straight from the database without tracking. Tracked/cached groups update from data-changed events, which
+                // might not have been applied yet when this runs, leading to stale (e.g. already completed) items.
+                var scheduleViewItemsGroup = await ScheduleViewItemsGroup.LoadAsync(account.LocalAccountId, account.CurrentSemesterId, trackChanges: false, includeWeightCategories: false);
+                return await AgendaViewItemsGroup.LoadAsync(account.LocalAccountId, scheduleViewItemsGroup.Semester, today, trackChanges: false);
             }
 
             // If semester didn't exist, it throws null reference exception
