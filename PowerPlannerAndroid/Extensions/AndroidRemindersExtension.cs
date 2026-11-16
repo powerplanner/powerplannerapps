@@ -262,10 +262,11 @@ namespace PowerPlannerAndroid.Extensions
             List<Tuple<ViewItemTaskOrEvent, DateTime>> shouldBeActive = new List<Tuple<ViewItemTaskOrEvent, DateTime>>();
 
             nextReminderTime = DateTime.MinValue;
+            var dayOfItems = agendaItems.Items.Where(i => account.IsDayOfReminderEnabled(i.Type)).ToArray();
             PowerPlannerSending.Schedule.Week currentWeek = account.GetWeekOnDifferentDate(now);
 
             // Add past-due incomplete tasks (we don't add events since they're "complete" when they're past-due)
-            foreach (var task in agendaItems.Items.Where(i => i.Type == TaskOrEventType.Task && i.Date.Date < now.Date).OrderBy(i => i))
+            foreach (var task in dayOfItems.Where(i => i.Type == TaskOrEventType.Task && i.Date.Date < now.Date).OrderBy(i => i))
             {
                 shouldBeActive.Add(new Tuple<ViewItemTaskOrEvent, DateTime>(task, task.Date.Date));
             }
@@ -276,7 +277,7 @@ namespace PowerPlannerAndroid.Extensions
             // To make sure we include items due 00:30 on the next day, we have to factor in tomorrow
             DateTime tomorrow = now.Date.AddDays(1);
             var weekForTomorrow = account.GetWeekOnDifferentDate(tomorrow);
-            foreach (var item in agendaItems.Items.Where(i => i.Date.Date == now.Date || i.Date.Date == tomorrow).OrderBy(i => i))
+            foreach (var item in dayOfItems.Where(i => i.Date.Date == now.Date || i.Date.Date == tomorrow).OrderBy(i => i))
             {
                 // Get the reminder time
                 DateTime reminderTime = GetDayOfReminderTime(item.Date.Date == tomorrow ? weekForTomorrow : currentWeek, item);
@@ -312,14 +313,14 @@ namespace PowerPlannerAndroid.Extensions
             // If no time found, we pick an item that's due in the future
             if (nextReminderTime == DateTime.MinValue)
             {
-                DateTime? nextDateWithItems = agendaItems.Items.Where(i => i.Date.Date > now.Date).OrderBy(i => i.Date.Date).FirstOrDefault()?.Date.Date;
+                DateTime? nextDateWithItems = dayOfItems.Where(i => i.Date.Date > now.Date).OrderBy(i => i.Date.Date).FirstOrDefault()?.Date.Date;
                 if (nextDateWithItems != null)
                 {
                     // Get the week for that date
                     var week = account.GetWeekOnDifferentDate(nextDateWithItems.Value);
 
                     // Look through all items on that date
-                    foreach (var item in agendaItems.Items.Where(i => i.Date.Date == nextDateWithItems.Value))
+                    foreach (var item in dayOfItems.Where(i => i.Date.Date == nextDateWithItems.Value))
                     {
                         // Pick the smallest reminder time
                         DateTime reminderTime = GetDayOfReminderTime(currentWeek, item);
@@ -424,8 +425,9 @@ namespace PowerPlannerAndroid.Extensions
         {
             string tag = account.LocalAccountId.ToString();
 
-            // If no current semester, or no items, then just clear
-            if (agendaItems == null || agendaItems.Items.Count == 0)
+            // If no current semester, or no items of the enabled types, then just clear
+            var dayBeforeItems = agendaItems?.Items.Where(i => account.IsDayBeforeReminderEnabled(i.Type)).ToArray();
+            if (dayBeforeItems == null || dayBeforeItems.Length == 0)
             {
                 notificationManager.Cancel(tag, NotificationIds.DAY_BEFORE_NOTIFICATION);
                 return;
@@ -446,7 +448,7 @@ namespace PowerPlannerAndroid.Extensions
 
             if (sendingDueTomorrow)
             {
-                var itemsDueTomorrow = agendaItems.Items.Where(i => i.Date.Date == now.Date.AddDays(1)).OrderBy(i => i).ToArray();
+                var itemsDueTomorrow = dayBeforeItems.Where(i => i.Date.Date == now.Date.AddDays(1)).OrderBy(i => i).ToArray();
 
                 // If nothing tomorrow, we clear
                 if (itemsDueTomorrow.Length == 0)
@@ -503,7 +505,7 @@ namespace PowerPlannerAndroid.Extensions
             // Otherwise "Today"
             else
             {
-                var itemsDueToday = agendaItems.Items.Where(i => i.Date.Date == now.Date).OrderBy(i => i).ToArray();
+                var itemsDueToday = dayBeforeItems.Where(i => i.Date.Date == now.Date).OrderBy(i => i).ToArray();
 
                 // If nothing left today, we clear
                 if (itemsDueToday.Length == 0)
@@ -749,7 +751,7 @@ namespace PowerPlannerAndroid.Extensions
 
         public static void ScheduleDayBeforeAlarm(Context context, AccountDataItem account, DateTime today, AgendaViewItemsGroup agendaItems)
         {
-            if (agendaItems == null)
+            if (agendaItems == null || (!account.TaskRemindersDayBefore && !account.EventRemindersDayBefore))
             {
                 return;
             }

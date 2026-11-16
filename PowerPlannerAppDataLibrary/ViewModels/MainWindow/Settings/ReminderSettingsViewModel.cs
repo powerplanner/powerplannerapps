@@ -22,8 +22,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             _account = base.FindAncestor<MainWindowViewModel>().CurrentAccount;
             if (_account != null)
             {
-                _remindersDayBefore = _account.RemindersDayBefore;
-                _remindersDayOf = _account.RemindersDayOf;
+                _taskRemindersDayBefore = _account.TaskRemindersDayBefore;
+                _taskRemindersDayOf = _account.TaskRemindersDayOf;
+                _eventRemindersDayBefore = _account.EventRemindersDayBefore;
+                _eventRemindersDayOf = _account.EventRemindersDayOf;
 
                 _selectedClassReminderOption = _timeSpanToStringMappings.FirstOrDefault(i => i.Key == _account.ClassRemindersTimeSpan).Value ?? ClassReminderOptions.First();
 
@@ -54,27 +56,49 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                 SupportsClassReminders ? RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_ClassRemindersDescription.Text")) : null,
 
-                RenderHeader(PowerPlannerResources.GetString("Settings_Reminders_TaskEventRemindersHeader.Text")),
+                RenderHeader(PowerPlannerResources.GetString("Settings_Reminders_TaskRemindersHeader.Text")),
 
                 new Switch
                 {
                     Title = PowerPlannerResources.GetString("Settings_Reminders_ToggleDayBefore.Header"),
-                    IsOn = VxValue.Create(RemindersDayBefore, v => RemindersDayBefore = v),
+                    IsOn = VxValue.Create(TaskRemindersDayBefore, v => TaskRemindersDayBefore = v),
                     Margin = new Thickness(0, 12, 0, 0),
                     IsEnabled = IsEnabled
                 },
 
-                RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_DayBeforeDescription.Text")),
+                RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_TaskDayBeforeDescription.Text")),
 
                 new Switch
                 {
                     Title = PowerPlannerResources.GetString("Settings_Reminders_ToggleDayOf.Header"),
-                    IsOn = VxValue.Create(RemindersDayOf, v => RemindersDayOf = v),
+                    IsOn = VxValue.Create(TaskRemindersDayOf, v => TaskRemindersDayOf = v),
                     Margin = new Thickness(0, 12, 0, 0),
                     IsEnabled = IsEnabled
                 },
 
-                RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_DayOfDescription.Text"))
+                RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_TaskDayOfDescription.Text")),
+
+                RenderHeader(PowerPlannerResources.GetString("Settings_Reminders_EventRemindersHeader.Text")),
+
+                new Switch
+                {
+                    Title = PowerPlannerResources.GetString("Settings_Reminders_ToggleDayBefore.Header"),
+                    IsOn = VxValue.Create(EventRemindersDayBefore, v => EventRemindersDayBefore = v),
+                    Margin = new Thickness(0, 12, 0, 0),
+                    IsEnabled = IsEnabled
+                },
+
+                RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_EventDayBeforeDescription.Text")),
+
+                new Switch
+                {
+                    Title = PowerPlannerResources.GetString("Settings_Reminders_ToggleDayOf.Header"),
+                    IsOn = VxValue.Create(EventRemindersDayOf, v => EventRemindersDayOf = v),
+                    Margin = new Thickness(0, 12, 0, 0),
+                    IsEnabled = IsEnabled
+                },
+
+                RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_EventDayOfDescription.Text"))
             );
         }
 
@@ -147,41 +171,81 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public string[] ClassReminderOptions { get; private set; } = _timeSpanToStringMappings.Select(i => i.Value).ToArray();
 
-        private bool _remindersDayOf;
-        public bool RemindersDayOf
+        private bool _taskRemindersDayOf;
+        public bool TaskRemindersDayOf
         {
-            get { return _remindersDayOf; }
+            get { return _taskRemindersDayOf; }
             set
             {
-                if (_remindersDayOf != value)
+                if (_taskRemindersDayOf != value)
                 {
-                    _remindersDayOf = value;
-                    OnPropertyChanged(nameof(RemindersDayOf));
+                    _taskRemindersDayOf = value;
+                    OnPropertyChanged(nameof(TaskRemindersDayOf));
                 }
 
-                if (_account.RemindersDayOf != value)
+                if (_account.TaskRemindersDayOf != value)
                 {
-                    _account.RemindersDayOf = value;
+                    _account.TaskRemindersDayOf = value;
                     SaveAndUpdate();
                 }
             }
         }
 
-        private bool _remindersDayBefore;
-        public bool RemindersDayBefore
+        private bool _taskRemindersDayBefore;
+        public bool TaskRemindersDayBefore
         {
-            get { return _remindersDayBefore; }
+            get { return _taskRemindersDayBefore; }
             set
             {
-                if (_remindersDayBefore != value)
+                if (_taskRemindersDayBefore != value)
                 {
-                    _remindersDayBefore = value;
-                    OnPropertyChanged(nameof(RemindersDayBefore));
+                    _taskRemindersDayBefore = value;
+                    OnPropertyChanged(nameof(TaskRemindersDayBefore));
                 }
 
-                if (_account.RemindersDayBefore != value)
+                if (_account.TaskRemindersDayBefore != value)
                 {
-                    _account.RemindersDayBefore = value;
+                    _account.TaskRemindersDayBefore = value;
+                    SaveAndUpdate();
+                }
+            }
+        }
+
+        private bool _eventRemindersDayOf;
+        public bool EventRemindersDayOf
+        {
+            get { return _eventRemindersDayOf; }
+            set
+            {
+                if (_eventRemindersDayOf != value)
+                {
+                    _eventRemindersDayOf = value;
+                    OnPropertyChanged(nameof(EventRemindersDayOf));
+                }
+
+                if (_account.EventRemindersDayOf != value)
+                {
+                    _account.EventRemindersDayOf = value;
+                    SaveAndUpdate();
+                }
+            }
+        }
+
+        private bool _eventRemindersDayBefore;
+        public bool EventRemindersDayBefore
+        {
+            get { return _eventRemindersDayBefore; }
+            set
+            {
+                if (_eventRemindersDayBefore != value)
+                {
+                    _eventRemindersDayBefore = value;
+                    OnPropertyChanged(nameof(EventRemindersDayBefore));
+                }
+
+                if (_account.EventRemindersDayBefore != value)
+                {
+                    _account.EventRemindersDayBefore = value;
                     SaveAndUpdate();
                 }
             }
