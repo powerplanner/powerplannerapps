@@ -197,8 +197,8 @@ namespace PowerPlanneriOS.Extensions
                     {
                         DateTime reminderTime = RemindersExtension.GetDayBeforeReminderTime(artificialToday, account, agendaItems);
 
-                        // "Due tomorrow"
-                        string title = PowerPlannerResources.GetDueX(PowerPlannerResources.GetRelativeDateTomorrow().ToLower());
+                        // "Tomorrow"
+                        string title = PowerPlannerResources.GetRelativeDateTomorrow();
                         string body = "";
                         if (itemsOnDay.Length == 1)
                         {

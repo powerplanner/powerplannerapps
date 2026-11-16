@@ -495,12 +495,12 @@ namespace PowerPlannerAndroid.Extensions
                 Bundle b = new Bundle();
                 b.PutString(EXTRA_UNIQUE_ID, extraUniqueId);
                 builder.SetExtras(b);
-                // "Due tomorrow"
-                builder.SetContentTitle(PowerPlannerResources.GetDueX(PowerPlannerResources.GetRelativeDateTomorrow().ToLower()));
+                // "Tomorrow"
+                builder.SetContentTitle(PowerPlannerResources.GetRelativeDateTomorrow());
                 PopulateNotificationDayBeforeWithItems(builder, itemsDueTomorrow);
             }
 
-            // Otherwise "due today"
+            // Otherwise "Today"
             else
             {
                 var itemsDueToday = agendaItems.Items.Where(i => i.Date.Date == now.Date).OrderBy(i => i).ToArray();
@@ -558,8 +558,8 @@ namespace PowerPlannerAndroid.Extensions
                 Bundle b = new Bundle();
                 b.PutString(EXTRA_UNIQUE_ID, extraUniqueId);
                 builder.SetExtras(b);
-                // "Due today"
-                builder.SetContentTitle(PowerPlannerResources.GetDueX(PowerPlannerResources.GetRelativeDateToday().ToLower()));
+                // "Today"
+                builder.SetContentTitle(PowerPlannerResources.GetRelativeDateToday());
                 PopulateNotificationDayBeforeWithItems(builder, itemsDueToday);
             }
             
