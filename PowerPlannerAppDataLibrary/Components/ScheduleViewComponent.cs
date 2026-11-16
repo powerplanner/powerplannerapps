@@ -180,7 +180,17 @@ namespace PowerPlannerAppDataLibrary.Components
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
                         Margin = new Thickness(itemLeft, scheduleTop + INITIAL_MARGIN + (float)s.TopOffset, 0, 0),
-                        Tapped = () => ViewModel.ViewClass(item.Item.Class),
+                        Tapped = delegate
+                        {
+                            if (ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.Normal)
+                            {
+                                ViewModel.ViewClass(item.Item.Class);
+                            }
+                            else
+                            {
+                                ViewModel.EditTimes(item.Item, useNewStyle: true);
+                            }
+                        },
                         Opacity = arranger.HasHolidays ? 0.7f : 1.0f,
                         Children =
                         {
