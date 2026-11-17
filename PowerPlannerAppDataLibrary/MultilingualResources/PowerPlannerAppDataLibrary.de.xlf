@@ -347,17 +347,25 @@ Klicken Sie auf weiter zum Login (was Duplikate verursachen kann).</target>
           <source>PUSH NOTIFICATIONS</source>
           <target state="final" state-qualifier="mt-suggestion">PUSH-BENACHRICHTIGUNGEN</target>
         </trans-unit>
-        <trans-unit id="Settings_Reminders_DayBeforeDescription.Text" translate="yes" xml:space="preserve">
-          <source>This feature reminds you the day before your incomplete tasks or events are due. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day.</source>
-          <target state="final">Diese Funktion erinnert Sie am Tag vor der Fälligkeit an Ihre unvollständigen Aufgaben oder Ereignisse. Sie erinnert Sie 10 Minuten nach dem letzten Kurs, oder um 15:00, wenn an diesem Tag keine Kurse stattfindet.</target>
-        </trans-unit>
-        <trans-unit id="Settings_Reminders_DayOfDescription.Text" translate="yes" xml:space="preserve">
-          <source>This feature reminds you on the same day that your incomplete tasks or events are due. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day.</source>
-          <target state="final">Diese Funktion erinnert Sie am selben Tag, an dem Ihre unerledigten Aufgaben oder Veranstaltungen anstehen, an diese. Sie erinnert Sie 1 Stunde vor Beginn Ihres Kurses daran, oder um 18:00, wenn an diesem Tag der Kurs nicht stattfindet.</target>
-        </trans-unit>
         <trans-unit id="Settings_Reminders_Description.Text" translate="yes" xml:space="preserve">
           <source>This application automatically sets reminders for each task and event. The reminders are just like calendar event reminders, with a snooze and dismiss option.</source>
           <target state="final">Diese Anwendung erstellt automatisch Erinnerungen für jede Aufgabe und jedes Ereignis. Die Erinnerungen sind wie Kalender-Terminerinnerungen, mit Schlaf- und Abschaltfunktion.</target>
+        </trans-unit>
+        <trans-unit id="Settings_Reminders_EventDayBeforeDescription.Text" translate="yes" xml:space="preserve">
+          <source>This feature reminds you the day before your events. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day.</source>
+          <target state="final">Diese Funktion erinnert Sie am Tag vor Ihren Ereignissen. Sie erinnert Sie 10 Minuten nach Ihrem letzten Kurs oder um 15:00 Uhr, wenn Sie an diesem Tag keine Kurse haben.</target>
+        </trans-unit>
+        <trans-unit id="Settings_Reminders_EventDayOfDescription.Text" translate="yes" xml:space="preserve">
+          <source>This feature reminds you on the same day as your events. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day.</source>
+          <target state="final">Diese Funktion erinnert Sie am selben Tag an Ihre Ereignisse. Sie erinnert Sie 1 Stunde vor Beginn Ihres Kurses oder um 18:00 Uhr, wenn Ihr Kurs an diesem Tag nicht stattfindet.</target>
+        </trans-unit>
+        <trans-unit id="Settings_Reminders_TaskDayBeforeDescription.Text" translate="yes" xml:space="preserve">
+          <source>This feature reminds you the day before your incomplete tasks are due. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day.</source>
+          <target state="final">Diese Funktion erinnert Sie am Tag vor der Fälligkeit an Ihre unerledigten Aufgaben. Sie erinnert Sie 10 Minuten nach Ihrem letzten Kurs oder um 15:00 Uhr, wenn Sie an diesem Tag keine Kurse haben.</target>
+        </trans-unit>
+        <trans-unit id="Settings_Reminders_TaskDayOfDescription.Text" translate="yes" xml:space="preserve">
+          <source>This feature reminds you on the same day that your incomplete tasks are due. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day.</source>
+          <target state="final">Diese Funktion erinnert Sie am selben Tag, an dem Ihre unerledigten Aufgaben fällig sind. Sie erinnert Sie 1 Stunde vor Beginn Ihres Kurses oder um 18:00 Uhr, wenn Ihr Kurs an diesem Tag nicht stattfindet.</target>
         </trans-unit>
         <trans-unit id="Settings_Reminders_Header.Text" translate="yes" xml:space="preserve">
           <source>REMINDERS</source>
@@ -2446,9 +2454,13 @@ Physik 202 - Di, Do 9:30-10:45 Uhr in Raum 150</target>
           <source>This feature reminds you about an upcoming class up to 60 minutes before the class starts.</source>
           <target state="final" state-qualifier="mt-suggestion">Diese Funktion erinnert Sie an eine kommende Klasse bis zu 60 Minuten vor Unterrichtsbeginn.</target>
         </trans-unit>
-        <trans-unit id="Settings_Reminders_TaskEventRemindersHeader.Text" translate="yes" xml:space="preserve">
-          <source>Task/event reminders</source>
-          <target state="final" state-qualifier="mt-suggestion">Aufgaben-/Ereigniserinnerungen</target>
+        <trans-unit id="Settings_Reminders_EventRemindersHeader.Text" translate="yes" xml:space="preserve">
+                  <source>Event reminders</source>
+                  <target state="final">Ereigniserinnerungen</target>
+                </trans-unit>
+                <trans-unit id="Settings_Reminders_TaskRemindersHeader.Text" translate="yes" xml:space="preserve">
+                  <source>Task reminders</source>
+                  <target state="final">Aufgabenerinnerungen</target>
         </trans-unit>
         <trans-unit id="String_XMinutes" translate="yes" xml:space="preserve">
           <source>{0} minutes</source>

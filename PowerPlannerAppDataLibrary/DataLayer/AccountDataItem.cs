@@ -412,20 +412,53 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             set => SetProperty(ref _classRemindersTimeSpan, value, nameof(ClassRemindersTimeSpan));
         }
 
-        private bool _remindersDayBefore = true;
-        [DataMember]
-        public bool RemindersDayBefore
+        // Persisted under the legacy name "RemindersDayBefore" (these used to cover both tasks and events)
+        private bool _taskRemindersDayBefore = true;
+        [DataMember(Name = "RemindersDayBefore")]
+        public bool TaskRemindersDayBefore
         {
-            get { return _remindersDayBefore; }
-            set { SetProperty(ref _remindersDayBefore, value, "RemindersDayBefore"); }
+            get { return _taskRemindersDayBefore; }
+            set { SetProperty(ref _taskRemindersDayBefore, value, nameof(TaskRemindersDayBefore)); }
         }
 
-        private bool _remindersDayOf = true;
-        [DataMember]
-        public bool RemindersDayOf
+        // Persisted under the legacy name "RemindersDayOf" (these used to cover both tasks and events)
+        private bool _taskRemindersDayOf = true;
+        [DataMember(Name = "RemindersDayOf")]
+        public bool TaskRemindersDayOf
         {
-            get { return _remindersDayOf; }
-            set { SetProperty(ref _remindersDayOf, value, "RemindersDayOf"); }
+            get { return _taskRemindersDayOf; }
+            set { SetProperty(ref _taskRemindersDayOf, value, nameof(TaskRemindersDayOf)); }
+        }
+
+        private bool _eventRemindersDayBefore = true;
+        [DataMember]
+        public bool EventRemindersDayBefore
+        {
+            get { return _eventRemindersDayBefore; }
+            set { SetProperty(ref _eventRemindersDayBefore, value, nameof(EventRemindersDayBefore)); }
+        }
+
+        private bool _eventRemindersDayOf = true;
+        [DataMember]
+        public bool EventRemindersDayOf
+        {
+            get { return _eventRemindersDayOf; }
+            set { SetProperty(ref _eventRemindersDayOf, value, nameof(EventRemindersDayOf)); }
+        }
+
+        public bool AreTaskOrEventRemindersEnabled()
+        {
+            return TaskRemindersDayBefore || TaskRemindersDayOf || EventRemindersDayBefore || EventRemindersDayOf;
+        }
+
+        public bool IsDayBeforeReminderEnabled(TaskOrEventType type)
+        {
+            return type == TaskOrEventType.Task ? TaskRemindersDayBefore : EventRemindersDayBefore;
+        }
+
+        public bool IsDayOfReminderEnabled(TaskOrEventType type)
+        {
+            return type == TaskOrEventType.Task ? TaskRemindersDayOf : EventRemindersDayOf;
         }
 
         private ImageUploadOptions _imageUploadOption = ImageUploadOptions.WifiOnly;

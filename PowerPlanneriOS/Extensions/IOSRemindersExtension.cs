@@ -134,7 +134,7 @@ namespace PowerPlanneriOS.Extensions
             {
                 // If reminders disabled or user denied notification permission, skip all the work,
                 // but make sure nothing that was previously scheduled is left behind
-                if ((!account.RemindersDayBefore && !account.RemindersDayOf) || !await IsAuthorizedAsync())
+                if (!account.AreTaskOrEventRemindersEnabled() || !await IsAuthorizedAsync())
                 {
                     await Task.Run(async delegate
                     {
@@ -170,12 +170,12 @@ namespace PowerPlanneriOS.Extensions
             // Just remove all, we would be overwriting them anyways
             await RemoveAllScheduledNotificationsAsync(account.LocalAccountId);
 
-            if (account.RemindersDayBefore)
+            if (account.TaskRemindersDayBefore || account.EventRemindersDayBefore)
             {
                 await AddScheduledDayBeforeNotifications(account, agendaItems, now);
             }
 
-            if (account.RemindersDayOf)
+            if (account.TaskRemindersDayOf || account.EventRemindersDayOf)
             {
                 await AddScheduledDayOfNotifications(account, agendaItems, now);
             }
@@ -191,14 +191,14 @@ namespace PowerPlanneriOS.Extensions
                 for (int i = 0; i < DAYS_IN_ADVANCE; i++, artificialToday = artificialToday.AddDays(1))
                 {
                     DateTime artificialTomorrow = artificialToday.AddDays(1);
-                    ViewItemTaskOrEvent[] itemsOnDay = agendaItems.Items.Where(x => x.Date.Date == artificialTomorrow).OrderBy(x => x).ToArray();
+                    ViewItemTaskOrEvent[] itemsOnDay = agendaItems.Items.Where(x => x.Date.Date == artificialTomorrow && account.IsDayBeforeReminderEnabled(x.Type)).OrderBy(x => x).ToArray();
 
                     if (itemsOnDay.Length > 0)
                     {
                         DateTime reminderTime = RemindersExtension.GetDayBeforeReminderTime(artificialToday, account, agendaItems);
 
-                        // "Due tomorrow"
-                        string title = PowerPlannerResources.GetDueX(PowerPlannerResources.GetRelativeDateTomorrow().ToLower());
+                        // "Tomorrow"
+                        string title = PowerPlannerResources.GetRelativeDateTomorrow();
                         string body = "";
                         if (itemsOnDay.Length == 1)
                         {
@@ -231,7 +231,7 @@ namespace PowerPlanneriOS.Extensions
                 DateTime today = now.Date;
                 DateTime maxDate = today.AddDays(DAYS_IN_ADVANCE);
 
-                ViewItemTaskOrEvent[] itemsDueTodayOrGreater = agendaItems.Items.Where(i => i.Date.Date >= today && i.Date.Date <= maxDate).OrderBy(i => i).ToArray();
+                ViewItemTaskOrEvent[] itemsDueTodayOrGreater = agendaItems.Items.Where(i => i.Date.Date >= today && i.Date.Date <= maxDate && account.IsDayOfReminderEnabled(i.Type)).OrderBy(i => i).ToArray();
 
                 foreach (var item in itemsDueTodayOrGreater)
                 {

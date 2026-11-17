@@ -77,8 +77,10 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 account.ClassRemindersTimeSpan.HasValue
                     ? Element("ClassRemindersTimeSpan", XmlConvert.ToString(account.ClassRemindersTimeSpan.Value))
                     : NullableElement("ClassRemindersTimeSpan", null),
-                Element("RemindersDayBefore", account.RemindersDayBefore),
-                Element("RemindersDayOf", account.RemindersDayOf),
+                Element("RemindersDayBefore", account.TaskRemindersDayBefore),
+                Element("RemindersDayOf", account.TaskRemindersDayOf),
+                Element("EventRemindersDayBefore", account.EventRemindersDayBefore),
+                Element("EventRemindersDayOf", account.EventRemindersDayOf),
                 Element("ImageUploadOption", account.ImageUploadOption),
                 Element("IsPushDisabled", account.IsPushDisabled),
                 SerializeGradeScales(accountNamespace, account.DefaultGradeScale),
@@ -164,8 +166,12 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             if (bool.TryParse(GetValue("Reviewed"), out bool reviewed)) account.Reviewed = reviewed;
             if (bool.TryParse(GetValue("HasAddedRepeating"), out bool hasAddedRepeating)) account.HasAddedRepeating = hasAddedRepeating;
             if (HasValue("ClassRemindersTimeSpan")) account.ClassRemindersTimeSpan = ParseNullableTimeSpan(document.Root.Elements().First(element => element.Name.LocalName == "ClassRemindersTimeSpan"));
-            if (bool.TryParse(GetValue("RemindersDayBefore"), out bool remindersDayBefore)) account.RemindersDayBefore = remindersDayBefore;
-            if (bool.TryParse(GetValue("RemindersDayOf"), out bool remindersDayOf)) account.RemindersDayOf = remindersDayOf;
+            if (bool.TryParse(GetValue("RemindersDayBefore"), out bool remindersDayBefore)) account.TaskRemindersDayBefore = remindersDayBefore;
+            if (bool.TryParse(GetValue("RemindersDayOf"), out bool remindersDayOf)) account.TaskRemindersDayOf = remindersDayOf;
+
+            // Migration: before event reminders had their own settings, the legacy values covered both tasks and events
+            account.EventRemindersDayBefore = bool.TryParse(GetValue("EventRemindersDayBefore"), out bool eventRemindersDayBefore) ? eventRemindersDayBefore : account.TaskRemindersDayBefore;
+            account.EventRemindersDayOf = bool.TryParse(GetValue("EventRemindersDayOf"), out bool eventRemindersDayOf) ? eventRemindersDayOf : account.TaskRemindersDayOf;
             if (TryParseEnum(GetValue("ImageUploadOption"), out ImageUploadOptions uploadOption)) account.ImageUploadOption = uploadOption;
             if (bool.TryParse(GetValue("IsPushDisabled"), out bool pushDisabled)) account.IsPushDisabled = pushDisabled;
 

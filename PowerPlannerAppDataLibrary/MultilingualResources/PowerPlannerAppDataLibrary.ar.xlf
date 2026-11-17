@@ -348,17 +348,25 @@ Click Continue to login (which might cause duplicates).</source>
           <source>PUSH NOTIFICATIONS</source>
           <target state="final">الاشعارات</target>
         </trans-unit>
-        <trans-unit id="Settings_Reminders_DayBeforeDescription.Text" translate="yes" xml:space="preserve">
-          <source>This feature reminds you the day before your incomplete tasks or events are due. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day.</source>
-          <target state="final">هذه الميزة تذكرك قبل يوم من موعد واجبك الناقص أو الامتحان. سوف يذكرك بعد 10 دقائق من الدرس الأخير الخاص بك، أو في 03:00 م إذا لم يكن لديك أية دروس ذلك اليوم.</target>
-        </trans-unit>
-        <trans-unit id="Settings_Reminders_DayOfDescription.Text" translate="yes" xml:space="preserve">
-          <source>This feature reminds you on the same day that your incomplete tasks or events are due. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day.</source>
-          <target state="final">هذه الميزة تذكرك في نفس يوم تسليم الواجبات المنزلية غير المكتملة أو الامتحان الخاص بك. سوف يتم تذكيرك ساعة قبل بدء الدرس، أو الساعة 06:00 م إذا لم يكن الواجب او الامتحان لدرس في ذلك اليوم.</target>
-        </trans-unit>
         <trans-unit id="Settings_Reminders_Description.Text" translate="yes" xml:space="preserve">
           <source>This application automatically sets reminders for each task and event. The reminders are just like calendar event reminders, with a snooze and dismiss option.</source>
           <target state="final">هذا التطبيق يقوم تلقائياً بتعيين تذكير لكل الواجبات المنزلية والامتحانات. هي تماما مثل التذكيرات التقويم، مع خيار للتأجيل او التجاهل</target>
+        </trans-unit>
+        <trans-unit id="Settings_Reminders_EventDayBeforeDescription.Text" translate="yes" xml:space="preserve">
+          <source>This feature reminds you the day before your events. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day.</source>
+          <target state="final">هذه الميزة تذكرك قبل يوم من أحداثك. سوف تذكرك بعد 10 دقائق من آخر درس لك، أو في الساعة 03:00 م إذا لم يكن لديك أي دروس في ذلك اليوم.</target>
+        </trans-unit>
+        <trans-unit id="Settings_Reminders_EventDayOfDescription.Text" translate="yes" xml:space="preserve">
+          <source>This feature reminds you on the same day as your events. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day.</source>
+          <target state="final">هذه الميزة تذكرك في نفس يوم أحداثك. سوف تذكرك قبل ساعة من بدء الدرس، أو في الساعة 06:00 م إذا لم يكن لديك درس في ذلك اليوم.</target>
+        </trans-unit>
+        <trans-unit id="Settings_Reminders_TaskDayBeforeDescription.Text" translate="yes" xml:space="preserve">
+          <source>This feature reminds you the day before your incomplete tasks are due. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day.</source>
+          <target state="final">هذه الميزة تذكرك قبل يوم من موعد استحقاق مهامك غير المكتملة. سوف تذكرك بعد 10 دقائق من آخر درس لك، أو في الساعة 03:00 م إذا لم يكن لديك أي دروس في ذلك اليوم.</target>
+        </trans-unit>
+        <trans-unit id="Settings_Reminders_TaskDayOfDescription.Text" translate="yes" xml:space="preserve">
+          <source>This feature reminds you on the same day that your incomplete tasks are due. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day.</source>
+          <target state="final">هذه الميزة تذكرك في نفس يوم استحقاق مهامك غير المكتملة. سوف تذكرك قبل ساعة من بدء الدرس، أو في الساعة 06:00 م إذا لم يكن لديك درس في ذلك اليوم.</target>
         </trans-unit>
         <trans-unit id="Settings_Reminders_Header.Text" translate="yes" xml:space="preserve">
           <source>REMINDERS</source>
@@ -2448,9 +2456,13 @@ CSC 337 - Tue, Thu 9:30-10:45am in ILC 150</source>
           <source>This feature reminds you about an upcoming class up to 60 minutes before the class starts.</source>
           <target state="final" state-qualifier="mt-suggestion">هذه الميزة تذكرك حول فئة القادمة ما يصل إلى 60 دقيقة قبل بدء الفصل الدراسي.</target>
         </trans-unit>
-        <trans-unit id="Settings_Reminders_TaskEventRemindersHeader.Text" translate="yes" xml:space="preserve">
-          <source>Task/event reminders</source>
-          <target state="final" state-qualifier="mt-suggestion">تذكيرات المهمة/الحدث</target>
+        <trans-unit id="Settings_Reminders_EventRemindersHeader.Text" translate="yes" xml:space="preserve">
+                  <source>Event reminders</source>
+                  <target state="final">تذكيرات الأحداث</target>
+                </trans-unit>
+                <trans-unit id="Settings_Reminders_TaskRemindersHeader.Text" translate="yes" xml:space="preserve">
+                  <source>Task reminders</source>
+                  <target state="final">تذكيرات المهام</target>
         </trans-unit>
         <trans-unit id="String_XMinutes" translate="yes" xml:space="preserve">
           <source>{0} minutes</source>

@@ -162,14 +162,14 @@ namespace PowerPlannerUWP.Extensions
                 return;
             }
 
-            if (account.RemindersDayBefore)
+            if (account.TaskRemindersDayBefore || account.EventRemindersDayBefore)
             {
                 Dictionary<DateTime, List<ViewItemTaskOrEvent>> groupedByDay = new Dictionary<DateTime, List<ViewItemTaskOrEvent>>();
 
                 DateTime tomorrow = DateTime.SpecifyKind(todayAsUtc.AddDays(1), DateTimeKind.Local);
 
                 //select all incomplete tasks/events that is due on tomorrow or later
-                foreach (ViewItemTaskOrEvent h in itemsDueTodayOrGreater.Where(i => i.Date.Date >= tomorrow))
+                foreach (ViewItemTaskOrEvent h in itemsDueTodayOrGreater.Where(i => i.Date.Date >= tomorrow && account.IsDayBeforeReminderEnabled(i.Type)))
                 {
                     token.ThrowIfCancellationRequested();
 
@@ -267,9 +267,9 @@ namespace PowerPlannerUWP.Extensions
                 }
             }
 
-            if (account.RemindersDayOf)
+            if (account.TaskRemindersDayOf || account.EventRemindersDayOf)
             {
-                foreach (ViewItemTaskOrEvent h in itemsDueTodayOrGreater)
+                foreach (ViewItemTaskOrEvent h in itemsDueTodayOrGreater.Where(i => account.IsDayOfReminderEnabled(i.Type)))
                 {
                     token.ThrowIfCancellationRequested();
                     bool hasClassTime = false;

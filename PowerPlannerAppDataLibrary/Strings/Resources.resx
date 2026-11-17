@@ -394,14 +394,20 @@ Click Continue to login (which might cause duplicates).</value>
   <data name="Settings_PushPage_Header.Text" xml:space="preserve">
     <value>PUSH NOTIFICATIONS</value>
   </data>
-  <data name="Settings_Reminders_DayBeforeDescription.Text" xml:space="preserve">
-    <value>This feature reminds you the day before your incomplete tasks or events are due. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day.</value>
-  </data>
-  <data name="Settings_Reminders_DayOfDescription.Text" xml:space="preserve">
-    <value>This feature reminds you on the same day that your incomplete tasks or events are due. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day.</value>
-  </data>
   <data name="Settings_Reminders_Description.Text" xml:space="preserve">
     <value>This application automatically sets reminders for each task and event. The reminders are just like calendar event reminders, with a snooze and dismiss option.</value>
+  </data>
+  <data name="Settings_Reminders_EventDayBeforeDescription.Text" xml:space="preserve">
+    <value>This feature reminds you the day before your events. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day.</value>
+  </data>
+  <data name="Settings_Reminders_EventDayOfDescription.Text" xml:space="preserve">
+    <value>This feature reminds you on the same day as your events. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day.</value>
+  </data>
+  <data name="Settings_Reminders_TaskDayBeforeDescription.Text" xml:space="preserve">
+    <value>This feature reminds you the day before your incomplete tasks are due. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day.</value>
+  </data>
+  <data name="Settings_Reminders_TaskDayOfDescription.Text" xml:space="preserve">
+    <value>This feature reminds you on the same day that your incomplete tasks are due. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day.</value>
   </data>
   <data name="Settings_RemindersWithClasses_Description.Text" xml:space="preserve">
     <value>This application automatically sets reminders for classes, tasks, and events. The reminders are just like calendar event reminders, with a snooze and dismiss option.</value>
@@ -418,8 +424,11 @@ Click Continue to login (which might cause duplicates).</value>
   <data name="Settings_Reminders_ClassRemindersDescription.Text" xml:space="preserve">
     <value>This feature reminds you about an upcoming class up to 60 minutes before the class starts.</value>
   </data>
-  <data name="Settings_Reminders_TaskEventRemindersHeader.Text" xml:space="preserve">
-    <value>Task/event reminders</value>
+  <data name="Settings_Reminders_EventRemindersHeader.Text" xml:space="preserve">
+    <value>Event reminders</value>
+  </data>
+  <data name="Settings_Reminders_TaskRemindersHeader.Text" xml:space="preserve">
+    <value>Task reminders</value>
   </data>
   <data name="Settings_Reminders_ToggleDayBefore.Header" xml:space="preserve">
     <value>day before</value>

@@ -31,9 +31,6 @@ namespace PowerPlanneriOS.Controllers
         private ClassGradesViewController _gradesViewController;
         private CAPSPageMenuController _pageMenuController;
 
-        private UIBarButtonItem _navButtonEditDetails;
-        private UIBarButtonItem _navButtonEditTimes;
-
         public ClassViewController()
         {
             // Revert toolbar height to default, since this is NOT rendered as a popup on iOS
@@ -42,18 +39,6 @@ namespace PowerPlanneriOS.Controllers
 
         public override void OnViewModelLoadedOverride()
         {
-            _navButtonEditDetails = new UIBarButtonItem
-            {
-                Title = PowerPlannerResources.GetString("AppBarButtonEdit.Label")
-            };
-            _navButtonEditDetails.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.EditClassWithDetails(); }).Handler;
-
-            _navButtonEditTimes = new UIBarButtonItem
-            {
-                Title = PowerPlannerResources.GetString("AppBarButtonEdit.Label")
-            };
-            _navButtonEditTimes.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.EditTimes(); }).Handler;
-
             _detailsViewController = new ClassDetailsViewController()
             {
                 ViewModel = ViewModel.DetailsViewModel
@@ -281,6 +266,8 @@ namespace PowerPlanneriOS.Controllers
                     deleteClass
                 };
             }
+
+            Toolbar.RenderOnDemand();
         }
 
         protected override void BackButtonClicked()
