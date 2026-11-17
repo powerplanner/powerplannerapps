@@ -81,6 +81,7 @@ namespace PowerPlannerAndroid.App
             NetworkInfoExtension.Current = new DroidNetworkInfoExtension();
             AppShortcutsExtension.Current = new DroidAppShortcutsExtension();
             BrowserExtension.Current = new DroidBrowserExtension();
+            ClipboardExtension.Current = new DroidClipboardExtension();
             EmailExtension.Current = new DroidEmailExtension();
             ThemeExtension.Current = new DroidThemeExtension();
             LanguageExtension.Current = new DroidLanguageExtension();

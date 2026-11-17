@@ -16,6 +16,7 @@ using System.Globalization;
 using PowerPlannerAppDataLibrary.ViewItems;
 using InterfacesiOS.Helpers;
 using PowerPlannerAppDataLibrary;
+using PowerPlanneriOS.Helpers;
 
 namespace PowerPlanneriOS.Extensions
 {
@@ -83,6 +84,80 @@ namespace PowerPlanneriOS.Extensions
         private async Task<bool> IsAuthorizedAsync()
         {
             return await IsAuthorizedAsync(_notificationCenter);
+        }
+
+        public override bool CanGetLogs => true;
+
+        public override async Task<string> GetLogs()
+        {
+            try
+            {
+                var accountNames = new Dictionary<Guid, string>();
+                foreach (var account in await AccountsManager.GetAllAccounts())
+                {
+                    accountNames[account.LocalAccountId] = account.Username;
+                }
+
+                var notifsTask = _notificationCenter.GetPendingNotificationRequestsAsync();
+                var notifs = notifsTask == null ? null : await notifsTask;
+                notifs = notifs ?? [];
+
+                var entries = notifs.Select(n =>
+                {
+                    DateTime? triggerTime = null;
+                    if (n.Trigger is UNTimeIntervalNotificationTrigger trigger)
+                    {
+                        var next = trigger.NextTriggerDate;
+                        if (next != null)
+                        {
+                            triggerTime = ((DateTime)next).ToLocalTime();
+                        }
+                    }
+                    return new { Request = n, TriggerTime = triggerTime };
+                }).OrderBy(i => i.TriggerTime ?? DateTime.MaxValue).ThenBy(i => i.Request.Identifier).ToArray();
+
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("Now: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture));
+                sb.AppendLine("Accounts: " + (accountNames.Count == 0 ? "(none)" : string.Join(", ", accountNames.Select(i => i.Value + " = " + i.Key))));
+                sb.AppendLine("Scheduled reminders: " + entries.Length);
+
+                foreach (var entry in entries)
+                {
+                    var request = entry.Request;
+
+                    string account;
+                    if (TryParseAccount(request.Identifier, out Guid localAccountId))
+                    {
+                        account = accountNames.TryGetValue(localAccountId, out string username) ? username : "UNKNOWN ACCOUNT";
+                    }
+                    else
+                    {
+                        account = "NO ACCOUNT";
+                    }
+
+                    sb.AppendLine(string.Join(" | ", new string[]
+                    {
+                        entry.TriggerTime?.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) ?? "no trigger time",
+                        account,
+                        request.Identifier,
+                        SingleLine(request.Content?.Title),
+                        SingleLine(request.Content?.Subtitle),
+                        SingleLine(request.Content?.Body)
+                    }));
+                }
+
+                return sb.ToString().TrimEnd();
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+                return "Failed to get logs: " + ex;
+            }
+        }
+
+        private static string SingleLine(string text)
+        {
+            return (text ?? "").Replace("\r", "").Replace("\n", " / ");
         }
 
         protected override async Task ActuallyClearReminders(Guid localAccountId)
@@ -167,22 +242,46 @@ namespace PowerPlanneriOS.Extensions
 
         private async Task UpdateScheduledNotificationsAsync(AccountDataItem account, AgendaViewItemsGroup agendaItems, DateTime now)
         {
-            // Just remove all, we would be overwriting them anyways
-            await RemoveAllScheduledNotificationsAsync(account.LocalAccountId);
+            var desired = GetDesiredScheduledNotifications(account, agendaItems, now);
+
+            string idStartString = GetIdentifierStartStringForAccount(account.LocalAccountId);
+            string[] identifierStartsWith =
+            [
+                idStartString + DAY_BEFORE,
+                idStartString + DAY_OF_TASK,
+                idStartString + DAY_OF_EVENT
+            ];
+
+            await iOSNotifcationRequestUpdater.MakePendingNotificationRequestsLikeAsync(_notificationCenter, identifierStartsWith, desired);
+        }
+
+        private Dictionary<string, iOSNotificationRequest> GetDesiredScheduledNotifications(AccountDataItem account, AgendaViewItemsGroup agendaItems, DateTime now)
+        {
+            Dictionary<string, iOSNotificationRequest> answer = [];
 
             if (account.TaskRemindersDayBefore || account.EventRemindersDayBefore)
             {
-                await AddScheduledDayBeforeNotifications(account, agendaItems, now);
+                foreach (var n in GetDesiredScheduledDayBeforeNotifications(account, agendaItems, now))
+                {
+                    answer[n.Key] = n.Value;
+                }
             }
 
             if (account.TaskRemindersDayOf || account.EventRemindersDayOf)
             {
-                await AddScheduledDayOfNotifications(account, agendaItems, now);
+                foreach (var n in GetDesiredScheduledDayOfNotifications(account, agendaItems, now))
+                {
+                    answer[n.Key] = n.Value;
+                }
             }
+
+            return answer;
         }
 
-        private async Task AddScheduledDayBeforeNotifications(AccountDataItem account, AgendaViewItemsGroup agendaItems, DateTime now)
+        private Dictionary<string, iOSNotificationRequest> GetDesiredScheduledDayBeforeNotifications(AccountDataItem account, AgendaViewItemsGroup agendaItems, DateTime now)
         {
+            Dictionary<string, iOSNotificationRequest> answer = [];
+
             try
             {
                 string idStartString = GetIdentifierStartStringForDayBefore(account.LocalAccountId);
@@ -195,7 +294,7 @@ namespace PowerPlanneriOS.Extensions
 
                     if (itemsOnDay.Length > 0)
                     {
-                        DateTime reminderTime = RemindersExtension.GetDayBeforeReminderTime(artificialToday, account, agendaItems);
+                        DateTime reminderTime = GetDayBeforeReminderTime(artificialToday, account, agendaItems);
 
                         // "Tomorrow"
                         string title = PowerPlannerResources.GetRelativeDateTomorrow();
@@ -214,7 +313,16 @@ namespace PowerPlanneriOS.Extensions
                             }
                             body = body.Trim();
                         }
-                        await ScheduleDayBeforeNotification(idStartString + artificialToday.ToString(DAY_BEFORE_DATE_FORMAT, CultureInfo.InvariantCulture), title, body, reminderTime);
+
+                        var identifier = idStartString + artificialToday.ToString(DAY_BEFORE_DATE_FORMAT, CultureInfo.InvariantCulture);
+
+                        answer[identifier] = new iOSNotificationRequest
+                        {
+                            Identifier = identifier,
+                            Title = title,
+                            Body = body,
+                            DeliveryTime = reminderTime
+                        };
                     }
                 }
             }
@@ -222,10 +330,14 @@ namespace PowerPlanneriOS.Extensions
             {
                 TelemetryExtension.Current?.TrackException(ex);
             }
+
+            return answer;
         }
 
-        private async Task AddScheduledDayOfNotifications(AccountDataItem account, AgendaViewItemsGroup agendaItems, DateTime now)
+        private Dictionary<string, iOSNotificationRequest> GetDesiredScheduledDayOfNotifications(AccountDataItem account, AgendaViewItemsGroup agendaItems, DateTime now)
         {
+            Dictionary<string, iOSNotificationRequest> answer = [];
+
             try
             {
                 DateTime today = now.Date;
@@ -252,13 +364,24 @@ namespace PowerPlanneriOS.Extensions
                         body += " - " + StringTools.TrimLengthWithEllipses(item.Details.Trim(), 200);
                     }
 
-                    await ScheduleDayOfNotification(account.LocalAccountId, item, title, subtitle, body, reminderTime);
+                    var identifier = GetIdentifierForDayOfItem(account.LocalAccountId, item);
+
+                    answer[identifier] = new iOSNotificationRequest
+                    {
+                        Identifier = identifier,
+                        Title = title,
+                        Subtitle = subtitle,
+                        Body = body,
+                        DeliveryTime = reminderTime
+                    };
                 }
             }
             catch (Exception ex)
             {
                 TelemetryExtension.Current?.TrackException(ex);
             }
+
+            return answer;
         }
 
         private static string GetClassName(ViewItemTaskOrEvent item)
@@ -466,59 +589,6 @@ namespace PowerPlanneriOS.Extensions
 
             // If semester didn't exist, it throws null reference exception
             catch { return null; }
-        }
-
-        private async Task ScheduleDayOfNotification(Guid localAccountId, ViewItemTaskOrEvent item, string title, string subtitle, string body, DateTime deliveryTime)
-        {
-            var content = new UNMutableNotificationContent()
-            {
-                Title = title,
-                Subtitle = subtitle
-            };
-
-            if (!string.IsNullOrWhiteSpace(body))
-            {
-                content.Body = body;
-            }
-
-            await ScheduleNotification(GetIdentifierForDayOfItem(localAccountId, item), content, deliveryTime);
-        }
-
-        private async Task ScheduleDayBeforeNotification(string id, string title, string body, DateTime deliveryTime)
-        {
-            await ScheduleNotification(id, new UNMutableNotificationContent()
-            {
-                Title = title,
-                Body = body
-            }, deliveryTime);
-        }
-
-        private async Task ScheduleNotification(string id, UNMutableNotificationContent content, DateTime deliveryTime)
-        {
-            try
-            {
-                // Don't schedule unless 5 secs in future, otherwise possibly throws assertion error
-                double seconds = (deliveryTime - DateTime.Now).TotalSeconds;
-                if (seconds < 5)
-                {
-                    return;
-                }
-
-                var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(seconds, false);
-
-                // This code doesn't seem to work
-                //var components = new NSDateComponents();
-                //components.Second += 5;
-                //var trigger = UserNotifications.UNCalendarNotificationTrigger.CreateTrigger(components, false);
-
-                var request = UNNotificationRequest.FromIdentifier(id, content, trigger);
-
-                await UNUserNotificationCenter.Current.AddNotificationRequestAsync(request);
-            }
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
         }
     }
 }

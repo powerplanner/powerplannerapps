@@ -21,6 +21,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         }
 
         private VxState<string> _developerLogs = new VxState<string>();
+        private VxState<string> _reminderLogs = new VxState<string>();
 
         protected override View Render()
         {
@@ -62,7 +63,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 {
                     Text = new VxValue<string>(_developerLogs.Value, e => { }),
                     Height = 150,
+                    Margin = new Thickness(0, 12, 0, 6)
+                } : null,
+
+                RemindersExtension.Current?.CanGetLogs == true ? new Button
+                {
+                    Text = "Show reminder logs",
+                    Click = ShowReminderLogs,
+                    Margin = new Thickness(0, 6, 0, 0)
+                } : null,
+
+                _reminderLogs.Value != null ? new MultilineTextBox
+                {
+                    Text = new VxValue<string>(_reminderLogs.Value, e => { }),
+                    Height = 150,
                     Margin = new Thickness(0, 12, 0, 0)
+                } : null,
+
+                _reminderLogs.Value != null ? new TextButton
+                {
+                    Text = "Copy logs",
+                    Click = CopyReminderLogs,
+                    Margin = new Thickness(0, 6, 0, 0)
                 } : null
             );
         }
@@ -70,6 +92,31 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         private void ShowLogs()
         {
             _developerLogs.Value = TelemetryExtension.Current?.GetDeveloperLogs();
+        }
+
+        private async void ShowReminderLogs()
+        {
+            try
+            {
+                _reminderLogs.Value = await RemindersExtension.Current.GetLogs() ?? "";
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+                _reminderLogs.Value = "Failed to get reminder logs: " + ex;
+            }
+        }
+
+        private async void CopyReminderLogs()
+        {
+            try
+            {
+                await ClipboardExtension.Current.SetTextAsync(_reminderLogs.Value);
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
         }
 
         private void OpenPrivacy()

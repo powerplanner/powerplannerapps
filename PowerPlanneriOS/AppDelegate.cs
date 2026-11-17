@@ -144,6 +144,7 @@ namespace PowerPlanneriOS
             InAppPurchaseExtension.Current = new iOSInAppPurchaseExtension();
             PushExtension.Current = new iOSPushExtension();
             BrowserExtension.Current = new iOSBrowserExtension();
+            ClipboardExtension.Current = new iOSClipboardExtension();
             EmailExtension.Current = new iOSEmailExtension();
             DateTimeFormatterExtension.Current = new iOSDateTimeFormatterExtension();
             TilesExtension.Current = new iOSTilesExtension();

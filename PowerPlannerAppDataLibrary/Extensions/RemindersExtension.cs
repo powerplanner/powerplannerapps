@@ -113,6 +113,16 @@ namespace PowerPlannerAppDataLibrary.Extensions
 
         protected virtual Task ActuallyClearCurrentReminders(Guid localAccountId) { throw new NotImplementedException(); }
 
+        /// <summary>
+        /// True if the platform can provide debug logs of its scheduled reminders via <see cref="GetLogs"/>
+        /// </summary>
+        public virtual bool CanGetLogs => false;
+
+        /// <summary>
+        /// Returns a plain text dump of all scheduled reminders across all accounts, one per line. Only meaningful if <see cref="CanGetLogs"/> is true.
+        /// </summary>
+        public virtual Task<string> GetLogs() => Task.FromResult("");
+
 
         public static DateTime GetDayBeforeReminderTime(DateTime date, AccountDataItem account, AgendaViewItemsGroup agenda)
         {

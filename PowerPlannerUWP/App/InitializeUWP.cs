@@ -59,6 +59,7 @@ namespace PowerPlannerUWP
             LanguageExtension.Current = new UWPLanguageExtension();
             SoundsExtension.Current = new UWPSoundsExtension();
             BrowserExtension.Current = new UWPBrowserExtension();
+            ClipboardExtension.Current = new UWPClipboardExtension();
             EmailExtension.Current = new UWPEmailExtension();
             ThemeExtension.Current = new UWPThemeExtension();
             ReviewAppExtension.Current = new UWPReviewAppExtension();
