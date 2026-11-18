@@ -199,6 +199,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         return;
                     }
 
+                    // Another local account might already have this username (for example, if the user logged in with the new
+                    // username after it was changed from another device, before updating this account's credentials)
+                    var conflicting = (await AccountsManager.GetAllAccounts()).FirstOrDefault(i =>
+                        i.LocalAccountId != Account.LocalAccountId
+                        && string.Equals(i.Username, username, StringComparison.CurrentCultureIgnoreCase));
+
+                    if (conflicting != null)
+                    {
+                        if (conflicting.IsOnlineAccount && conflicting.AccountId == Account.AccountId)
+                        {
+                            // It's a duplicate of this same online account, so remove the duplicate and keep this one
+                            await AccountsManager.Delete(conflicting.LocalAccountId);
+                        }
+                        else
+                        {
+                            SetError(PowerPlannerResources.GetString("Settings_ChangeUsernamePage_Errors_UsernameExists"));
+                            return;
+                        }
+                    }
+
                     //update their local account
                     Account.Username = username;
                     Account.LocalToken = resp.LocalToken;
