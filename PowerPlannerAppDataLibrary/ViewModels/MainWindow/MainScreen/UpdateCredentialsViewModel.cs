@@ -159,6 +159,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 string username = Username.Trim();
                 string password = Password;
 
+                // Another local account might already have this username (for example, if the user has an
+                // offline account with the same username as an online account)
+                var conflicting = (await AccountsManager.GetAllAccounts()).FirstOrDefault(i =>
+                    i.LocalAccountId != Account.LocalAccountId
+                    && string.Equals(i.Username, username, StringComparison.CurrentCultureIgnoreCase));
+
+                if (conflicting != null)
+                {
+                    SetError("An account with this username already exists on this device. Please log out and log into that existing account.");
+                    return;
+                }
+
                 if (UpdateType == UpdateTypes.NoDevice)
                 {
                     var resp = await PowerPlannerAuth.AddDeviceAsync(
@@ -172,6 +184,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     }
 
                     // Set their new device ID and token
+                    Account.Username = username;
                     Account.DeviceId = resp.DeviceId;
                     Account.LocalToken = resp.LocalToken;
                     Account.Token = resp.Token;
@@ -197,26 +210,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     {
                         SetError(resp.Error);
                         return;
-                    }
-
-                    // Another local account might already have this username (for example, if the user logged in with the new
-                    // username after it was changed from another device, before updating this account's credentials)
-                    var conflicting = (await AccountsManager.GetAllAccounts()).FirstOrDefault(i =>
-                        i.LocalAccountId != Account.LocalAccountId
-                        && string.Equals(i.Username, username, StringComparison.CurrentCultureIgnoreCase));
-
-                    if (conflicting != null)
-                    {
-                        if (conflicting.IsOnlineAccount && conflicting.AccountId == Account.AccountId)
-                        {
-                            // It's a duplicate of this same online account, so remove the duplicate and keep this one
-                            await AccountsManager.Delete(conflicting.LocalAccountId);
-                        }
-                        else
-                        {
-                            SetError(PowerPlannerResources.GetString("Settings_ChangeUsernamePage_Errors_UsernameExists"));
-                            return;
-                        }
                     }
 
                     //update their local account
