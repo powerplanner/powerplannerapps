@@ -540,7 +540,15 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     if (response.UpdateErrors != null && response.UpdateErrors.Count > 0)
                     {
                         foreach (var updateError in response.UpdateErrors)
+                        {
                             answer.UpdateErrors.Add(new SyncError("Update Item Error", updateError.ToString()));
+
+                            // Means this device had an old ChangeNumber and tried to edit an item that another device had already edited. This device should resync.
+                            if (updateError.SqlErrorNumber == 998)
+                            {
+                                needsAnotherSync = true;
+                            }    
+                        }
 
                         Debug.WriteLine("Had " + response.UpdateErrors.Count + " UpdateErrors");
                     }
