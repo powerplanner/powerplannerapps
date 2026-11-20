@@ -920,17 +920,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                         new LoggedError("Sync Error", result.Error)
                                     });
                                 }
-
-                                if (result.Error.Equals(PowerPlannerSending.SyncResponse.INCORRECT_PASSWORD) || result.Error.Equals(PowerPlannerSending.SyncResponse.USERNAME_CHANGED) || result.Error.Equals(PowerPlannerSending.SyncResponse.DEVICE_NOT_FOUND))
-                                {
-                                    ShowPopupUpdateCredentials(CurrentAccount);
-                                    return;
-                                }
-
-                                else if (result.Error.Equals(PowerPlannerSending.SyncResponse.DEVICE_NOT_FOUND) || result.Error.Equals(PowerPlannerSending.SyncResponse.NO_DEVICE))
-                                {
-                                    ShowPopupUpdateCredentials(CurrentAccount, UpdateCredentialsViewModel.UpdateTypes.NoDevice);
-                                }
                             }
 
                             else if (result.UpdateErrors != null && result.UpdateErrors.Count > 0)
@@ -961,7 +950,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }
         }
 
-        private void ShowPopupUpdateCredentials(AccountDataItem account, UpdateCredentialsViewModel.UpdateTypes updateType = UpdateCredentialsViewModel.UpdateTypes.Normal)
+        public void ShowPopupUpdateCredentials(AccountDataItem account, UpdateCredentialsViewModel.UpdateTypes updateType = UpdateCredentialsViewModel.UpdateTypes.Normal)
         {
             ShowPopup(UpdateCredentialsViewModel.Create(this, account, updateType));
         }

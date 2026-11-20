@@ -123,6 +123,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 await Account.SetSchoolTimeZone(SelectedSchoolTimeZone.TimeZone);
 
                 // Reset the app so that changes are applied to all the views
+                App.PowerPlannerApp.ClearViewCaches();
                 await base.FindAncestor<MainWindowViewModel>().HandleNormalLaunchActivation(sync: false);
             }
             catch { IsEnabled = true; }

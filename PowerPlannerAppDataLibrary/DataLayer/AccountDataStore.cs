@@ -1,25 +1,26 @@
-using PowerPlannerSending;
-using PowerPlannerAppDataLibrary.DataLayer.DataItems;
-using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using Dapper;
 using Microsoft.Data.Sqlite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections;
-using System.IO;
-using System.Runtime.Serialization;
-using ToolsPortable;
-using System.Diagnostics;
-using PowerPlannerAppDataLibrary.Helpers;
-using StorageEverywhere;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Extensions.Telemetry;
-using System.Reflection;
+using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.Serialization;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
-using PowerPlannerAppDataLibrary.Serialization;
+using PowerPlannerSending;
+using StorageEverywhere;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Threading.Tasks;
+using ToolsPortable;
+using static PowerPlannerAppDataLibrary.DataLayer.AccountDataStore;
 
 [module: DapperAot]
 
@@ -1350,23 +1351,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return pendingTasks;
         }
 
-        internal async System.Threading.Tasks.Task ImportItemsAsync(BaseDataItem[] items)
-        {
-            await System.Threading.Tasks.Task.Run(delegate
-            {
-                ImportItemsBlocking(items);
-            });
-        }
-
-        private void ImportItemsBlocking(BaseDataItem[] items)
-        {
-            using (var transaction = _db.BeginTransaction())
-            {
-                UpsertItems(items, transaction);
-                transaction.Commit();
-            }
-        }
-
         private void UpsertItems(IEnumerable<BaseDataItem> items, SqliteTransaction transaction)
         {
             foreach (var item in items)
@@ -1551,6 +1535,70 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             RecursiveDeleteHelper(childrenToDelete, into, transaction: transaction);
         }
 
+        /// <summary>
+        /// The app should effectively be restarted after this, since it's a destructive change, and all reminders should be reset, etc. The new IDs and relevant updated children are committed to the ChangedItems so they will be picked up on the next sync.
+        /// </summary>
+        /// <param name="identifiers"></param>
+        /// <returns></returns>
+        public async System.Threading.Tasks.Task CreateNewIdentifiersForDataItemsAsync(HashSet<Guid> identifiers)
+        {
+            if (!identifiers.Any())
+            {
+                return;
+            }
+
+            using (await Locks.LockDataForWriteAsync())
+            {
+                var newUniqueIds = GenerateUniqueGuids(identifiers.Count);
+                var existingItems = FindAll(identifiers.ToArray()).ToArray();
+
+                var changedItems = await ChangedItems.Load(this);
+
+                try
+                {
+                    for (int i = 0; i < existingItems.Length; i++)
+                    {
+                        var existingItem = existingItems[i];
+                        var newId = newUniqueIds[i];
+
+                        RemapIdentifier(existingItem, newId, changedItems);
+                    }
+
+                    await changedItems.Save();
+                }
+                catch (Exception ex)
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Caller should establish lock. Generates an array of unique GUID values that aren't present locally.
+        /// </summary>
+        private Guid[] GenerateUniqueGuids(int count)
+        {
+            Guid[] answer = new Guid[count];
+
+            do
+            {
+                // Create new GUIDs
+                for (int i = 0; i < answer.Length; i++)
+                {
+                    answer[i] = Guid.NewGuid();
+                }
+
+                // Repeat if we find any existing items with those GUIDs
+            } while (FindAll(answer).Any());
+
+            return answer;
+        }
+
+        /// <summary>
+        /// Caller should establish lock
+        /// </summary>
+        /// <param name="identifiersToLookFor"></param>
+        /// <returns></returns>
         private IEnumerable<BaseDataItem> FindAll(Guid[] identifiersToLookFor)
         {
             HashSet<Guid> remainingIdentifiersToLookFor = new HashSet<Guid>(identifiersToLookFor);

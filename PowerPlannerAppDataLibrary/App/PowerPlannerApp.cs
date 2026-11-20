@@ -4,6 +4,7 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.ViewModels.Controls;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
@@ -227,16 +228,23 @@ namespace PowerPlannerAppDataLibrary.App
 
                             if (result.Error != null)
                             {
-                                if (result.Error.Equals(SyncResponse.INCORRECT_PASSWORD) || result.Error.Equals(SyncResponse.USERNAME_CHANGED) || result.Error.Equals(SyncResponse.DEVICE_NOT_FOUND))
+                                if (result.Error.Equals(SyncResponse.INCORRECT_PASSWORD) || result.Error.Equals(SyncResponse.USERNAME_CHANGED))
                                 {
-                                    mainWindow.ShowPopupUpdateCredentials(currAccount, UpdateCredentialsType.Normal);
+                                    mainWindow.ShowPopupUpdateCredentials(currAccount, UpdateCredentialsViewModel.UpdateTypes.Normal);
                                     return;
                                 }
 
                                 else if (result.Error.Equals(SyncResponse.DEVICE_NOT_FOUND) || result.Error.Equals(SyncResponse.NO_DEVICE))
                                 {
-                                    mainWindow.ShowPopupUpdateCredentials(currAccount, UpdateCredentialsType.NoDevice);
+                                    mainWindow.ShowPopupUpdateCredentials(currAccount, UpdateCredentialsViewModel.UpdateTypes.NoDevice);
                                     return;
+                                }
+
+                                else if (result.Error.Equals("RelaunchNeeded"))
+                                {
+                                    // Reset the app so that changes are applied to all the views, and perform another sync
+                                    ClearViewCaches();
+                                    await mainWindow.GetViewModel().HandleNormalLaunchActivation(sync: true);
                                 }
                             }
                             
@@ -260,6 +268,15 @@ namespace PowerPlannerAppDataLibrary.App
             {
                 TelemetryExtension.Current?.TrackException(ex);
             }
+        }
+
+        public static void ClearViewCaches()
+        {
+            SemesterItemsViewGroup.ClearCache();
+            ScheduleViewItemsGroup.ClearCache();
+            AgendaViewItemsGroup.ClearCache();
+            ViewLists.SchedulesOnDay.ClearCached();
+            ViewLists.DayScheduleItemsArranger.ClearCached();
         }
 
         public MainWindowViewModel GetMainWindowViewModel()
