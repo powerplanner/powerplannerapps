@@ -4,6 +4,7 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.ViewModels.Controls;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
@@ -227,16 +228,23 @@ namespace PowerPlannerAppDataLibrary.App
 
                             if (result.Error != null)
                             {
-                                if (result.Error.Equals(SyncResponse.INCORRECT_PASSWORD) || result.Error.Equals(SyncResponse.USERNAME_CHANGED) || result.Error.Equals(SyncResponse.DEVICE_NOT_FOUND))
+                                if (result.Error.Equals(SyncResponse.INCORRECT_PASSWORD) || result.Error.Equals(SyncResponse.USERNAME_CHANGED))
                                 {
-                                    mainWindow.ShowPopupUpdateCredentials(currAccount, UpdateCredentialsType.Normal);
+                                    mainWindow.ShowPopupUpdateCredentials(currAccount, UpdateCredentialsViewModel.UpdateTypes.Normal);
                                     return;
                                 }
 
                                 else if (result.Error.Equals(SyncResponse.DEVICE_NOT_FOUND) || result.Error.Equals(SyncResponse.NO_DEVICE))
                                 {
-                                    mainWindow.ShowPopupUpdateCredentials(currAccount, UpdateCredentialsType.NoDevice);
+                                    mainWindow.ShowPopupUpdateCredentials(currAccount, UpdateCredentialsViewModel.UpdateTypes.NoDevice);
                                     return;
+                                }
+
+                                else if (result.Error.Equals("RelaunchNeeded"))
+                                {
+                                    // Reset the app so that changes are applied to all the views, and perform another sync
+                                    ClearViewCaches();
+                                    await mainWindow.GetViewModel().HandleNormalLaunchActivation(sync: true);
                                 }
                             }
                             
@@ -262,6 +270,15 @@ namespace PowerPlannerAppDataLibrary.App
             }
         }
 
+        public static void ClearViewCaches()
+        {
+            SemesterItemsViewGroup.ClearCache();
+            ScheduleViewItemsGroup.ClearCache();
+            AgendaViewItemsGroup.ClearCache();
+            ViewLists.SchedulesOnDay.ClearCached();
+            ViewLists.DayScheduleItemsArranger.ClearCached();
+        }
+
         public MainWindowViewModel GetMainWindowViewModel()
         {
             return (GetCurrentWindow() as MainAppWindow)?.GetViewModel();
@@ -277,11 +294,41 @@ namespace PowerPlannerAppDataLibrary.App
             return (GetCurrentWindow() as MainAppWindow)?.GetCurrentAccount();
         }
 
+        public async Task<Guid> NewGuidForCurrentAccountAsync()
+        {
+            return (await NewGuidsForCurrentAccountAsync(1))[0];
+        }
+
+        public async Task<Guid[]> NewGuidsForCurrentAccountAsync(int count)
+        {
+            var account = GetCurrentAccount();
+            if (account == null)
+            {
+                throw new NullReferenceException("account was null. Windows: " + Windows.Count);
+            }
+
+            var dataStore = await AccountDataStore.Get(account.LocalAccountId);
+            return await dataStore.GenerateUniqueGuidsAsync(count);
+        }
+
         public System.Threading.Tasks.Task SaveChanges(DataChanges changes)
         {
             var account = GetCurrentAccount();
 
             return SaveChanges(account, changes);
+        }
+
+        public void RestartApp(AccountDataItem account, bool sync = true)
+        {
+            PowerPlannerApp.ClearViewCaches();
+
+            foreach (var mainWindow in Windows.OfType<MainAppWindow>())
+            {
+                mainWindow.Dispatcher.Run(async delegate
+                {
+                    mainWindow.GetViewModel()?.HandleNormalLaunchActivation(sync: sync);
+                });
+            }
         }
 
         public async System.Threading.Tasks.Task SaveChanges(AccountDataItem account, DataChanges changes, bool waitForSaveAndSyncTasks = false)
@@ -295,6 +342,13 @@ namespace PowerPlannerAppDataLibrary.App
 
             var dataStore = await AccountDataStore.Get(account.LocalAccountId);
             var saveChangeTasks = await dataStore.ProcessLocalChanges(changes);
+
+            if (saveChangeTasks.NeedsRestart)
+            {
+                RestartApp(account);
+                return;
+            }
+
             System.Threading.Tasks.Task<SyncResult> syncTask = null;
 
             // Don't await this, we don't want it blocking

@@ -109,11 +109,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 if (needsReset)
                 {
                     // Remove current semester, which will force re-loading the classes when user chooses to open it
-                    SemesterItemsViewGroup.ClearCache();
-                    ScheduleViewItemsGroup.ClearCache();
-                    AgendaViewItemsGroup.ClearCache();
-                    ViewLists.SchedulesOnDay.ClearCached();
-                    ViewLists.DayScheduleItemsArranger.ClearCached();
+                    PowerPlannerApp.ClearViewCaches();
                     await MainScreenViewModel.SetCurrentSemester(Guid.Empty, closeYearsPopup: false);
                 }
             }, RemoveViewModel);

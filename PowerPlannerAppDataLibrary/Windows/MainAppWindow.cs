@@ -27,7 +27,7 @@ namespace PowerPlannerAppDataLibrary.Windows
             return GetViewModel().CurrentAccount;
         }
 
-        public void ShowPopupUpdateCredentials(AccountDataItem account, UpdateCredentialsType updateType)
+        public void ShowPopupUpdateCredentials(AccountDataItem account, UpdateCredentialsViewModel.UpdateTypes updateType)
         {
             GetViewModel().ShowPopupUpdateCredentials(account, updateType);
         }

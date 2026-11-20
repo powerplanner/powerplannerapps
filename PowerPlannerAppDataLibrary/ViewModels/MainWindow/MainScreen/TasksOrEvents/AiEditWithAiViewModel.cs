@@ -133,12 +133,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                 var changes = new DataChanges();
 
+                Stack<Guid> newIds = new(await PowerPlannerApp.Current.NewGuidsForCurrentAccountAsync(ProposedChanges.Count(c => c.IsSelected && c.Operation == AiChangeOperation.Add)));
+
                 foreach (var change in ProposedChanges.Where(c => c.IsSelected))
                 {
                     switch (change.Operation)
                     {
                         case AiChangeOperation.Add:
-                            AddItem(changes, change);
+                            AddItem(changes, change, newIds.Pop());
                             break;
 
                         case AiChangeOperation.Edit:
@@ -168,11 +170,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             }
         }
 
-        private void AddItem(DataChanges changes, AiProposedChange change)
+        private void AddItem(DataChanges changes, AiProposedChange change, Guid identifier)
         {
             var dataItem = new DataItemMegaItem
             {
-                Identifier = Guid.NewGuid()
+                Identifier = identifier
             };
 
             ApplyChangeToDataItem(dataItem, change, isNew: true);

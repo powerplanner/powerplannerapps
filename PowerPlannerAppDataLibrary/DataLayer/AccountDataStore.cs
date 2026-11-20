@@ -1,25 +1,26 @@
-using PowerPlannerSending;
-using PowerPlannerAppDataLibrary.DataLayer.DataItems;
-using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using Dapper;
 using Microsoft.Data.Sqlite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections;
-using System.IO;
-using System.Runtime.Serialization;
-using ToolsPortable;
-using System.Diagnostics;
-using PowerPlannerAppDataLibrary.Helpers;
-using StorageEverywhere;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Extensions.Telemetry;
-using System.Reflection;
+using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.Serialization;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
-using PowerPlannerAppDataLibrary.Serialization;
+using PowerPlannerSending;
+using StorageEverywhere;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Threading.Tasks;
+using ToolsPortable;
+using static PowerPlannerAppDataLibrary.DataLayer.AccountDataStore;
 
 [module: DapperAot]
 
@@ -106,6 +107,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         public System.Threading.Tasks.Task UpdateRemindersTask { get; internal set; }
 
         public bool NeedsAccountToBeSaved { get; internal set; }
+        public bool NeedsRestart { get; internal set; }
 
         public AccountDataItem Account { get; internal set; }
 
@@ -1307,6 +1309,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                     var commitChangesResponse = await CommitChanges(account, dataChanges, processType);
 
                     pendingTasks.NeedsAccountToBeSaved = commitChangesResponse.NeedsAccountToBeSaved;
+                    pendingTasks.NeedsRestart = commitChangesResponse.NeedsRestart;
                 }
             });
 
@@ -1350,23 +1353,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return pendingTasks;
         }
 
-        internal async System.Threading.Tasks.Task ImportItemsAsync(BaseDataItem[] items)
-        {
-            await System.Threading.Tasks.Task.Run(delegate
-            {
-                ImportItemsBlocking(items);
-            });
-        }
-
-        private void ImportItemsBlocking(BaseDataItem[] items)
-        {
-            using (var transaction = _db.BeginTransaction())
-            {
-                UpsertItems(items, transaction);
-                transaction.Commit();
-            }
-        }
-
         private void UpsertItems(IEnumerable<BaseDataItem> items, SqliteTransaction transaction)
         {
             foreach (var item in items)
@@ -1376,6 +1362,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         private class CommitChangesResponse
         {
             public bool NeedsAccountToBeSaved { get; set; }
+            public bool NeedsRestart { get; set; }
         }
 
         private async System.Threading.Tasks.Task<CommitChangesResponse> CommitChanges(AccountDataItem account, DataChanges dataChanges, ProcessType processType)
@@ -1397,7 +1384,38 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
             // Obtain the existing data items (whichever match)
             var timeTracker = TimeTracker.Start();
-            List<BaseDataItem> existingDataItems = GetExistingItems(dataChanges.EditedItems);
+            List<BaseDataItem> existingDataItems = FindAll(dataChanges.EditedItems.Select(i => i.Identifier).ToArray()).ToList();
+
+            // If we have existing item that matches an incoming item but it's a different item type, we have a conflict
+            var conflictingExistingItems = existingDataItems.Where(existing => dataChanges.EditedItems.Any(edited => edited.Identifier == existing.Identifier && edited.ItemType != existing.ItemType)).ToArray();
+            bool needsRestart = false;
+
+            if (conflictingExistingItems.Length > 0)
+            {
+                if (processType == ProcessType.Local)
+                {
+                    // For local, we'll just throw, since this theoretically shouldn't happen since we check identifiers first
+                    throw new InvalidOperationException("Duplicate identifier");
+                }
+                else
+                {
+                    // For online, we need to rename the existing local items
+                    TelemetryExtension.Current?.TrackEvent("Sync_HandlingConfictFromOnlineItem", new Dictionary<string, string>()
+                    {
+                        { "Count", conflictingExistingItems.Length.ToString() }
+                    });
+
+                    var conflictChangedItems = await ChangedItems.Load(this);
+                    Stack<Guid> newIds = new Stack<Guid>(GenerateUniqueGuids(conflictingExistingItems.Length));
+                    foreach (var existing in conflictingExistingItems)
+                    {
+                        RemapIdentifier(existing, newIds.Pop(), conflictChangedItems);
+                    }
+                    await conflictChangedItems.Save();
+                    needsRestart = true;
+                }
+            }
+
             timeTracker.End(3, delegate { return $"CommitChanges GetExistingItems, {dataChanges.EditedItems.Count()} edited items"; });
 
             // Whichever didn't exist will be new items
@@ -1498,7 +1516,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 }
             }
 
-            if (DataChangedEvent != null)
+            if (DataChangedEvent != null && !needsRestart)
             {
                 timeTracker = TimeTracker.Start();
 
@@ -1514,11 +1532,15 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 timeTracker.End(3, "CommitChanges sending out DataChangedEvent");
             }
 
-            NotifyDataChangedEventHandlers(dataChangedEvent);
+            if (!needsRestart)
+            {
+                NotifyDataChangedEventHandlers(dataChangedEvent);
+            }
 
             return new CommitChangesResponse()
             {
-                NeedsAccountToBeSaved = needsSave
+                NeedsAccountToBeSaved = needsSave,
+                NeedsRestart = needsRestart
             };
         }
 
@@ -1551,6 +1573,108 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             RecursiveDeleteHelper(childrenToDelete, into, transaction: transaction);
         }
 
+        /// <summary>
+        /// The app should effectively be restarted after this, since it's a destructive change, and all reminders should be reset, etc. The new IDs and relevant updated children are committed to the ChangedItems so they will be picked up on the next sync.
+        /// </summary>
+        /// <param name="identifiers"></param>
+        /// <returns></returns>
+        public async System.Threading.Tasks.Task CreateNewIdentifiersForDataItemsAsync(HashSet<Guid> identifiers)
+        {
+            if (!identifiers.Any())
+            {
+                return;
+            }
+
+            using (await Locks.LockDataForWriteAsync())
+            {
+                var newUniqueIds = GenerateUniqueGuids(identifiers.Count);
+                var existingItems = FindAll(identifiers.ToArray()).ToArray();
+
+                var changedItems = await ChangedItems.Load(this);
+
+                try
+                {
+                    for (int i = 0; i < existingItems.Length; i++)
+                    {
+                        var existingItem = existingItems[i];
+                        var newId = newUniqueIds[i];
+
+                        RemapIdentifier(existingItem, newId, changedItems);
+                    }
+
+                    await changedItems.Save();
+                }
+                catch (Exception ex)
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously generates the specified number of unique GUID values.
+        /// </summary>
+        /// <param name="count">The number of GUID values to generate.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains an array of unique GUID values.</returns>
+        public async Task<Guid[]> GenerateUniqueGuidsAsync(int count)
+        {
+            using (await Locks.LockDataForReadAsync())
+            {
+                return GenerateUniqueGuids(count);
+            }
+        }
+
+        /// <summary>
+        /// Caller should establish lock. Generates an array of unique GUID values that aren't present locally.
+        /// </summary>
+        private Guid[] GenerateUniqueGuids(int count)
+        {
+            Guid[] answer;
+            int attempts = 1;
+
+            do
+            {
+                if (attempts > 10)
+                {
+                    TelemetryExtension.Current.TrackEvent("CouldntGenerateUniqueGuids", new Dictionary<string, string>
+                    {
+                        { "Count", count.ToString() }
+                    });
+                    throw new StackOverflowException("Couldn't generate unique GUIDs");
+                }
+
+                answer = GenerateUniqueGuidsWithoutCheckingDb(count);
+
+                attempts++;
+                // Repeat if we find any existing items with those GUIDs
+            } while (MatchesExistingIdentifiers(answer));
+
+            return answer;
+        }
+
+        public static Guid[] GenerateUniqueGuidsWithoutCheckingDb(int count)
+        {
+            Guid[] answer = new Guid[count];
+
+            do
+            {
+                // Create new GUIDs
+                for (int i = 0; i < answer.Length; i++)
+                {
+                    answer[i] = Guid.NewGuid();
+                }
+
+                // Repeat if we didn't produce all distinct GUIDs
+            } while (answer.Distinct().Count() != count);
+
+            return answer;
+        }
+
+        /// <summary>
+        /// Caller should establish lock
+        /// </summary>
+        /// <param name="identifiersToLookFor"></param>
+        /// <returns></returns>
         private IEnumerable<BaseDataItem> FindAll(Guid[] identifiersToLookFor)
         {
             HashSet<Guid> remainingIdentifiersToLookFor = new HashSet<Guid>(identifiersToLookFor);
@@ -1737,34 +1861,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
         }
 
-        private List<BaseDataItem> GetExistingItems(IEnumerable<BaseDataItem> itemsToMatch)
-        {
-            List<BaseDataItem> existingItems = new List<BaseDataItem>();
-
-            List<Guid> classIdentifiers = itemsToMatch.OfType<DataItemClass>().Select(i => i.Identifier).ToList();
-            existingItems.AddRange(LoadClassesByIdentifiers(classIdentifiers.ToArray()));
-
-            List<Guid> gradeIdentifiers = itemsToMatch.OfType<DataItemGrade>().Select(i => i.Identifier).ToList();
-            existingItems.AddRange(LoadGradesByIdentifiers(gradeIdentifiers.ToArray()));
-
-            Guid[] megaItemIdentifiers = itemsToMatch.OfType<DataItemMegaItem>().Select(i => i.Identifier).ToArray();
-            existingItems.AddRange(LoadMegaItemsByIdentifiers(megaItemIdentifiers));
-
-            List<Guid> scheduleIdentifiers = itemsToMatch.OfType<DataItemSchedule>().Select(i => i.Identifier).ToList();
-            existingItems.AddRange(LoadSchedulesByIdentifiers(scheduleIdentifiers.ToArray()));
-
-            List<Guid> semesterIdentifiers = itemsToMatch.OfType<DataItemSemester>().Select(i => i.Identifier).ToList();
-            existingItems.AddRange(LoadSemestersByIdentifiers(semesterIdentifiers.ToArray()));
-
-            List<Guid> weightCategoryIdentifiers = itemsToMatch.OfType<DataItemWeightCategory>().Select(i => i.Identifier).ToList();
-            existingItems.AddRange(LoadWeightCategoriesByIdentifiers(weightCategoryIdentifiers.ToArray()));
-
-            List<Guid> yearIdentifiers = itemsToMatch.OfType<DataItemYear>().Select(i => i.Identifier).ToList();
-            existingItems.AddRange(LoadYearsByIdentifiers(yearIdentifiers.ToArray()));
-
-            return existingItems;
-        }
-
         public DataItemYear[] GetYears()
         {
             return LoadYears();
@@ -1908,11 +2004,11 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return LoadHasManyOldMegaItems();
         }
 
-        public static BaseDataItem[] GenerateNewDefaultClass(AccountDataItem account, Guid semesterId, string name, byte[] rawColor)
+        public static BaseDataItem[] GenerateNewDefaultClass(AccountDataItem account, Guid semesterId, Guid newClassId, string name, byte[] rawColor, Guid newWeightId)
         {
             DataItemClass c = new DataItemClass()
             {
-                Identifier = Guid.NewGuid(),
+                Identifier = newClassId,
                 UpperIdentifier = semesterId,
                 Credits = Grade.NO_CREDITS,
                 DoesRoundGradesUp = account.DefaultDoesRoundGradesUp,
@@ -1923,16 +2019,16 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             
             c.SetGradeScales(account.DefaultGradeScale);
 
-            DataItemWeightCategory weight = CreateDefaultWeightCategory(c.Identifier);
+            DataItemWeightCategory weight = CreateDefaultWeightCategory(classIdentifier: c.Identifier, newWeightId: newWeightId);
 
             return new BaseDataItem[] { c, weight };
         }
 
-        public static DataItemWeightCategory CreateDefaultWeightCategory(Guid classIdentifier)
+        public static DataItemWeightCategory CreateDefaultWeightCategory(Guid classIdentifier, Guid newWeightId)
         {
             return new DataItemWeightCategory()
             {
-                Identifier = Guid.NewGuid(),
+                Identifier = newWeightId,
                 Name = PowerPlannerResources.GetString("WeightCategory_AllGrades"),
                 WeightValue = 100,
                 UpperIdentifier = classIdentifier

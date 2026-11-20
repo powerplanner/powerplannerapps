@@ -420,6 +420,25 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
                 else
                 {
+                    // Niche case...
+                    // If the username was changed from another device, the existing local account still has the old username
+                    // and wouldn't have matched by username. Reuse it rather than creating a duplicate local account
+                    // for the same online account.
+                    var existingAccount = await AccountsManager.GetOrLoadOnlineAccount(resp.AccountId);
+                    if (existingAccount != null)
+                    {
+                        existingAccount.Username = username;
+                        existingAccount.LocalToken = resp.LocalToken;
+                        existingAccount.Token = resp.Token;
+                        // Note that we do NOT change the device ID. Technically a new device ID was created on the server, but there's no need for the new device ID.
+                        await AccountsManager.Save(existingAccount);
+
+                        TelemetryExtension.Current?.TrackEvent("LoggedInToExistingAccountWithNewUsername");
+
+                        ToMainPage(existingAccount);
+                        return;
+                    }
+
                     SyncedSettings syncedSettings = AuthSyncedSettingsMapper.Convert(resp.Settings);
 
                     AccountDataItem account = await CreateAccount(username, resp.LocalToken, resp.Token, resp.AccountId, resp.DeviceId, syncedSettings, resp.DefaultGradeScaleIndex);

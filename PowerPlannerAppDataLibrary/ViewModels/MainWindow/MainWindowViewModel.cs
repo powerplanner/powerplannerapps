@@ -148,9 +148,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             }
         }
 
-        public void ShowPopupUpdateCredentials(AccountDataItem account, UpdateCredentialsType updateType)
+        public void ShowPopupUpdateCredentials(AccountDataItem account, UpdateCredentialsViewModel.UpdateTypes updateType)
         {
-            // TODO
+            var mainScreen = GetMainScreenViewModel();
+            if (mainScreen != null)
+            {
+                mainScreen.ShowPopupUpdateCredentials(account, updateType);
+            }
         }
 
         private static SimpleAsyncWorkerQueue _normalLaunchActivationWorkerQueue = new SimpleAsyncWorkerQueue();

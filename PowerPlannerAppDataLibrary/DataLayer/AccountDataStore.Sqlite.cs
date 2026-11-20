@@ -24,16 +24,82 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         private const string YearColumns = "Identifier, DateCreated, Updated, UpperIdentifier, Name, OverriddenGPA, OverriddenCredits, Details, ImageNames";
         private const string WeightCategoryColumns = "Identifier, DateCreated, Updated, UpperIdentifier, Name, WeightValue, Details, ImageNames";
 
+        private const string TABLE_MEGAITEM = "DataItemMegaItem";
+        private const string TABLE_GRADE = "DataItemGrade";
+        private const string TABLE_SCHEDULE = "DataItemSchedule";
+        private const string TABLE_CLASS = "DataItemClass";
+        private const string TABLE_SEMESTER = "DataItemSemester";
+        private const string TABLE_YEAR = "DataItemYear";
+        private const string TABLE_WEIGHTCATEGORY = "DataItemWeightCategory";
+
         private static readonly string[] Tables =
         [
-            "DataItemMegaItem",
-            "DataItemGrade",
-            "DataItemSchedule",
-            "DataItemClass",
-            "DataItemSemester",
-            "DataItemYear",
-            "DataItemWeightCategory"
+            TABLE_MEGAITEM,
+            TABLE_GRADE,
+            TABLE_SCHEDULE,
+            TABLE_CLASS,
+            TABLE_SEMESTER,
+            TABLE_YEAR,
+            TABLE_WEIGHTCATEGORY
         ];
+
+        private static string GetTableForDataItem(BaseDataItem item)
+        {
+            switch (item)
+            {
+                case DataItemMegaItem:
+                    return TABLE_MEGAITEM;
+                case DataItemGrade:
+                    return TABLE_GRADE;
+                case DataItemSchedule:
+                    return TABLE_SCHEDULE;
+                case DataItemClass:
+                    return TABLE_CLASS;
+                case DataItemSemester:
+                    return TABLE_SEMESTER;
+                case DataItemYear:
+                    return TABLE_YEAR;
+                case DataItemWeightCategory:
+                    return TABLE_WEIGHTCATEGORY;
+                default:
+                    throw new InvalidOperationException();
+            }
+        }
+
+        private static string[] GetChildTablesOfTable(string table)
+        {
+            switch (table)
+            {
+                case TABLE_MEGAITEM:
+                    return [];
+                case TABLE_GRADE:
+                    return [];
+                case TABLE_SCHEDULE:
+                    return [];
+                case TABLE_CLASS:
+                    return [TABLE_MEGAITEM, TABLE_SCHEDULE, TABLE_WEIGHTCATEGORY];
+                case TABLE_SEMESTER:
+                    return [TABLE_CLASS, TABLE_MEGAITEM];
+                case TABLE_YEAR:
+                    return [TABLE_SEMESTER];
+                case TABLE_WEIGHTCATEGORY:
+                    return [TABLE_GRADE];
+
+                default:
+                    throw new InvalidOperationException();
+            }
+        }
+
+        private static List<string> GetDescendantTablesOfTable(string table)
+        {
+            List<string> answer = [];
+            foreach (var child in GetChildTablesOfTable(table))
+            {
+                answer.Add(child);
+                answer.AddRange(GetDescendantTablesOfTable(child));
+            }
+            return answer;
+        }
 
         private void CreateSchema()
         {
@@ -609,6 +675,71 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 return [];
             }
             return _db.Query<WeightCategoryRow>(SELECT_WEIGHT_CATEGORIES + " WHERE " + InStatemet("UpperIdentifier", upperIdentifiers), transaction: transaction).Select(ToEntity).ToArray();
+        }
+
+        private bool MatchesExistingIdentifiers(Guid[] identifiersToLookFor)
+        {
+            if (identifiersToLookFor.Length == 0)
+            {
+                return false;
+            }
+
+            string query = "WITH TargetIds(Identifier) AS ( VALUES " + string.Join(",", identifiersToLookFor.Select(i => "('" + i.ToString() + "')")) + " )";
+
+            var tableQueries = Tables.Select(t => $"EXISTS (SELECT 1 FROM {t} WHERE Identifier IN (SELECT Identifier FROM TargetIds))");
+
+            query += "\n\nSELECT\n\t" + string.Join("\n\tOR ", tableQueries) + "\nAS FoundMatch;";
+
+            return _db.ExecuteScalar<long>(query) == 1;
+        }
+
+        private void RemapIdentifier(BaseDataItem item, Guid newIdentifier, ChangedItems changedItems)
+        {
+            string tableName = GetTableForDataItem(item);
+            var existingChildrenIds = LoadAllIdentifiersThatAreChildren([item.Identifier]);
+
+            var updated = _db.Execute($"UPDATE {tableName} SET Identifier = @NewIdentifier WHERE Identifier = @OldIdentifier", new
+            {
+                OldIdentifier = item.Identifier.ToString(),
+                NewIdentifier = newIdentifier.ToString()
+            });
+
+            // And flag this as a new item
+            changedItems.AddNewItem(newIdentifier);
+
+            // Update children's UpperIdentifier
+            foreach (var childTableName in GetChildTablesOfTable(tableName))
+            {
+                int count = _db.Execute($"UPDATE {childTableName} SET UpperIdentifier = @NewIdentifier WHERE UpperIdentifier = @OldIdentifier", new
+                {
+                    OldIdentifier = item.Identifier.ToString(),
+                    NewIdentifier = newIdentifier.ToString()
+                });
+            }
+
+            // And flag those children as edited in the changed items
+            foreach (var existingChildId in existingChildrenIds)
+            {
+                changedItems.AddEditedItem(existingChildId, [BaseDataItem.SyncPropertyNames.UpperIdentifier]);
+            }
+
+            // If we remapped a WeightCategory, we also need to update any MegaItem that referred to it
+            if (tableName == TABLE_WEIGHTCATEGORY)
+            {
+                var existingMegaItems = LoadGradedMegaItems().Where(i => i.WeightCategoryIdentifier == item.Identifier).ToArray();
+
+                _db.Execute($"UPDATE {TABLE_MEGAITEM} SET WeightCategoryIdentifier = @NewIdentifier WHERE WeightCategoryIdentifier = @OldIdentifier", new
+                {
+                    OldIdentifier = item.Identifier.ToString(),
+                    NewIdentifier = newIdentifier.ToString()
+                });
+
+                // Flag those mega items as edited in the changed items
+                foreach (var existingMegaItem in existingMegaItems)
+                {
+                    changedItems.AddEditedItem(existingMegaItem.Identifier, [BaseDataItem.SyncPropertyNames.WeightCategoryIdentifier]);
+                }
+            }
         }
 
         private void UpsertItem(BaseDataItem item, SqliteTransaction transaction = null)

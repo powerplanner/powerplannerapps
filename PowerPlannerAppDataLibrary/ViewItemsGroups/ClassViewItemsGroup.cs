@@ -163,7 +163,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 TelemetryExtension.Current?.TrackEvent("Error_ClassMissingWeightCategoryAddingDefault");
 
                 DataChanges changes = new DataLayer.DataChanges();
-                changes.Add(AccountDataStore.CreateDefaultWeightCategory(this.Class.Identifier));
+                changes.Add(AccountDataStore.CreateDefaultWeightCategory(this.Class.Identifier, await PowerPlannerApp.Current.NewGuidForCurrentAccountAsync()));
 
                 await PowerPlannerApp.Current.SaveChanges(changes);
             }

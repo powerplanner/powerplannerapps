@@ -159,6 +159,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 string username = Username.Trim();
                 string password = Password;
 
+                // Another local account might already have this username (for example, if the user has an
+                // offline account with the same username as an online account)
+                var conflicting = (await AccountsManager.GetAllAccounts()).FirstOrDefault(i =>
+                    i.LocalAccountId != Account.LocalAccountId
+                    && string.Equals(i.Username, username, StringComparison.CurrentCultureIgnoreCase));
+
+                if (conflicting != null)
+                {
+                    SetError("An account with this username already exists on this device. Please log out and log into that existing account.");
+                    return;
+                }
+
                 if (UpdateType == UpdateTypes.NoDevice)
                 {
                     var resp = await PowerPlannerAuth.AddDeviceAsync(
@@ -172,6 +184,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     }
 
                     // Set their new device ID and token
+                    Account.Username = username;
                     Account.DeviceId = resp.DeviceId;
                     Account.LocalToken = resp.LocalToken;
                     Account.Token = resp.Token;

@@ -173,7 +173,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     };
 
                 else
-                    year = new DataItemYear() { Identifier = Guid.NewGuid() };
+                    year = new DataItemYear() { Identifier = await PowerPlannerApp.Current.NewGuidForCurrentAccountAsync() };
 
                 year.Name = name;
                 year.Details = Details.Trim();

@@ -477,6 +477,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 int partialSyncNumber = 0;
                 IFolder partialSyncsFolder = null;
                 List<IFile> partialSyncFiles = null;
+                HashSet<Guid> conflictingIdentifiers = new HashSet<Guid>(); // Identifiers that existed on the server, that we tried creating new items for
 
                 do
                 {
@@ -540,7 +541,24 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     if (response.UpdateErrors != null && response.UpdateErrors.Count > 0)
                     {
                         foreach (var updateError in response.UpdateErrors)
-                            answer.UpdateErrors.Add(new SyncError("Update Item Error", updateError.ToString()));
+                        {
+                            switch (updateError.SqlErrorNumber)
+                            {
+                                // Means this device had an old ChangeNumber and tried to edit an item that another device had already edited.
+                                case 998:
+                                    // We do nothing, since the server item will replace our local item anyways.
+                                    break;
+
+                                // Means this device tried to insert an item with a duplicate identifier.
+                                case 2627:
+                                    conflictingIdentifiers.Add(updateError.Identifier);
+                                    break;
+
+                                default:
+                                    answer.UpdateErrors.Add(new SyncError("Update Item Error", updateError.ToString()));
+                                    break;
+                            }
+                        }
 
                         Debug.WriteLine("Had " + response.UpdateErrors.Count + " UpdateErrors");
                     }
@@ -650,7 +668,20 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                 } while (true);
 
-                // Mark our items as sent
+                // Need to handle conflicting identifiers BEFORE we save any items from the server,
+                // because if the server had a new ID that matches our local ID, we don't want to wipe out our local ID.
+                if (conflictingIdentifiers.Any())
+                {
+                    TelemetryExtension.Current?.TrackEvent("Sync_HandlingConfictFromLocalItem", new Dictionary<string, string>()
+                    {
+                        { "Count", conflictingIdentifiers.Count.ToString() }
+                    });
+
+                    // This flags those items as Changed
+                    await accountDataStore.CreateNewIdentifiersForDataItemsAsync(conflictingIdentifiers);
+                }
+
+                // Mark our previous items as sent
                 await accountDataStore.ClearSyncing();
 
                 // Create changes so we can process the sync changes.
@@ -699,6 +730,10 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                             if (saveChangesTask.NeedsAccountToBeSaved)
                             {
                                 answer.SaveChangesTask.NeedsAccountToBeSaved = true;
+                            }
+                            if (saveChangesTask.NeedsRestart)
+                            {
+                                answer.SaveChangesTask.NeedsRestart = true;
                             }
                         }
                     }
@@ -814,6 +849,16 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                 // Log when last synced
                 account.LastSyncOn = DateTime.Now;
+
+                // If we had conflicting identifiers, we need to relaunch the app, since too many views and classes would have stale IDs
+                // This should be a RARE case.
+                if (conflictingIdentifiers.Any() || answer.SaveChangesTask.NeedsRestart)
+                {
+                    return new SyncResult
+                    {
+                        Error = "RelaunchNeeded"
+                    };
+                }
 
                 if (isBatchingUpdates && answer.Error == null)
                 {
