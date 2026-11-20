@@ -672,7 +672,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 // because if the server had a new ID that matches our local ID, we don't want to wipe out our local ID.
                 if (conflictingIdentifiers.Any())
                 {
-                    TelemetryExtension.Current?.TrackEvent("Sync_HandlingConfictingIdentifiers", new Dictionary<string, string>()
+                    TelemetryExtension.Current?.TrackEvent("Sync_HandlingConfictFromLocalItem", new Dictionary<string, string>()
                     {
                         { "Count", conflictingIdentifiers.Count.ToString() }
                     });
@@ -730,6 +730,10 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                             if (saveChangesTask.NeedsAccountToBeSaved)
                             {
                                 answer.SaveChangesTask.NeedsAccountToBeSaved = true;
+                            }
+                            if (saveChangesTask.NeedsRestart)
+                            {
+                                answer.SaveChangesTask.NeedsRestart = true;
                             }
                         }
                     }
@@ -848,7 +852,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                 // If we had conflicting identifiers, we need to relaunch the app, since too many views and classes would have stale IDs
                 // This should be a RARE case.
-                if (conflictingIdentifiers.Any())
+                if (conflictingIdentifiers.Any() || answer.SaveChangesTask.NeedsRestart)
                 {
                     return new SyncResult
                     {

@@ -107,6 +107,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         public System.Threading.Tasks.Task UpdateRemindersTask { get; internal set; }
 
         public bool NeedsAccountToBeSaved { get; internal set; }
+        public bool NeedsRestart { get; internal set; }
 
         public AccountDataItem Account { get; internal set; }
 
@@ -1308,6 +1309,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                     var commitChangesResponse = await CommitChanges(account, dataChanges, processType);
 
                     pendingTasks.NeedsAccountToBeSaved = commitChangesResponse.NeedsAccountToBeSaved;
+                    pendingTasks.NeedsRestart = commitChangesResponse.NeedsRestart;
                 }
             });
 
@@ -1360,6 +1362,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         private class CommitChangesResponse
         {
             public bool NeedsAccountToBeSaved { get; set; }
+            public bool NeedsRestart { get; set; }
         }
 
         private async System.Threading.Tasks.Task<CommitChangesResponse> CommitChanges(AccountDataItem account, DataChanges dataChanges, ProcessType processType)
@@ -1381,7 +1384,38 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
             // Obtain the existing data items (whichever match)
             var timeTracker = TimeTracker.Start();
-            List<BaseDataItem> existingDataItems = GetExistingItems(dataChanges.EditedItems);
+            List<BaseDataItem> existingDataItems = FindAll(dataChanges.EditedItems.Select(i => i.Identifier).ToArray()).ToList();
+
+            // If we have existing item that matches an incoming item but it's a different item type, we have a conflict
+            var conflictingExistingItems = existingDataItems.Where(existing => dataChanges.EditedItems.Any(edited => edited.Identifier == existing.Identifier && edited.ItemType != existing.ItemType)).ToArray();
+            bool needsRestart = false;
+
+            if (conflictingExistingItems.Length > 0)
+            {
+                if (processType == ProcessType.Local)
+                {
+                    // For local, we'll just throw, since this theoretically shouldn't happen since we check identifiers first
+                    throw new InvalidOperationException("Duplicate identifier");
+                }
+                else
+                {
+                    // For online, we need to rename the existing local items
+                    TelemetryExtension.Current?.TrackEvent("Sync_HandlingConfictFromOnlineItem", new Dictionary<string, string>()
+                    {
+                        { "Count", conflictingExistingItems.Length.ToString() }
+                    });
+
+                    var conflictChangedItems = await ChangedItems.Load(this);
+                    Stack<Guid> newIds = new Stack<Guid>(GenerateUniqueGuids(conflictingExistingItems.Length));
+                    foreach (var existing in conflictingExistingItems)
+                    {
+                        RemapIdentifier(existing, newIds.Pop(), conflictChangedItems);
+                    }
+                    await conflictChangedItems.Save();
+                    needsRestart = true;
+                }
+            }
+
             timeTracker.End(3, delegate { return $"CommitChanges GetExistingItems, {dataChanges.EditedItems.Count()} edited items"; });
 
             // Whichever didn't exist will be new items
@@ -1482,7 +1516,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 }
             }
 
-            if (DataChangedEvent != null)
+            if (DataChangedEvent != null && !needsRestart)
             {
                 timeTracker = TimeTracker.Start();
 
@@ -1498,11 +1532,15 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 timeTracker.End(3, "CommitChanges sending out DataChangedEvent");
             }
 
-            NotifyDataChangedEventHandlers(dataChangedEvent);
+            if (!needsRestart)
+            {
+                NotifyDataChangedEventHandlers(dataChangedEvent);
+            }
 
             return new CommitChangesResponse()
             {
-                NeedsAccountToBeSaved = needsSave
+                NeedsAccountToBeSaved = needsSave,
+                NeedsRestart = needsRestart
             };
         }
 
@@ -1809,34 +1847,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 _db.Execute("DELETE FROM DataItemYear WHERE " + InStatemet("Identifier", years.Select(i => i.Identifier)), transaction: transaction);
             }
-        }
-
-        private List<BaseDataItem> GetExistingItems(IEnumerable<BaseDataItem> itemsToMatch)
-        {
-            List<BaseDataItem> existingItems = new List<BaseDataItem>();
-
-            List<Guid> classIdentifiers = itemsToMatch.OfType<DataItemClass>().Select(i => i.Identifier).ToList();
-            existingItems.AddRange(LoadClassesByIdentifiers(classIdentifiers.ToArray()));
-
-            List<Guid> gradeIdentifiers = itemsToMatch.OfType<DataItemGrade>().Select(i => i.Identifier).ToList();
-            existingItems.AddRange(LoadGradesByIdentifiers(gradeIdentifiers.ToArray()));
-
-            Guid[] megaItemIdentifiers = itemsToMatch.OfType<DataItemMegaItem>().Select(i => i.Identifier).ToArray();
-            existingItems.AddRange(LoadMegaItemsByIdentifiers(megaItemIdentifiers));
-
-            List<Guid> scheduleIdentifiers = itemsToMatch.OfType<DataItemSchedule>().Select(i => i.Identifier).ToList();
-            existingItems.AddRange(LoadSchedulesByIdentifiers(scheduleIdentifiers.ToArray()));
-
-            List<Guid> semesterIdentifiers = itemsToMatch.OfType<DataItemSemester>().Select(i => i.Identifier).ToList();
-            existingItems.AddRange(LoadSemestersByIdentifiers(semesterIdentifiers.ToArray()));
-
-            List<Guid> weightCategoryIdentifiers = itemsToMatch.OfType<DataItemWeightCategory>().Select(i => i.Identifier).ToList();
-            existingItems.AddRange(LoadWeightCategoriesByIdentifiers(weightCategoryIdentifiers.ToArray()));
-
-            List<Guid> yearIdentifiers = itemsToMatch.OfType<DataItemYear>().Select(i => i.Identifier).ToList();
-            existingItems.AddRange(LoadYearsByIdentifiers(yearIdentifiers.ToArray()));
-
-            return existingItems;
         }
 
         public DataItemYear[] GetYears()

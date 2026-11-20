@@ -318,6 +318,19 @@ namespace PowerPlannerAppDataLibrary.App
             return SaveChanges(account, changes);
         }
 
+        public void RestartApp(AccountDataItem account, bool sync = true)
+        {
+            PowerPlannerApp.ClearViewCaches();
+
+            foreach (var mainWindow in Windows.OfType<MainAppWindow>())
+            {
+                mainWindow.Dispatcher.Run(async delegate
+                {
+                    mainWindow.GetViewModel()?.HandleNormalLaunchActivation(sync: sync);
+                });
+            }
+        }
+
         public async System.Threading.Tasks.Task SaveChanges(AccountDataItem account, DataChanges changes, bool waitForSaveAndSyncTasks = false)
         {
             if (account == null)
@@ -329,6 +342,13 @@ namespace PowerPlannerAppDataLibrary.App
 
             var dataStore = await AccountDataStore.Get(account.LocalAccountId);
             var saveChangeTasks = await dataStore.ProcessLocalChanges(changes);
+
+            if (saveChangeTasks.NeedsRestart)
+            {
+                RestartApp(account);
+                return;
+            }
+
             System.Threading.Tasks.Task<SyncResult> syncTask = null;
 
             // Don't await this, we don't want it blocking

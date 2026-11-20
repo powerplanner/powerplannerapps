@@ -715,7 +715,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                     OldIdentifier = item.Identifier.ToString(),
                     NewIdentifier = newIdentifier.ToString()
                 });
-                System.Diagnostics.Debug.WriteLine(count);
             }
 
             // And flag those children as edited in the changed items
