@@ -1529,7 +1529,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                             return;
                         }
 
-                        bulkEntry.Add(CreateDataItem(currDate));
+                        bulkEntry.Add(CreateDataItem(currDate, Guid.Empty)); // Temporarily set to empty, then we'll intiialize them
+                    }
+
+                    // Initialze the unique identifiers
+                    var newGuids = await PowerPlannerApp.Current.NewGuidsForCurrentAccountAsync(bulkEntry.Count);
+                    for (int i = 0; i < bulkEntry.Count; i++)
+                    {
+                        bulkEntry[i].Identifier = newGuids[i];
                     }
                 }
 
@@ -1574,7 +1581,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 // Otherwise not repeating, create item as normal
                 else
                 {
-                    dataItem = CreateDataItem(Date.Date);
+                    Guid identifier = AddParams != null || CloneParams != null ? await PowerPlannerApp.Current.NewGuidForCurrentAccountAsync() : EditParams.Item.Identifier;
+                    dataItem = CreateDataItem(Date.Date, identifier);
                     changes.Add(dataItem);
                 }
 
@@ -1785,7 +1793,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             }
         }
 
-        private DataItemMegaItem CreateDataItem(DateTime date)
+        private DataItemMegaItem CreateDataItem(DateTime date, Guid identifier)
         {
             DataItemMegaItem dataItem = new DataItemMegaItem();
 
@@ -1817,16 +1825,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     throw new NotImplementedException("Unknown type");
             }
 
-            if (AddParams != null || CloneParams != null)
-            {
-                dataItem.Identifier = Guid.NewGuid();
-            }
-
-            else
-            {
-                dataItem.Identifier = EditParams.Item.Identifier;
-            }
-
+            dataItem.Identifier = identifier;
             dataItem.Name = Name.Text.Trim();
             dataItem.Date = DateTime.SpecifyKind(date, DateTimeKind.Utc).Date;
 

@@ -431,7 +431,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                     {
                         BaseDataItemHomeworkExamGrade g;
                         if (State == OperationState.Adding)
-                            g = new DataItemGrade() { Identifier = Guid.NewGuid() };
+                            g = new DataItemGrade() { Identifier = await PowerPlannerApp.Current.NewGuidForCurrentAccountAsync() };
                         else
                         {
                             g = _editingGrade.CreateBlankDataItem();

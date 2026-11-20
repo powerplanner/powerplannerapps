@@ -204,7 +204,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday
                 else if (AddParams != null)
                     holiday = new DataItemMegaItem()
                     {
-                        Identifier = Guid.NewGuid(),
+                        Identifier = await PowerPlannerApp.Current.NewGuidForCurrentAccountAsync(),
                         UpperIdentifier = AddParams.SemesterIdentifier,
                         MegaItemType = PowerPlannerSending.MegaItemType.Holiday
                     };

@@ -1574,9 +1574,35 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         }
 
         /// <summary>
+        /// Asynchronously generates the specified number of unique GUID values.
+        /// </summary>
+        /// <param name="count">The number of GUID values to generate.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains an array of unique GUID values.</returns>
+        public async Task<Guid[]> GenerateUniqueGuidsAsync(int count)
+        {
+            using (await Locks.LockDataForReadAsync())
+            {
+                return GenerateUniqueGuids(count);
+            }
+        }
+
+        /// <summary>
         /// Caller should establish lock. Generates an array of unique GUID values that aren't present locally.
         /// </summary>
         private Guid[] GenerateUniqueGuids(int count)
+        {
+            Guid[] answer;
+
+            do
+            {
+                answer = GenerateUniqueGuidsWithoutCheckingDb(count);
+                // Repeat if we find any existing items with those GUIDs
+            } while (MatchesExistingIdentifiers(answer));
+
+            return answer;
+        }
+
+        public static Guid[] GenerateUniqueGuidsWithoutCheckingDb(int count)
         {
             Guid[] answer = new Guid[count];
 
@@ -1588,8 +1614,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                     answer[i] = Guid.NewGuid();
                 }
 
-                // Repeat if we find any existing items with those GUIDs
-            } while (FindAll(answer).Any());
+                // Repeat if we didn't produce all distinct GUIDs
+            } while (answer.Distinct().Count() != count);
 
             return answer;
         }
@@ -1956,11 +1982,11 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return LoadHasManyOldMegaItems();
         }
 
-        public static BaseDataItem[] GenerateNewDefaultClass(AccountDataItem account, Guid semesterId, string name, byte[] rawColor)
+        public static BaseDataItem[] GenerateNewDefaultClass(AccountDataItem account, Guid semesterId, Guid newClassId, string name, byte[] rawColor, Guid newWeightId)
         {
             DataItemClass c = new DataItemClass()
             {
-                Identifier = Guid.NewGuid(),
+                Identifier = newClassId,
                 UpperIdentifier = semesterId,
                 Credits = Grade.NO_CREDITS,
                 DoesRoundGradesUp = account.DefaultDoesRoundGradesUp,
@@ -1971,16 +1997,16 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             
             c.SetGradeScales(account.DefaultGradeScale);
 
-            DataItemWeightCategory weight = CreateDefaultWeightCategory(c.Identifier);
+            DataItemWeightCategory weight = CreateDefaultWeightCategory(classIdentifier: c.Identifier, newWeightId: newWeightId);
 
             return new BaseDataItem[] { c, weight };
         }
 
-        public static DataItemWeightCategory CreateDefaultWeightCategory(Guid classIdentifier)
+        public static DataItemWeightCategory CreateDefaultWeightCategory(Guid classIdentifier, Guid newWeightId)
         {
             return new DataItemWeightCategory()
             {
-                Identifier = Guid.NewGuid(),
+                Identifier = newWeightId,
                 Name = PowerPlannerResources.GetString("WeightCategory_AllGrades"),
                 WeightValue = 100,
                 UpperIdentifier = classIdentifier

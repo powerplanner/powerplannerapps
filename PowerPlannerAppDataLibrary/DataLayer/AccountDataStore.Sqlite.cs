@@ -677,6 +677,22 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return _db.Query<WeightCategoryRow>(SELECT_WEIGHT_CATEGORIES + " WHERE " + InStatemet("UpperIdentifier", upperIdentifiers), transaction: transaction).Select(ToEntity).ToArray();
         }
 
+        private bool MatchesExistingIdentifiers(Guid[] identifiersToLookFor)
+        {
+            if (identifiersToLookFor.Length == 0)
+            {
+                return false;
+            }
+
+            string query = "WITH TargetIds(Identifier) AS ( VALUES " + string.Join(",", identifiersToLookFor.Select(i => "('" + i.ToString() + "')")) + " )";
+
+            var tableQueries = Tables.Select(t => $"EXISTS (SELECT 1 FROM {t} WHERE Identifier IN (SELECT Identifier FROM TargetIds))");
+
+            query += "\n\nSELECT\n\t" + string.Join("\n\tOR ", tableQueries) + "\nAS FoundMatch;";
+
+            return _db.ExecuteScalar<long>(query) == 1;
+        }
+
         private void RemapIdentifier(BaseDataItem item, Guid newIdentifier, ChangedItems changedItems)
         {
             string tableName = GetTableForDataItem(item);

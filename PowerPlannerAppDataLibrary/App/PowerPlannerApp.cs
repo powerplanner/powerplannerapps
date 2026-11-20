@@ -294,6 +294,23 @@ namespace PowerPlannerAppDataLibrary.App
             return (GetCurrentWindow() as MainAppWindow)?.GetCurrentAccount();
         }
 
+        public async Task<Guid> NewGuidForCurrentAccountAsync()
+        {
+            return (await NewGuidsForCurrentAccountAsync(1))[0];
+        }
+
+        public async Task<Guid[]> NewGuidsForCurrentAccountAsync(int count)
+        {
+            var account = GetCurrentAccount();
+            if (account == null)
+            {
+                throw new NullReferenceException("account was null. Windows: " + Windows.Count);
+            }
+
+            var dataStore = await AccountDataStore.Get(account.LocalAccountId);
+            return await dataStore.GenerateUniqueGuidsAsync(count);
+        }
+
         public System.Threading.Tasks.Task SaveChanges(DataChanges changes)
         {
             var account = GetCurrentAccount();

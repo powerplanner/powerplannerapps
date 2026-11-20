@@ -317,7 +317,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         if (semesterId == Guid.Empty)
                             throw new ArgumentException("CurrentSemesterId was empty");
 
-                        var newItems = AccountDataStore.GenerateNewDefaultClass(MainScreenViewModel.CurrentAccount, semesterId, name, Color);
+                        Guid[] newGuids = await PowerPlannerApp.Current.NewGuidsForCurrentAccountAsync(2);
+
+                        var newItems = AccountDataStore.GenerateNewDefaultClass(
+                            account: MainScreenViewModel.CurrentAccount,
+                            semesterId: semesterId,
+                            newClassId: newGuids[0],
+                            name: name,
+                            rawColor: Color,
+                            newWeightId: newGuids[1]);
 
                         PopulateClassInfo(newItems.OfType<DataItemClass>().First());
 

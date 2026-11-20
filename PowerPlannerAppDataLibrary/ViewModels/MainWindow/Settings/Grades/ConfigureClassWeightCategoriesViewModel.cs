@@ -238,6 +238,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     }
                 }
 
+                int newWeightsCount = newWeights.Count(w => !Class.WeightCategories.Any(i => i.Identifier == w.Identifier));
+                Stack<Guid> newWeightIds = newWeightsCount == 0 ? [] : new(await PowerPlannerApp.Current.NewGuidsForCurrentAccountAsync(newWeightsCount));
+
                 //and now process the new/changed weights
                 foreach (EditingWeightCategoryViewModel changed in newWeights)
                 {
@@ -253,7 +256,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     {
                         w = new DataItemWeightCategory()
                         {
-                            Identifier = Guid.NewGuid(),
+                            Identifier = newWeightIds.Pop(),
                             UpperIdentifier = Class.Identifier
                         };
 

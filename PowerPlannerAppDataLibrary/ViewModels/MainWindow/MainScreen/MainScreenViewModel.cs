@@ -1751,22 +1751,29 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         /// <param name="item">The task or event being duplicated</param>
         /// <param name="date">The date the task or event should be copied to. Defaults to same date as item</param>
         /// <param name="weightCategoryIdentifier">The weight the task or event should be copied to. Defaults to same weight as item</param>
-        public void DuplicateTaskOrEvent(ViewItemTaskOrEvent item, DateTime? date = null, Guid? weightCategoryIdentifier = null, Guid? classIdentifier = null)
+        public async void DuplicateTaskOrEvent(ViewItemTaskOrEvent item, DateTime? date = null, Guid? weightCategoryIdentifier = null, Guid? classIdentifier = null)
         {
-            DataChanges changes = new DataChanges();
-            DateTime now = DateTime.UtcNow;
+            try
+            {
+                DataChanges changes = new DataChanges();
+                DateTime now = DateTime.UtcNow;
 
-            DataItemMegaItem copiedDataItem = (DataItemMegaItem)item.DataItem.Clone();
-            copiedDataItem.Identifier = Guid.NewGuid(); // Create new Guid
-            copiedDataItem.DateCreated = now;   // The copy was created now
-            copiedDataItem.Updated = now;       // The copy was created now
-            copiedDataItem.Date = date ?? copiedDataItem.Date;  // If date is defined, set it
-            copiedDataItem.WeightCategoryIdentifier = weightCategoryIdentifier ?? copiedDataItem.WeightCategoryIdentifier; // If weight is defined, set it
-            copiedDataItem.UpperIdentifier = classIdentifier ?? copiedDataItem.UpperIdentifier; // If class is defined, set it
+                DataItemMegaItem copiedDataItem = (DataItemMegaItem)item.DataItem.Clone();
+                copiedDataItem.Identifier = await PowerPlannerApp.Current.NewGuidForCurrentAccountAsync(); // Create new Guid
+                copiedDataItem.DateCreated = now;   // The copy was created now
+                copiedDataItem.Updated = now;       // The copy was created now
+                copiedDataItem.Date = date ?? copiedDataItem.Date;  // If date is defined, set it
+                copiedDataItem.WeightCategoryIdentifier = weightCategoryIdentifier ?? copiedDataItem.WeightCategoryIdentifier; // If weight is defined, set it
+                copiedDataItem.UpperIdentifier = classIdentifier ?? copiedDataItem.UpperIdentifier; // If class is defined, set it
 
-            changes.Add(copiedDataItem);
+                changes.Add(copiedDataItem);
 
-            PowerPlannerApp.Current.SaveChanges(changes);
+                await PowerPlannerApp.Current.SaveChanges(changes);
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
         }
 
         /// /// <summary>
@@ -1775,21 +1782,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         /// <param name="item">The grade being duplicated</param>
         /// <param name="date">The date the grade should be copied to. Defaults to same date as item</param>
         /// <param name="weightCategoryIdentifier">The weight the grade should be copied to. Defaults to same weight as item</param>
-        public void DuplicateGrade(ViewItemGrade item, DateTime? date = null, Guid? weightCategoryIdentifier = null)
+        public async void DuplicateGrade(ViewItemGrade item, DateTime? date = null, Guid? weightCategoryIdentifier = null)
         {
-            DataChanges changes = new DataChanges();
-            DateTime now = DateTime.UtcNow;
+            try
+            {
+                DataChanges changes = new DataChanges();
+                DateTime now = DateTime.UtcNow;
 
-            DataItemGrade copiedDataItem = (DataItemGrade)item.DataItem.Clone();
-            copiedDataItem.Identifier = Guid.NewGuid(); // Create new Guid
-            copiedDataItem.DateCreated = now;   // The copy was created now
-            copiedDataItem.Updated = now;       // The copy was created now
-            copiedDataItem.Date = date ?? copiedDataItem.Date;  // If date is defined, set it
-            copiedDataItem.UpperIdentifier = weightCategoryIdentifier ?? copiedDataItem.UpperIdentifier; // If weight is defined, set it
+                DataItemGrade copiedDataItem = (DataItemGrade)item.DataItem.Clone();
+                copiedDataItem.Identifier = await PowerPlannerApp.Current.NewGuidForCurrentAccountAsync(); // Create new Guid
+                copiedDataItem.DateCreated = now;   // The copy was created now
+                copiedDataItem.Updated = now;       // The copy was created now
+                copiedDataItem.Date = date ?? copiedDataItem.Date;  // If date is defined, set it
+                copiedDataItem.UpperIdentifier = weightCategoryIdentifier ?? copiedDataItem.UpperIdentifier; // If weight is defined, set it
 
-            changes.Add(copiedDataItem);
+                changes.Add(copiedDataItem);
 
-            PowerPlannerApp.Current.SaveChanges(changes);
+                await PowerPlannerApp.Current.SaveChanges(changes);
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
         }
 
         public async void ConvertTaskOrEventType(ViewItemTaskOrEvent item, BaseViewModel viewModel = null)

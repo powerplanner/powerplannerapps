@@ -53,7 +53,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     PlaceholderText = PowerPlannerResources.GetString("EditSemesterPage_TextBoxName.PlaceholderText"),
                     Text = VxValue.Create(Name, v => Name = v),
                     AutoFocus = true,
-                    OnSubmit = Save
+                    OnSubmit = () => _ = Save()
                 },
 
                 // Year picker (for when copying semester)
@@ -200,7 +200,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
         {
             State = state;
 
-            PrimaryCommand = PopupCommand.Save(Save);
+            PrimaryCommand = PopupCommand.Save(() => _ = Save());
 
             switch (state)
             {
@@ -301,7 +301,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             set => SetProperty(ref _details, value, nameof(Details));
         }
 
-        public void Save()
+        public async Task Save()
         {
             string name = Name;
 
@@ -320,6 +320,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
             DataItemSemester semester;
 
+            Stack<Guid> newIdsForCopying = [];
+            if (State == OperationState.Copying)
+            {
+                int count = 1;
+                foreach (var c in _copySelectedClasses)
+                {
+                    count++;
+                    count += c.Schedules.Count;
+                    count += c.WeightCategories.Count;
+                }
+
+                newIdsForCopying = new(await PowerPlannerApp.Current.NewGuidsForCurrentAccountAsync(count));
+            }
+
             if (SemesterToEdit != null)
                 semester = new DataItemSemester()
                 {
@@ -329,7 +343,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             else if (AddParams != null)
                 semester = new DataItemSemester()
                 {
-                    Identifier = Guid.NewGuid(),
+                    Identifier = await PowerPlannerApp.Current.NewGuidForCurrentAccountAsync(),
                     UpperIdentifier = AddParams.YearIdentifier
                 };
 
@@ -337,7 +351,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             {
                 semester = new DataItemSemester
                 {
-                    Identifier = Guid.NewGuid(),
+                    Identifier = newIdsForCopying.Pop(),
                     UpperIdentifier = _copySelectedYear.Value.Identifier
                 };
             }
@@ -396,7 +410,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     {
                         var dataC = new DataItemClass
                         {
-                            Identifier = Guid.NewGuid(),
+                            Identifier = newIdsForCopying.Pop(),
                             UpperIdentifier = semester.Identifier,
                             Name = c.Name,
                             Credits = c.Credits,
@@ -414,7 +428,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                         {
                             changes.Add(new DataItemWeightCategory
                             {
-                                Identifier = Guid.NewGuid(),
+                                Identifier = newIdsForCopying.Pop(),
                                 UpperIdentifier = dataC.Identifier,
                                 Name = w.Name,
                                 WeightValue = w.WeightValue
@@ -425,7 +439,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                         {
                             changes.Add(new DataItemSchedule
                             {
-                                Identifier = Guid.NewGuid(),
+                                Identifier = newIdsForCopying.Pop(),
                                 UpperIdentifier = dataC.Identifier,
                                 DayOfWeek = s.DayOfWeek,
                                 StartTime = s.DataItem.StartTime,

@@ -324,11 +324,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         private async System.Threading.Tasks.Task ActuallySaveClassesAsync(GenerateClassesResponse response)
         {
+            int totalNewItems = (response.Classes.Count * 2) + response.Classes.SelectMany(i => i.Schedules).Count();
+
+            Stack<Guid> newIds = new(await PowerPlannerApp.Current.NewGuidsForCurrentAccountAsync(totalNewItems));
+
             DataChanges changes = new DataChanges();
 
             foreach (var c in response.Classes)
             {
-                var classChanges = AccountDataStore.GenerateNewDefaultClass(_scheduleViewModel.Account, _scheduleViewModel.SemesterViewItemsGroup.Semester.Identifier, c.Name, c.Color);
+                var classChanges = AccountDataStore.GenerateNewDefaultClass(
+                    account: _scheduleViewModel.Account,
+                    semesterId: _scheduleViewModel.SemesterViewItemsGroup.Semester.Identifier,
+                    newClassId: newIds.Pop(),
+                    name: c.Name,
+                    rawColor: c.Color,
+                    newWeightId: newIds.Pop());
                 var dataItemC = classChanges.OfType<DataItemClass>().First();
 
                 foreach (var change in classChanges)
@@ -340,7 +350,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 {
                     DataItemSchedule dataItemS = new DataItemSchedule()
                     {
-                        Identifier = Guid.NewGuid(),
+                        Identifier = newIds.Pop(),
                         UpperIdentifier = dataItemC.Identifier,
                         StartTime = AsUtc(s.StartTime),
                         EndTime = AsUtc(s.EndTime),

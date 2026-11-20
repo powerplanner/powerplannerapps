@@ -970,7 +970,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
                         DataItemSchedule dataItem = new DataItemSchedule()
                         {
-                            Identifier = existingSchedule != null ? existingSchedule.Identifier : Guid.NewGuid(),
+                            Identifier = existingSchedule != null ? existingSchedule.Identifier : Guid.Empty, // Temporarily use Empty, then we'll initialize it
                             UpperIdentifier = classId,
                             StartTime = AsUtc(g.StartTime),
                             EndTime = AsUtc(g.EndTime),
@@ -981,6 +981,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                         };
 
                         updatedAndNewSchedules.Add(dataItem);
+                    }
+
+                    int newSchedules = updatedAndNewSchedules.Count(i => i.Identifier == Guid.Empty);
+                    if (newSchedules > 0)
+                    {
+                        Stack<Guid> newIds = new(await PowerPlannerApp.Current.NewGuidsForCurrentAccountAsync(newSchedules));
+                        foreach (var newSchedule in updatedAndNewSchedules.Where(i => i.Identifier == Guid.Empty))
+                        {
+                            newSchedule.Identifier = newIds.Pop();
+                        }
                     }
                 }
 
