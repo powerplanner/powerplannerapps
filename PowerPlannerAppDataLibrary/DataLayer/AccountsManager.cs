@@ -575,11 +575,23 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             await ValidateUsernameAsync(username);
 
             var allAccounts = await GetAllAccounts();
+            int attempt = 1;
             Guid newLocalAccountId;
             do
             {
+                if (attempt > 10)
+                {
+                    TelemetryExtension.Current?.TrackEvent("FailedGeneratingNewLocalAccountGuid", new Dictionary<string, string>()
+                    {
+                        { "Attempt", attempt.ToString() }
+                    });
+                    throw new StackOverflowException("Failed generating new local account GUID");
+                }
+
                 newLocalAccountId = Guid.NewGuid();
-            } while (!allAccounts.Any(i => i.LocalAccountId == newLocalAccountId));
+
+                attempt++;
+            } while (allAccounts.Any(i => i.LocalAccountId == newLocalAccountId));
 
             // Initialize data
             AccountDataItem account = new AccountDataItem(newLocalAccountId)

@@ -1630,10 +1630,22 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         private Guid[] GenerateUniqueGuids(int count)
         {
             Guid[] answer;
+            int attempts = 1;
 
             do
             {
+                if (attempts > 10)
+                {
+                    TelemetryExtension.Current.TrackEvent("CouldntGenerateUniqueGuids", new Dictionary<string, string>
+                    {
+                        { "Count", count.ToString() }
+                    });
+                    throw new StackOverflowException("Couldn't generate unique GUIDs");
+                }
+
                 answer = GenerateUniqueGuidsWithoutCheckingDb(count);
+
+                attempts++;
                 // Repeat if we find any existing items with those GUIDs
             } while (MatchesExistingIdentifiers(answer));
 
