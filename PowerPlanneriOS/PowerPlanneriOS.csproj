@@ -16,11 +16,15 @@
   <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
     <None Remove="Info.plist" />
     <None Include="Info-Mac.plist" Link="Info.plist" />
+    <!-- Pre-rounded, full-resolution (16-1024px) icon for macOS 25 and earlier. actool's auto-generated fallback only goes up to 256px -->
+    <None Include="AppIconLegacy.icns" />
   </ItemGroup>
   <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
     <SupportedOSPlatformVersion>17.0</SupportedOSPlatformVersion>
     <CodeSignEntitlements>Entitlements-Mac.plist</CodeSignEntitlements>
     <MTouchLink>SdkOnly</MTouchLink>
+    <!-- Icon Composer icon: macOS 26+ applies the rounded shape; actool also generates a pre-rounded fallback icns for older macOS -->
+    <AppIcon>AppIcon</AppIcon>
     <!-- The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
          When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifer>.
          The App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
@@ -30,6 +34,10 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <UseInterpreter>true</UseInterpreter>
   </PropertyGroup>
+  <!-- Replace actool's 256px-max fallback icns with the full-resolution one (still named AppIcon.icns, matching the CFBundleIconFile actool writes) -->
+  <Target Name="UseFullResolutionLegacyIcon" AfterTargets="_CopyResourcesToBundle" Condition="'$(TargetPlatformIdentifier)' == 'maccatalyst'">
+    <Copy SourceFiles="AppIconLegacy.icns" DestinationFiles="$(_AppResourcesPath)AppIcon.icns" />
+  </Target>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <MtouchInterpreter>-all</MtouchInterpreter>
   </PropertyGroup>

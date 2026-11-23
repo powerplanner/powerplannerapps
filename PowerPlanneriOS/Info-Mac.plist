@@ -9,7 +9,7 @@
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.education</string>
     <key>CFBundleIconName</key>
-    <string>AppIcons</string>
+    <string>AppIcon</string>
     <key>CFBundleIdentifier</key>
     <string>com.barebonesdev.powerplanner.dev</string>
     <key>CFBundleShortVersionString</key>
@@ -35,8 +35,7 @@
         <string>UIInterfaceOrientationLandscapeLeft</string>
         <string>UIInterfaceOrientationLandscapeRight</string>
     </array>
-    <key>XSAppIconAssets</key>
-    <string>Resources/Images.xcassets/AppIcons.appiconset</string><key>ITSAppUsesNonExemptEncryption</key>
+    <key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UIBackgroundModes</key>
 	<array>
