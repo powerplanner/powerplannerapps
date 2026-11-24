@@ -7,6 +7,8 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
 		<SatelliteResourceLanguages>en;ar;de;es;fr;it;pt</SatelliteResourceLanguages> <!--Need to be specified so trimming doesn't remove these languages-->
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <!-- Icon Composer icon (AppIcon.icon). Used on iOS/macOS 26+; actool generates a lower-resolution fallback for older OS versions (and Mac uses AppIconLegacy.icns instead) -->
+    <AppIcon>AppIcon</AppIcon>
   </PropertyGroup>
   <ItemGroup>
     <!--Info.plist files are supposed to have Build action of None -->
@@ -23,8 +25,6 @@
     <SupportedOSPlatformVersion>17.0</SupportedOSPlatformVersion>
     <CodeSignEntitlements>Entitlements-Mac.plist</CodeSignEntitlements>
     <MTouchLink>SdkOnly</MTouchLink>
-    <!-- Icon Composer icon: macOS 26+ applies the rounded shape; actool also generates a pre-rounded fallback icns for older macOS -->
-    <AppIcon>AppIcon</AppIcon>
     <!-- The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
          When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifer>.
          The App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
@@ -87,45 +87,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76%402x.png">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76%402x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%401x.png">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%401x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-60x60%401x.png">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-60x60%401x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40%401x.png">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40%401x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76%403x.png">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76%403x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-83.5x83.5%402x.png">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-83.5x83.5%402x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%403x.png">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%403x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40%402x.png">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40%402x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-60x60%403x.png">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-60x60%403x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-60x60%402x.png">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-60x60%402x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76%401x.png">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76%401x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40%403x.png">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40%403x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%402x.png">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%402x.png</Link>
-    </ImageAsset>
     <ImageAsset Update="Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon%403x.png">
       <Link>Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon%403x.png</Link>
     </ImageAsset>
