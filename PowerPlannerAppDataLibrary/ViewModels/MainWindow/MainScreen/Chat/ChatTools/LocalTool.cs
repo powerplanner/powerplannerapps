@@ -1,8 +1,12 @@
 ﻿using Microsoft.Extensions.AI;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Schema;
 using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
 using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatViewModel;
@@ -80,12 +84,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 
         public ChatTurnTool ToChatTurnTool()
         {
+            var context = new LocalToolJsonContext(new JsonSerializerOptions()
+            {
+                RespectNullableAnnotations = true
+            });
+            var options = context.Options;
+
             return new ChatTurnTool
             {
                 Name = Name,
                 Description = Description,
-                ParametersSchema = AIJsonUtilities.CreateJsonSchema(ParametersType, serializerOptions: (JsonSerializerOptions)LocalToolJsonContext.Default.Options),
-                ReturnSchema = ReturnType != null ? AIJsonUtilities.CreateJsonSchema(ReturnType, serializerOptions: (JsonSerializerOptions)LocalToolJsonContext.Default.Options) : null
+                ParametersSchema = AIJsonUtilities.CreateJsonSchema(ParametersType, serializerOptions: options),
+                ReturnSchema = ReturnType != null ? AIJsonUtilities.CreateJsonSchema(ReturnType, serializerOptions: options) : null
             };
         }
     }

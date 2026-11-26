@@ -9,12 +9,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 {
     [JsonSourceGenerationOptions(
             PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
+            PropertyNameCaseInsensitive = true,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             UseStringEnumConverter = true)]
-    [JsonSerializable(typeof(NavigateToPageTool.Parameters))]
+    [JsonSerializable(typeof(NavigateToPageToolParameters))]
     [JsonSerializable(typeof(Dictionary<string, JsonElement>))]
     [JsonSerializable(typeof(BlankParams))]
     [JsonSerializable(typeof(List<ChatClassItem>))]
+    [JsonSerializable(typeof(AddClassesToolParameters))]
     internal partial class LocalToolJsonContext : JsonSerializerContext
     {
 

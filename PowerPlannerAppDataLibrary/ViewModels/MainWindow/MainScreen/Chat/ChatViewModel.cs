@@ -51,7 +51,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             LocalTools =
             [
                 new NavigateToPageTool(MainScreenViewModel),
-                new GetClassesTool(MainScreenViewModel)
+                new GetClassesTool(MainScreenViewModel),
+                new AddClassesTool(MainScreenViewModel)
             ];
         }
 

@@ -8,25 +8,25 @@ using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.Ch
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatTools
 {
-    internal class NavigateToPageTool : LocalTool<NavigateToPageTool.Parameters>
+    public class NavigateToPageToolParameters
+    {
+        [JsonPropertyName("page")]
+        [Description("The page to navigate to.")]
+        public required ChatPageType Page { get; set; }
+    }
+
+    internal class NavigateToPageTool : LocalTool<NavigateToPageToolParameters>
     {
         public override string Name => "navigate_to_page";
         public override string Description => "Navigates to the specified page.";
         private MainScreenViewModel _mainScreenViewModel;
-
-        public class Parameters
-        {
-            [JsonPropertyName("page")]
-            [Description("The page to navigate to.")]
-            public required ChatPageType Page { get; set; }
-        }
 
         public NavigateToPageTool(MainScreenViewModel mainScreenViewModel)
         {
             _mainScreenViewModel = mainScreenViewModel;
         }
 
-        public override Task InvokeAsync(Parameters parameters)
+        public override Task InvokeAsync(NavigateToPageToolParameters parameters)
         {
             throw new NotImplementedException();
         }
