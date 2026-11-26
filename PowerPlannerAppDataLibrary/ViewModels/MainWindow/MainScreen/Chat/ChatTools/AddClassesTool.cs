@@ -1,5 +1,6 @@
 ﻿using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatItemTypes;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using ToolsPortable;
 using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatTools.AddClassesTool;
 using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatViewModel;
 
@@ -39,6 +41,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 
             [Description("Optional details (free-form user-visible text) for the class.")]
             public string Details { get; set; }
+
+            [Description("Optional: Credits the class is worth, or leave null if no credits assigned.")]
+            public double? Credits { get; set; }
+
+            [Description("Optional start date of the class, if it starts later than the semester itself.")]
+            public DateOnly? StartDate { get; set; }
+
+            [Description("Optional end date of the class, if it ends earlier than the semester itself.")]
+            public DateOnly? EndDate { get; set; }
         }
     }
 
@@ -74,9 +85,36 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
                     account: _mainScreenViewModel.CurrentAccount,
                     semesterId: _mainScreenViewModel.CurrentSemesterId,
                     newClassId: newIdsStack.Pop(),
-                    name: c.Name,
+                    name: c.Name.Trim(),
                     rawColor: ClassValidator.GetColor(c.Color),
                     newWeightId: newIdsStack.Pop());
+
+                var newClass = classChanges[0] as DataItemClass;
+                if (c.Credits != null)
+                {
+                    newClass.Credits = c.Credits.Value;
+                }
+                if (!string.IsNullOrWhiteSpace(c.Details))
+                {
+                    newClass.Details = c.Details.Trim();
+                }
+                if (c.StartDate != null)
+                {
+                    newClass.StartDate = DateTime.SpecifyKind(c.StartDate.Value.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc);
+                    if (!SqlDate.IsValid(newClass.StartDate))
+                    {
+                        throw new ArgumentException($"Start date {c.StartDate} is not valid for SQL Server.");
+                    }
+                }
+
+                if (c.EndDate != null)
+                {
+                    newClass.EndDate = DateTime.SpecifyKind(c.EndDate.Value.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc);
+                    if (!SqlDate.IsValid(newClass.EndDate))
+                    {
+                        throw new ArgumentException($"End date {c.EndDate} is not valid for SQL Server.");
+                    }
+                }
 
                 foreach (var change in classChanges)
                 {
