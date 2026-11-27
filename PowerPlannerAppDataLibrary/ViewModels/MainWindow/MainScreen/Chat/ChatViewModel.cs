@@ -54,6 +54,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             [
                 new NavigateToPageTool(MainScreenViewModel),
                 new GetClassesTool(MainScreenViewModel),
+                new GetTasksAndEventsTool(MainScreenViewModel),
 
                 // Add classes
                 new AddClassesTool(MainScreenViewModel)
@@ -63,6 +64,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
 
                 // Edit classes
                 new AddOrEditItemsTool<AddOrEditClassDataItem>(MainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Edit
+                },
+
+                // Add tasks
+                new AddOrEditItemsTool<AddOrEditTaskDataItem>(MainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Add
+                },
+
+                // Edit tasks
+                new AddOrEditItemsTool<AddOrEditTaskDataItem>(MainScreenViewModel)
                 {
                     Mode = AddOrEditMode.Edit
                 },
@@ -272,6 +285,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 - CurrentSemesterIdentifier: {_semester.Identifier}
                 - CurrentPage: calendar
                 - CurrentOpenMonth: {_displayMonth.ToString("yyyy-MM")}
+                - CurrentDateTime: {DateTime.Now.ToString("yyyy-MM-ddTHH:mm")}
                 - Current classes in the semester ({_classes.Count}):
                 """;
 
