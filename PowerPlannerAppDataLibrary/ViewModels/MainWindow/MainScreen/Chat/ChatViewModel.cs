@@ -146,7 +146,33 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 });
             }
 
-            bool isSendButtonActive = _state.HasInput && !_state.IsLoading && !needsToolCallApproval;
+            bool canSend = _state.HasInput && !_state.IsLoading && !needsToolCallApproval;
+            bool canCancel = _state.IsLoading || needsToolCallApproval;
+
+            var sendButton = new Border
+            {
+                BackgroundColor = canCancel ? Theme.Current.BackgroundAlt1Color : canSend ? Theme.Current.AccentColor : Theme.Current.AccentColor.Opacity(0.8),
+                CornerRadius = 6,
+                Margin = new Thickness(12, 0, 0, 0),
+                Content = new FontIcon
+                {
+                    Glyph = canCancel ? MaterialDesign.MaterialDesignIcons.Cancel : MaterialDesign.MaterialDesignIcons.Send,
+                    Color = canCancel ? Theme.Current.ForegroundColor : canSend ? System.Drawing.Color.White : System.Drawing.Color.White.Opacity(0.8),
+                    FontSize = 18,
+                    Margin = new Thickness(6)
+                },
+                Tapped = () =>
+                {
+                    if (canCancel)
+                    {
+                        _state.Cancel();
+                    }
+                    else
+                    {
+                        _state.SendMessage();
+                    }
+                }
+            };
 
             return new LinearLayout
             {
@@ -173,20 +199,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                                 IsEnabled = _state.IsLoading == false
                             }.LinearLayoutWeight(1),
 
-                             new Border
-                            {
-                                BackgroundColor = isSendButtonActive ? Theme.Current.AccentColor : Theme.Current.AccentColor.Opacity(0.8),
-                                CornerRadius = 6,
-                                Margin = new Thickness(12, 0, 0, 0),
-                                Content = new FontIcon
-                                {
-                                    Glyph = MaterialDesign.MaterialDesignIcons.Send,
-                                    Color = isSendButtonActive ? System.Drawing.Color.White : System.Drawing.Color.White.Opacity(0.8),
-                                    FontSize = 18,
-                                    Margin = new Thickness(6)
-                                },
-                                Tapped = _state.SendMessage
-                            }
+                            sendButton
                         }
                     }
                 }

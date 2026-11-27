@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 using ToolsPortable;
 using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatViewModelState;
@@ -25,6 +26,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
         public ObservableCollection<ChatMessage> Messages { get; private init; } = new([new ChatMessage(ChatRole.Assistant, "How can I help you today?")]);
 
         public string CurrentInput { get; private set; }
+
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         public void SetCurrentInputSilently(string value)
         {
@@ -206,6 +209,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             ];
         }
 
+        public void Cancel()
+        {
+            _cancellationTokenSource.Cancel();
+        }
+
         internal LocalTool GetLocalTool(string toolName)
         {
             return LocalTools.FirstOrDefault(i => i.Name.Equals(toolName, StringComparison.OrdinalIgnoreCase));
@@ -235,7 +243,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
 
             try
             {
-                await SendMessageAndHandleResponseAsync();
+                _cancellationTokenSource = new CancellationTokenSource();
+                await SendMessageAndHandleResponseAsync(_cancellationTokenSource.Token);
+            }
+            catch (OperationCanceledException)
+            {
             }
             catch (Exception ex)
             {
@@ -249,13 +261,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
 
         private LocalTool[] LocalTools;
 
-        private async Task SendMessageAndHandleResponseAsync()
+        private async Task SendMessageAndHandleResponseAsync(CancellationToken cancellationToken)
         {
-            var response = await GetResponseAsync();
-            await HandleResponseAsync(response);
+            var response = await GetResponseAsync(cancellationToken);
+            await HandleResponseAsync(response, cancellationToken);
         }
 
-        private async Task HandleResponseAsync(ChatTurnResponse response)
+        private async Task HandleResponseAsync(ChatTurnResponse response, CancellationToken cancellationToken)
         {
             if (response.Messages != null)
             {
@@ -266,12 +278,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                     Messages.Add(m);
                 }
 
-                await HandleToolCallsAsync(toolCalls);
+                await HandleToolCallsAsync(toolCalls, cancellationToken);
 
                 // If we had tool calls, we need to repeat the cycle now that we've responded to them
                 if (toolCalls.Any())
                 {
-                    await SendMessageAndHandleResponseAsync();
+                    await SendMessageAndHandleResponseAsync(cancellationToken);
                 }
             }
         }
@@ -285,31 +297,53 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
         /// <param name="functionCalls">The function calls to evaluate for local approval requirements and immediate execution.</param>
         /// <returns><see langword="true"/> when all calls were handled immediately; <see langword="false"/> when one or more
         /// calls were deferred for approval.</returns>
-        private async Task HandleToolCallsAsync(FunctionCallContent[] functionCalls)
+        private async Task HandleToolCallsAsync(FunctionCallContent[] functionCalls, CancellationToken cancellationToken)
         {
             foreach (var call in functionCalls)
             {
                 var localTool = GetLocalTool(call.Name);
                 if (localTool != null && localTool.RequiresApproval)
                 {
-                    if (!await RequestApprovalAsync(call))
+                    try
                     {
-                        AddToolCallResponse(call.CallId, "Denied by the user.");
+                        if (!await RequestApprovalAsync(call, cancellationToken))
+                        {
+                            AddToolCallResponse(call.CallId, "Error: User denied the operation.");
+                            return;
+                        }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        AddToolCallResponse(call.CallId, "Error: User cancelled the operation.");
                         return;
                     }
                 }
 
-                await HandleToolCallAsync(call);
+                await HandleToolCallAsync(call, cancellationToken);
             }
         }
 
         private Dictionary<string, TaskCompletionSource<bool>> _pendingApprovalRequests = new Dictionary<string, TaskCompletionSource<bool>>();
 
-        private Task<bool> RequestApprovalAsync(FunctionCallContent functionCall)
+        private Task<bool> RequestApprovalAsync(FunctionCallContent functionCall, CancellationToken cancellationToken)
         {
             var taskCompletionSource = new TaskCompletionSource<bool>();
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return Task.FromCanceled<bool>(cancellationToken);
+            }
+
             _pendingApprovalRequests[functionCall.CallId] = taskCompletionSource;
             OnPropertyChanged("PendingApprovalRequests");
+
+            var registration = cancellationToken.Register(() =>
+            {
+                _pendingApprovalRequests.Remove(functionCall.CallId);
+                taskCompletionSource.TrySetCanceled(cancellationToken);
+                OnPropertyChanged("PendingApprovalRequests");
+            });
+            taskCompletionSource.Task.ContinueWith(_ => registration.Dispose(), TaskScheduler.Default);
+
             return taskCompletionSource.Task;
         }
 
@@ -328,7 +362,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             }
         }
 
-        private async Task HandleToolCallAsync(FunctionCallContent functionCall)
+        private async Task HandleToolCallAsync(FunctionCallContent functionCall, CancellationToken cancellationToken)
         {
             var localTool = GetLocalTool(functionCall.Name);
             if (localTool != null)
@@ -336,7 +370,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 try
                 {
                     object result = await localTool.InvokeWithResultAsync(functionCall.Arguments);
-                    AddToolCallResponse(functionCall.CallId, result);
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        AddToolCallResponse(functionCall.CallId, "Error: User cancelled the operation.");
+                    }
+                    else
+                    { 
+                        AddToolCallResponse(functionCall.CallId, result);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -359,7 +400,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             Messages.Add(chatMessage);
         }
 
-        private async Task<ChatTurnResponse> GetResponseAsync()
+        private async Task<ChatTurnResponse> GetResponseAsync(CancellationToken cancellationToken)
         {
             var systemContextMessage = new ChatMessage(ChatRole.System, $"""
                 You are Power Planner's AI assistant.
@@ -400,9 +441,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             var httpRequest = new HttpRequestMessage(HttpMethod.Post, TurnUrl);
             httpRequest.Content = content;
 
-            var response = await _httpClient.SendAsync(httpRequest);
+            var response = await _httpClient.SendAsync(httpRequest, cancellationToken);
             response.EnsureSuccessStatusCode();
-            var responseJson = await response.Content.ReadAsStringAsync();
+            var responseJson = await response.Content.ReadAsStringAsync(cancellationToken);
             var result = JsonSerializer.Deserialize(responseJson, ChatTurnJsonContext.Default.ChatTurnResponse);
             return result;
         }
