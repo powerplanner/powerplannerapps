@@ -40,7 +40,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
     public partial class MainScreenViewModel : PagedViewModelWithPopups
     {
-        private ChatViewModel _chatViewModel;
+        private ChatViewModelState _chatViewModelState;
 
         protected override View Render()
         {
@@ -1733,15 +1733,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
         public void ShowChat()
         {
-            if (_chatViewModel == null)
+            if (_chatViewModelState == null)
             {
-                _chatViewModel = new ChatViewModel(this);
+                _chatViewModelState = new ChatViewModelState(this);
             }
 
-            if (!Popups.Any(i => i == _chatViewModel))
-            {
-                ShowPopup(_chatViewModel);
-            }
+            ShowPopup(new ChatViewModel(this, _chatViewModelState));
         }
 
         public void ShowItem(ViewItemTaskOrEvent item)

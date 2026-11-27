@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatViewModel;
+using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatViewModelState;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatTools
 {
