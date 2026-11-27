@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatDataTypes
 {
@@ -10,7 +11,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
     {
         public override string DataTypeName => "classes";
 
-        protected override ChatDataTypeProperty[] GetProperties()
+        protected override BaseAddOrEditDataItemProperty[] GetProperties()
         {
             return
             [
@@ -55,6 +56,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
                     RequireNonEmptyStringIfSet = true,
+                    RequireSingleLineIfSet = true,
                     Apply = (dataItem, value) =>
                     {
                         if (string.IsNullOrWhiteSpace(value))
@@ -78,6 +80,69 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
                     Apply = (dataItem, value) =>
                     {
                         dataItem.RawColor = [value.R, value.G, value.B];
+                    }
+                },
+
+                new Property<DateOnly>
+                {
+                    Name = "StartDate",
+                    Description = "The start date of the class. To clear the start date, send " + DateOnly.MinValue.ToString("yyyy-MM-dd") + ".",
+                    WhenAdding = PropertyPresence.Optional,
+                    WhenEditing = PropertyPresence.Optional,
+                    Apply = (dataItem, value) =>
+                    {
+                        if (value == DateOnly.MinValue)
+                        {
+                            dataItem.StartDate = PowerPlannerSending.DateValues.UNASSIGNED;
+                        }
+                        else
+                        {
+                            dataItem.StartDate = DateTime.SpecifyKind(value.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc);
+                            if (!SqlDate.IsValid(dataItem.StartDate))
+                            {
+                                throw new ArgumentException("Start date is out of range for SQL DateTime.");
+                            }
+                        }
+                    }
+                },
+
+                new Property<DateOnly>
+                {
+                    Name = "EndDate",
+                    Description = "The end date of the class. To clear the end date, send " + DateOnly.MinValue.ToString("yyyy-MM-dd") + ".",
+                    WhenAdding = PropertyPresence.Optional,
+                    WhenEditing = PropertyPresence.Optional,
+                    Apply = (dataItem, value) =>
+                    {
+                        if (value == DateOnly.MinValue)
+                        {
+                            dataItem.EndDate = PowerPlannerSending.DateValues.UNASSIGNED;
+                        }
+                        else
+                        {
+                            dataItem.EndDate = DateTime.SpecifyKind(value.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc);
+                            if (!SqlDate.IsValid(dataItem.EndDate))
+                            {
+                                throw new ArgumentException("End date is out of range for SQL DateTime.");
+                            }
+                        }
+                    }
+                },
+
+                new Property<double>
+                {
+                    Name = "Credits",
+                    Description = "The credits the class is worth. If no credits are assigned, send -1.",
+                    WhenAdding = PropertyPresence.Optional,
+                    WhenEditing = PropertyPresence.Optional,
+                    Apply = (dataItem, value) =>
+                    {
+                        if (value < -1)
+                        {
+                            throw new ArgumentException("Credits cannot be less than -1.");
+                        }
+
+                        dataItem.Credits = value;
                     }
                 }
             ];

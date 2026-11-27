@@ -8,7 +8,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
     internal class AddOrEditTaskDataItem : BaseAddOrEditDataItem<DataItemMegaItem>
     {
         public override string DataTypeName => "tasks";
-        protected override ChatDataTypeProperty[] GetProperties()
+        protected override BaseAddOrEditDataItemProperty[] GetProperties()
         {
             return
             [
@@ -46,6 +46,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
                     WhenEditing = PropertyPresence.Optional,
                     MaxLength = 200,
                     RequireNonEmptyStringIfSet = true,
+                    RequireSingleLineIfSet = true,
                     Apply = (dataItem, value) =>
                     {
                         dataItem.Name = value;

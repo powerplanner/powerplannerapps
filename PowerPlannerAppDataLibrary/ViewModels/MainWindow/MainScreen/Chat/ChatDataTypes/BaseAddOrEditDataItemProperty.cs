@@ -9,27 +9,7 @@ using System.Text.Json;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatDataTypes
 {
-    internal class ChatAddOrEditDataTypes
-    {
-    }
-
-    internal class ChatAddOrEditDataType<T> : ChatAddOrEditDataType where T : BaseDataItem
-    {
-        public void ApplyToDataItem(T dataItem)
-        {
-            //foreach (var property in Properties)
-            //{
-            //    property.Apply(dataItem);
-            //}
-        }
-    }
-
-    internal class ChatAddOrEditDataType
-    {
-        public required ChatDataTypeProperty[] Properties { get; set; }
-    }
-
-    internal abstract class ChatDataTypeProperty
+    internal abstract class BaseAddOrEditDataItemProperty
     {
         public required string Name { get; set; }
         public required string Description { get; set; }
@@ -43,6 +23,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
         public int? MaxLength { get; set; }
         public bool RequireNonDefaultValueIfSet { get; set; }
         public bool RequireNonEmptyStringIfSet { get; set; }
+        public bool RequireSingleLineIfSet { get; set; }
         public abstract Dictionary<string, string> GetJsonSchemaTypeProperties();
         public abstract void SetValue(JsonElement value);
         public abstract bool HasSetValue { get; }
@@ -56,7 +37,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
         NotPresent
     }
 
-    internal class ChatDataTypeProperty<D, T> : ChatDataTypeProperty where D : BaseDataItem
+    internal class BaseAddOrEditDataItemProperty<D, T> : BaseAddOrEditDataItemProperty where D : BaseDataItem
     {
         override public Type Type => typeof(T);
         public Func<T, bool> Validator { get; set; }
@@ -143,6 +124,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
                 if (RequireNonEmptyStringIfSet && string.IsNullOrWhiteSpace(Value as string))
                 {
                     throw new ArgumentException($"Value for property '{Name}' must be a non-empty string when it is being specified.");
+                }
+                if (RequireSingleLineIfSet && Value is string singleLineValue && (singleLineValue.Contains('\n') || singleLineValue.Contains('\r')))
+                {
+                    throw new ArgumentException($"Value for property '{Name}' must be a single line string when it is being specified.");
                 }
             }
             else if (typeof(T) == typeof(int))

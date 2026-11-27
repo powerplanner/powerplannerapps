@@ -10,7 +10,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 {
     internal abstract class BaseAddOrEditDataItem<D> : BaseAddOrEditDataItem where D : BaseDataItem, new()
     {
-        public class Property<T> : ChatDataTypeProperty<D, T>
+        public class Property<T> : BaseAddOrEditDataItemProperty<D, T>
         {
 
         }
@@ -53,9 +53,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
         /// </summary>
         public abstract string DataTypeName { get; }
 
-        public ChatDataTypeProperty[] Properties { get; private set; }
+        public BaseAddOrEditDataItemProperty[] Properties { get; private set; }
 
-        protected abstract ChatDataTypeProperty[] GetProperties();
+        protected abstract BaseAddOrEditDataItemProperty[] GetProperties();
 
         public BaseAddOrEditDataItem()
         {

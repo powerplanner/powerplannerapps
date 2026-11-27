@@ -258,8 +258,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
         private async Task<ChatTurnResponse> GetResponseAsync()
         {
             var systemContextMessage = new ChatMessage(ChatRole.System, $"""
-                You are Power Planner's AI assistant. Power Planner is the ultimate homework planner for students. The user has our local app open. You have access to the user's class schedule and semester information. Use this information to provide helpful responses to the user's queries about their classes, assignments, and schedule. Be concise and clear in your responses. Stay focused on the user's schedule and avoid providing unrelated information. If the user asks for advice or suggestions, provide them based on their current schedule and classes. Always be polite and professional in your responses.
+                You are Power Planner's AI assistant. Power Planner is the ultimate homework planner for students. The user has our local app open. You have access to the user's class schedule and semester information. Use this information to provide helpful responses to the user's queries about their classes, assignments, and schedule. Be concise and clear in your responses. Stay focused on the user's schedule and avoid providing unrelated information. If the user asks for advice or suggestions, provide them based on their current schedule and classes. Always be polite and professional in your responses. If the tools aren't available to help with the user's request, respond with a clear message indicating that you cannot assist with that request.
                 """);
+
+            var contextMessage = $"""
+                Current app state:
+                - CurrentSemesterIdentifier: {_semester.Identifier}
+                - CurrentPage: calendar
+                - CurrentOpenMonth: {_displayMonth.ToString("yyyy-MM")}
+                - Current classes in the semester ({_classes.Count}):
+                """;
+
+            foreach (var c in MainScreenViewModel.Classes)
+            {
+                contextMessage += $"\n  - Class: \"{c.Name}\", Identifier: {c.Identifier}";
+            }
 
             var currentContextMessage = new ChatMessage(ChatRole.System, $"""
                 Current app state:
