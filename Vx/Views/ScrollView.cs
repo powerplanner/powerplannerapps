@@ -20,5 +20,7 @@ namespace Vx.Views
         public float MaximumZoomScale { get; set; } = 1.0f;
 
         public float MinimumZoomScale { get; set; } = 1.0f;
+
+        public bool ScrollToBottomWhenContentHeightChanges { get; set; } = false;
     }
 }

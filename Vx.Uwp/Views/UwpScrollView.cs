@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToolsPortable;
 using Vx.Views;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Vx.Uwp.Views
@@ -26,8 +28,40 @@ namespace Vx.Uwp.Views
 
             VxReconciler.Reconcile(oldView?.Content, newView.Content, view =>
             {
-                View.Content = view?.CreateFrameworkElement();
+                if (View.Content is FrameworkElement oldContent)
+                {
+                    oldContent.SizeChanged -= ContentFwEl_SizeChanged;
+                }
+
+                var contentFwEl = view?.CreateFrameworkElement();
+                View.Content = contentFwEl;
+
+                if (VxView.ScrollToBottomWhenContentHeightChanges && contentFwEl != null)
+                {
+                    contentFwEl.SizeChanged += ContentFwEl_SizeChanged;
+                }
             });
+
+            if (newView.ScrollToBottomWhenContentHeightChanges)
+            {
+                View.ScrollToVerticalOffset(double.MaxValue);
+            }
+        }
+
+        private double _prevHeight;
+        private void ContentFwEl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            try
+            {
+                var prevHeight = _prevHeight;
+                _prevHeight = e.NewSize.Height;
+
+                if (e.NewSize.Height > prevHeight)
+                {
+                    View.ScrollToVerticalOffset(double.MaxValue);
+                }
+            }
+            catch { }
         }
     }
 }

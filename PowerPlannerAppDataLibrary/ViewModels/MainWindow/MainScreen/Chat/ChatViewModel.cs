@@ -171,7 +171,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 {
                     new ScrollView
                     {
-                        Content = renderedMessages
+                        Content = renderedMessages,
+                        ScrollToBottomWhenContentHeightChanges = true
                     }.LinearLayoutWeight(1),
 
                     new LinearLayout
