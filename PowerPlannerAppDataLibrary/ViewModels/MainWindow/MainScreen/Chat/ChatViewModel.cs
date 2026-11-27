@@ -1,24 +1,7 @@
-﻿using BareMvvm.Core.ViewModels;
-using Microsoft.Extensions.AI;
-using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+﻿using Microsoft.Extensions.AI;
 using PowerPlannerAppDataLibrary.Helpers;
-using PowerPlannerAppDataLibrary.Services;
-using PowerPlannerAppDataLibrary.ViewItems;
-using PowerPlannerAppDataLibrary.ViewItemsGroups;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatDataTypes;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatTools;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-using System.Text.Json.Serialization.Metadata;
-using System.Threading.Tasks;
-using ToolsPortable;
 using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
@@ -197,7 +180,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                         Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 12, Theme.Current.PageMargin + NookInsets.Right, Theme.Current.PageMargin + NookInsets.Bottom),
                         Children =
                         {
-                            new TextBox
+                            new MultilineTextBox
                             {
                                 PlaceholderText = "Type your message...",
                                 Text = new VxValue<string>(_state.CurrentInput, v => _state.SetCurrentInputSilently(v)),

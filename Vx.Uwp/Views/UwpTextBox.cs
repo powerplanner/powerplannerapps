@@ -6,7 +6,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
+using Vx.Views;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -22,14 +24,28 @@ namespace Vx.Uwp.Views
             View.NativeTextBox.LostFocus += NativeTextBox_LostFocus;
             View.NativeTextBox.GotFocus += NativeTextBox_GotFocus;
             View.Loaded += View_Loaded;
-            View.EnterPressed += View_EnterPressed;
+            View.PreviewKeyDown += View_PreviewKeyDown;
         }
 
-        private void View_EnterPressed(object sender, EventArgs e)
+        private void View_PreviewKeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
             if (VxView.OnSubmit != null)
             {
-                VxView.OnSubmit();
+                if (e.Key == Windows.System.VirtualKey.Enter)
+                {
+                    if (VxView is MultilineTextBox)
+                    {
+                        var shiftState = Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.Shift);
+                        bool isShiftDown = (shiftState & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
+                        if (isShiftDown)
+                        {
+                            return;
+                        }
+                    }
+
+                    e.Handled = true;
+                    VxView.OnSubmit();
+                }
             }
         }
 
