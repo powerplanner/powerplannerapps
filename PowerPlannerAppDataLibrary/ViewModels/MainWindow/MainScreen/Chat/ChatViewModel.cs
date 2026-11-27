@@ -134,6 +134,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 {
                     Mode = AddOrEditMode.Edit,
                     DisplayName = "Edit holidays"
+                },
+
+                // Add weight categories
+                new AddOrEditItemsTool<AddOrEditWeightCategoryDataItem>(MainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Add,
+                    DisplayName = "Add weight categories"
+                },
+
+                // Edit weight categories
+                new AddOrEditItemsTool<AddOrEditWeightCategoryDataItem>(MainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Edit,
+                    DisplayName = "Edit weight categories"
                 }
             ];
         }

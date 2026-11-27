@@ -23,7 +23,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
         [Description("The total weight of this weight category.")]
         [NotNull]
         [DisallowNull]
-        public double WeightTotal { get; set; }
+        public double WeightValue { get; set; }
 
         [Description("The grades associated with this weight category.")]
         [NotNull]
@@ -34,7 +34,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
         {
             Name = item.Name;
             WeightAchieved = item.WeightAchieved;
-            WeightTotal = item.WeightValue;
+            WeightValue = item.WeightValue;
             Grades = item.Grades.Select(i => new ChatGradeItem(i)).ToList();
         }
     }
