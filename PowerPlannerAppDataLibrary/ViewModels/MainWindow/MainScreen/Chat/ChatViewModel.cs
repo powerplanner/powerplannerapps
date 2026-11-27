@@ -34,6 +34,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             SubscribeToCollection(_state.Messages);
 
             Title = R.S("AiEdit_Title");
+
+            PrimaryCommand = new PopupCommand
+            {
+                Glyph = MaterialDesign.MaterialDesignIcons.Refresh,
+                Text = "New chat",
+                Click = _state.NewChat
+            };
         }
 
         private const float MESSAGE_INDENT = 24;
@@ -81,7 +88,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                             {
                                 renderedMessages.Children.Add(new HyperlinkTextBlock
                                 {
-                                    Text = $"Action: {localTool.DisplayName ?? localTool.Name}",
+                                    Text = localTool.DisplayName ?? localTool.Name,
                                     FontSize = Theme.Current.CaptionFontSize,
                                     TextColor = Theme.Current.SubtleForegroundColor,
                                     Margin = new Thickness(MESSAGE_INDENT, 0, 0, MESSAGE_SPACING),

@@ -23,7 +23,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
         //private const string TurnUrl = "http://localhost:7074/api/v1/ai/chat/turn";
         private readonly MainScreenViewModel _mainScreenViewModel;
 
-        public ObservableCollection<ChatMessage> Messages { get; private init; } = new([new ChatMessage(ChatRole.Assistant, "How can I help you today?")]);
+        public ObservableCollection<ChatMessage> Messages { get; private init; } = [];
 
         public string CurrentInput { get; private set; }
 
@@ -44,6 +44,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             }
         }
 
+        public void InitializeDefaultMessages()
+        {
+            Messages.Add(new ChatMessage(ChatRole.Assistant, "How can I help you today?"));
+        }
+
         private bool _hasInput;
         public bool HasInput
         {
@@ -60,6 +65,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
 
         public ChatViewModelState(MainScreenViewModel mainScreenViewModel)
         {
+            InitializeDefaultMessages();
             _mainScreenViewModel = mainScreenViewModel;
 
             LocalTools =
@@ -214,19 +220,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             _cancellationTokenSource.Cancel();
         }
 
+        public void NewChat()
+        {
+            Cancel();
+            Messages.Clear();
+            InitializeDefaultMessages();
+            SetCurrentInput(string.Empty);
+        }
+
         internal LocalTool GetLocalTool(string toolName)
         {
             return LocalTools.FirstOrDefault(i => i.Name.Equals(toolName, StringComparison.OrdinalIgnoreCase));
-        }
-
-        public object GetToolResult(FunctionCallContent functionCall)
-        {
-            return Messages.SelectMany(m => m.Contents).OfType<FunctionResultContent>().FirstOrDefault(i => i.CallId == functionCall.CallId);
-        }
-
-        private FunctionCallContent GetToolCall(string toolCallId)
-        {
-            return Messages.SelectMany(m => m.Contents).OfType<FunctionCallContent>().FirstOrDefault(i => i.CallId == toolCallId);
         }
 
         public async void SendMessage()
@@ -301,6 +305,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
         {
             foreach (var call in functionCalls)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    AddToolCallCancelledResponse(call.CallId);
+                    break;
+                }
+
                 var localTool = GetLocalTool(call.Name);
                 if (localTool != null && localTool.RequiresApproval)
                 {
@@ -309,13 +319,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                         if (!await RequestApprovalAsync(call, cancellationToken))
                         {
                             AddToolCallResponse(call.CallId, "Error: User denied the operation.");
-                            return;
+                            break;
                         }
                     }
                     catch (OperationCanceledException)
                     {
-                        AddToolCallResponse(call.CallId, "Error: User cancelled the operation.");
-                        return;
+                        AddToolCallCancelledResponse(call.CallId);
+                        break;
                     }
                 }
 
@@ -365,14 +375,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
         private async Task HandleToolCallAsync(FunctionCallContent functionCall, CancellationToken cancellationToken)
         {
             var localTool = GetLocalTool(functionCall.Name);
-            if (localTool != null)
+            if (cancellationToken.IsCancellationRequested)
+            {
+                AddToolCallCancelledResponse(functionCall.CallId);
+            }
+            else if (localTool != null)
             {
                 try
                 {
                     object result = await localTool.InvokeWithResultAsync(functionCall.Arguments);
                     if (cancellationToken.IsCancellationRequested)
                     {
-                        AddToolCallResponse(functionCall.CallId, "Error: User cancelled the operation.");
+                        AddToolCallCancelledResponse(functionCall.CallId);
                     }
                     else
                     { 
@@ -388,6 +402,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             {
                 AddToolCallResponse(functionCall.CallId, "Error: Unknown tool: " + functionCall.Name);
             }
+        }
+
+        private void AddToolCallCancelledResponse(string callId)
+        {
+            AddToolCallResponse(callId, "Error: User cancelled the operation.");
         }
 
         private void AddToolCallResponse(string callId, object result)
@@ -417,6 +436,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                   - Grades: Grades under a specific class.
                   - Holidays: Holidays under a specific semester.
                 - For any "how to" questions about using the app that you can't help with using the existing tools, refer the user to https://support.powerplanner.net, or ask them to email support@powerplanner.net.
+                - Power Planner does have a MCP server, it's in beta, refer the user to https://support.powerplanner.net/misc/mcp/ only if they explicitly ask about MCP.
                 - If the user asks what you can do or what actions you can perform, mention the editing/adding tools before others, since users will primarily use this to bulk edit or add data.
                 - Respond to the user in plain text (but feel free to format with bullets or use emojis!). We do not support Markdown rendering.
                 """);
