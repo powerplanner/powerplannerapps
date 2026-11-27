@@ -19,22 +19,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 
         public override async Task<object> InvokeWithResultAsync(IDictionary<string, object> arguments)
         {
-            var jsonElements = new Dictionary<string, JsonElement>(StringComparer.Ordinal);
-
-            foreach (var arg in arguments)
-            {
-                if (arg.Value is JsonElement jsonElement)
-                {
-                    jsonElements[arg.Key] = jsonElement;
-                }
-                else
-                {
-                    throw new InvalidOperationException("Unknown argument type");
-                }
-            }
-
-            var dictTypeInfo = LocalToolJsonContext.Default.DictionaryStringJsonElement;
-            JsonElement argsElement = JsonSerializer.SerializeToElement(jsonElements, dictTypeInfo);
+            JsonElement argsElement = ConvertToolCallArgumentsToJsonElement(arguments);
 
             var typeInfo = (JsonTypeInfo<T>)LocalToolJsonContext.Default.GetTypeInfo(typeof(T));
             var parsedParams = JsonSerializer.Deserialize(argsElement, typeInfo);
@@ -108,12 +93,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 
         public ChatTurnTool ToChatTurnTool()
         {
-            var context = new LocalToolJsonContext(new JsonSerializerOptions()
-            {
-                RespectNullableAnnotations = true
-            });
-            var options = context.Options;
-
             return new ChatTurnTool
             {
                 Name = Name,
@@ -121,6 +100,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
                 ParametersSchema = ParametersSchema,
                 ReturnSchema = ReturnSchema
             };
+        }
+
+        public static JsonElement ConvertToolCallArgumentsToJsonElement(IDictionary<string, object> arguments)
+        {
+            var jsonElements = new Dictionary<string, JsonElement>(StringComparer.Ordinal);
+
+            foreach (var arg in arguments)
+            {
+                if (arg.Value is JsonElement jsonElement)
+                {
+                    jsonElements[arg.Key] = jsonElement;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Unknown argument type");
+                }
+            }
+
+            var dictTypeInfo = LocalToolJsonContext.Default.DictionaryStringJsonElement;
+            JsonElement argsElement = JsonSerializer.SerializeToElement(jsonElements, dictTypeInfo);
+            return argsElement;
         }
     }
 }

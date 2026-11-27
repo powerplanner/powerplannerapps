@@ -121,44 +121,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                         {
                             if (localTool.RequiresApproval && !HasBeenApproved(toolCall.CallId))
                             {
-                                renderedMessages.Children.Add(new Border
-                                {
-                                    BackgroundColor = Theme.Current.BackgroundAlt1Color,
-                                    CornerRadius = 6,
-                                    Margin = new Thickness(24, 0, 0, 12),
-                                    Padding = new Thickness(6),
-                                    Content = new LinearLayout
-                                    {
-                                        Children =
-                                        {
-                                            new TextBlock
-                                            {
-                                                Text = $"{localTool.DisplayName ?? localTool.Name}",
-                                                Margin = new Thickness(0, 0, 0, 6),
-                                            },
-                                            new LinearLayout
-                                            {
-                                                Orientation = Orientation.Horizontal,
-                                                Children =
-                                                {
-                                                    new AccentButton
-                                                    {
-                                                        Text = "Approve",
-                                                        Margin = new Thickness(0, 0, 3, 0),
-                                                        Click = () => ApproveToolCall(toolCall.CallId, true)
-                                                    },
-
-                                                    new Button
-                                                    {
-                                                        Text = "Deny",
-                                                        Margin = new Thickness(3, 0, 0, 0),
-                                                        Click = () => ApproveToolCall(toolCall.CallId, false)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                });
+                                var renderedApproval = RenderApproval(toolCall, localTool);
+                                renderedApproval.Margin = new Thickness(24, 0, 0, 12);
+                                renderedMessages.Children.Add(renderedApproval);
 
                                 needsToolCallApproval = true;
                             }
@@ -166,7 +131,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                             {
                                 renderedMessages.Children.Add(new TextBlock
                                 {
-                                    Text = $"{localTool.DisplayName ?? localTool.Name}",
+                                    Text = $"Action: {localTool.DisplayName ?? localTool.Name}",
                                     FontSize = Theme.Current.CaptionFontSize,
                                     TextColor = Theme.Current.SubtleForegroundColor,
                                     Margin = new Thickness(24, 0, 0, 12)
@@ -244,6 +209,74 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                         OnSubmit = SendMessage,
                         AutoFocus = true,
                         IsEnabled = _isLoading.Value == false
+                    }
+                }
+            };
+        }
+
+        private View RenderApproval(FunctionCallContent toolCall, LocalTool localTool)
+        {
+            string toolArguments;
+            try
+            {
+                toolArguments = LocalTool.ConvertToolCallArgumentsToJsonElement(toolCall.Arguments).ToString();
+            }
+            catch
+            {
+                toolArguments = "Failed to display arguments";
+            }
+
+            return new Border
+            {
+                BackgroundColor = Theme.Current.BackgroundAlt1Color,
+                CornerRadius = 6,
+                Padding = new Thickness(6),
+                Content = new LinearLayout
+                {
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = $"Approval needed: {localTool.DisplayName ?? localTool.Name}",
+                            Margin = new Thickness(0, 0, 0, 6),
+                        },
+                        new ScrollView
+                        {
+                            Height = 100,
+                            Content = new Border
+                            {
+                                BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                                CornerRadius = 4,
+                                Padding = new Thickness(6),
+                                Content = new TextBlock
+                                {
+                                    Text = toolArguments,
+                                    IsTextSelectionEnabled = true,
+                                    TextColor = Theme.Current.SubtleForegroundColor,
+                                    FontSize = Theme.Current.CaptionFontSize
+                                }
+                            }
+                        },
+                        new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Children =
+                            {
+                                new AccentButton
+                                {
+                                    Text = "Approve",
+                                    Margin = new Thickness(0, 0, 3, 0),
+                                    Click = () => ApproveToolCall(toolCall.CallId, true)
+                                },
+
+                                new Button
+                                {
+                                    Text = "Deny",
+                                    Margin = new Thickness(3, 0, 0, 0),
+                                    Click = () => ApproveToolCall(toolCall.CallId, false)
+                                }
+                            }
+                        }
                     }
                 }
             };
