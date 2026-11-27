@@ -135,6 +135,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
                         dataItem.Date = finalDate;
                         dataItem.EndTime = endTime;
                     }
+                },
+
+                new Property<string>
+                {
+                    Name = "Details",
+                    Description = "Additional details about the event.",
+                    WhenAdding = PropertyPresence.Optional,
+                    WhenEditing = PropertyPresence.Optional,
+                    MaxLength = 4000,
+                    Apply = (dataItem, value) =>
+                    {
+                        dataItem.Details = value;
+                    }
                 }
             ];
         }

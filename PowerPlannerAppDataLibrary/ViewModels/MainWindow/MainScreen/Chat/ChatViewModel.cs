@@ -119,6 +119,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 {
                     Mode = AddOrEditMode.Edit,
                     DisplayName = "Edit events"
+                },
+
+                // Add holidays
+                new AddOrEditItemsTool<AddOrEditHolidayDataItem>(MainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Add,
+                    DisplayName = "Add holidays"
+                },
+
+                // Edit holidays
+                new AddOrEditItemsTool<AddOrEditHolidayDataItem>(MainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Edit,
+                    DisplayName = "Edit holidays"
                 }
             ];
         }
@@ -474,6 +488,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                   - Events: Exams / quizzes, etc... things that can't be marked complete and are events that simply happen and are done after they've passed. These can also be under a class, or under a semester for "no class" events. Class schedules should NOT be created using events.
                   - Schedules: Weekly schedule entries for a specific class.
                   - Grades: Grades under a specific class.
+                  - Holidays: Holidays under a specific semester.
                 """);
 
             var contextMessage = $"""
