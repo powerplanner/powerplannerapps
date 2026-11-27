@@ -63,7 +63,9 @@ namespace PowerPlannerAppDataLibrary.Components
                         Text = PowerPlannerResources.GetString("String_EditTimes"),
                         Glyph = MaterialDesign.MaterialDesignIcons.Edit,
                         Click = ViewModel.EditTimes
-                    } : null
+                    } : null,
+
+                    ToolbarHelper.ChatCommand(ViewModel.MainScreenViewModel)
                 },
 
                 SecondaryCommands =

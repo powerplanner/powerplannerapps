@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
+using System;
 using System.Drawing;
 using System.Linq;
 using Vx;
@@ -50,6 +51,16 @@ namespace PowerPlannerAppDataLibrary.Helpers
                         Click = addHoliday
                     } : null
                 }
+            };
+        }
+
+        public static MenuItem ChatCommand(MainScreenViewModel mainScreenViewModel)
+        {
+            return new MenuItem
+            {
+                Text = R.S("AiEdit_Title"),
+                Glyph = MaterialDesign.MaterialDesignIcons.Bolt,
+                Click = mainScreenViewModel.ShowChat
             };
         }
     }

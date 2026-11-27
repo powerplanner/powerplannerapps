@@ -84,7 +84,9 @@ namespace PowerPlannerAppDataLibrary.Components
                         Text = PowerPlannerResources.GetString("String_EditSchedule"),
                         Glyph = MaterialDesign.MaterialDesignIcons.Edit,
                         Click = ViewModel.EnterEditMode
-                    }
+                    },
+
+                    ToolbarHelper.ChatCommand(ViewModel.MainScreenViewModel),
                 },
                 SecondaryCommands =
                 {

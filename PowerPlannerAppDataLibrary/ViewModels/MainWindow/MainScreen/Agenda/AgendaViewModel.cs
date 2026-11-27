@@ -114,7 +114,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                             new Toolbar
                             {
                                 Title = PowerPlannerResources.GetStringMenuItem(NavigationManager.MainMenuSelections.Agenda),
-                                NookInsets = NookInsets
+                                NookInsets = NookInsets,
+                                PrimaryCommands =
+                                {
+                                    ToolbarHelper.ChatCommand(MainScreenViewModel)
+                                }
                             },
 
                             baseView.LinearLayoutWeight(1)

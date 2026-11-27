@@ -122,7 +122,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
                                 Text = R.S("SchedulePage_ButtonAddClass.Content"),
                                 Glyph = MaterialDesign.MaterialDesignIcons.Add,
                                 Click = AddClass
-                            }
+                            },
+
+                            ToolbarHelper.ChatCommand(MainScreenViewModel)
                         },
                         NookInsets = NookInsets
                     }.InnerToolbarThemed(),

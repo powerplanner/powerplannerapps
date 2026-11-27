@@ -410,36 +410,49 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
         private IEnumerable<string> GetCurrentAppState()
         {
             yield return $"- CurrentDateTime: {DateTime.Now.ToString("yyyy-MM-ddTHH:mm")}";
+            yield return $"- CurrentWeek: {_mainScreenViewModel.CurrentAccount.CurrentWeek} (a.k.a. week A/B)";
 
             if (_mainScreenViewModel.CurrentSemester != null)
             {
                 yield return $"- CurrentSemester: \"{_mainScreenViewModel.CurrentSemester.Name}\", Identifier: {_mainScreenViewModel.CurrentSemester.Identifier}";
+
+                if (_mainScreenViewModel.Classes.Count == 0)
+                {
+                    yield return "- Current classes in the semester: None";
+                }
+                else
+                {
+                    yield return $"- Current classes in the semester ({_mainScreenViewModel.Classes.Count}):";
+
+                    foreach (var c in _mainScreenViewModel.Classes)
+                    {
+                        yield return $"  - Class: \"{c.Name}\", Identifier: {c.Identifier}, Color: {ColorHelper.ToString(c.Color)}";
+                    }
+                }
             }
             else
             {
                 yield return "- CurrentSemester: None";
             }
 
-            yield return $"- CurrentPage: {_mainScreenViewModel.SelectedItem}";
-
-            if (_mainScreenViewModel.SelectedItem == NavigationManager.MainMenuSelections.Calendar)
+            if (_mainScreenViewModel.SelectedItem == NavigationManager.MainMenuSelections.Classes)
             {
-                yield return $"- CurrentOpenMonth: {NavigationManager.GetDisplayMonth().ToString("yyyy-MM")}";
-            }
-
-            yield return $"- CurrentWeek: {_mainScreenViewModel.CurrentAccount.CurrentWeek} (a.k.a. week A/B)";
-
-            if (_mainScreenViewModel.Classes.Count == 0)
-            {
-                yield return "- Current classes in the semester: None";
+                if (_mainScreenViewModel.SelectedClass != null)
+                {
+                    yield return $"- CurrentOpenPage: Class: \"{_mainScreenViewModel.SelectedClass.Name}\", Identifier: {_mainScreenViewModel.SelectedClass.Identifier}";
+                }
+                else
+                {
+                    yield return "- CurrentOpenPage: Classes";
+                }
             }
             else
             {
-                yield return $"- Current classes in the semester ({_mainScreenViewModel.Classes.Count}):";
+                yield return $"- CurrentOpenPage: {_mainScreenViewModel.SelectedItem}";
 
-                foreach (var c in _mainScreenViewModel.Classes)
+                if (_mainScreenViewModel.SelectedItem == NavigationManager.MainMenuSelections.Calendar)
                 {
-                    yield return $"  - Class: \"{c.Name}\", Identifier: {c.Identifier}, Color: {ColorHelper.ToString(c.Color)}";
+                    yield return $"- CurrentOpenMonth: {NavigationManager.GetDisplayMonth().ToString("yyyy-MM")}";
                 }
             }
         }
