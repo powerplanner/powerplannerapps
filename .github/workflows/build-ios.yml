@@ -54,6 +54,8 @@ jobs:
     env:
       BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
       BUILD_CONFIGURATION: Release
+      # Keep the pinned SDK and workloads separate from the runner's preinstalled SDKs.
+      DOTNET_INSTALL_DIR: ${{ runner.temp }}/dotnet
 
     steps:
       - name: Checkout
