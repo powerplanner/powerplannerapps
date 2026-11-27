@@ -41,11 +41,6 @@ namespace Vx.Uwp.Views
                     contentFwEl.SizeChanged += ContentFwEl_SizeChanged;
                 }
             });
-
-            if (newView.ScrollToBottomWhenContentHeightChanges)
-            {
-                View.ScrollToVerticalOffset(double.MaxValue);
-            }
         }
 
         private double _prevHeight;

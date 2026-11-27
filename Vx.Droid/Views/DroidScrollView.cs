@@ -68,6 +68,7 @@ namespace Vx.Droid.Views
                 {
                     // Need to introduce second view so that bottom margin of the child view work correctly inside the scroll view
                     _container = new FrameLayout(View.Context);
+                    _container.LayoutChange += Container_LayoutChange;
 
                     _normalScrollView = new ScrollView(View.Context)
                     {
@@ -87,6 +88,31 @@ namespace Vx.Droid.Views
                     _container.AddView(view.CreateDroidView(VxView));
                 }
             });
+        }
+
+        private int _prevContainerHeight;
+        private void Container_LayoutChange(object sender, View.LayoutChangeEventArgs e)
+        {
+            try
+            {
+                var prevHeight = _prevContainerHeight;
+                var newHeight = e.Bottom - e.Top;
+                _prevContainerHeight = newHeight;
+
+                var scrollView = _normalScrollView;
+                if (VxView?.ScrollToBottomWhenContentHeightChanges == true && scrollView != null && newHeight > prevHeight)
+                {
+                    scrollView.Post(() =>
+                    {
+                        var maxScroll = newHeight - scrollView.Height;
+                        if (maxScroll > 0)
+                        {
+                            scrollView.ScrollTo(0, maxScroll);
+                        }
+                    });
+                }
+            }
+            catch { }
         }
     }
 }
