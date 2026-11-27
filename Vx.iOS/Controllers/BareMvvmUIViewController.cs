@@ -87,6 +87,10 @@ namespace InterfacesiOS.Controllers
                 _viewModel = value;
                 BindingHost.DataContext = value;
                 UpdateNookInsets();
+                if (ViewModel != null && ViewModel.EnablePlatformKeyboardHeight)
+                {
+                    EnableKeyboardShowHideEvents();
+                }
                 RenderViewModel();
                 OnViewModelSetOverride();
                 TriggerViewModelLoaded(value);
@@ -216,17 +220,27 @@ namespace InterfacesiOS.Controllers
         private NSObject _keyboardObserverWillShow;
         private NSObject _keyboardObserverWillHide;
         private nfloat _keyboardTopOffset = 0;
+        private bool _keyboardScrollOffsetHandlingEnabled = false;
 
         protected void EnableKeyboardScrollOffsetHandling(UIScrollView scrollView, nfloat topOffset)
         {
             _scrollViewForKeyboardOffset = scrollView;
             _keyboardTopOffset = topOffset;
+            _keyboardScrollOffsetHandlingEnabled = true;
 
             // Dismiss keyboard when scrolling
             _scrollViewForKeyboardOffset.KeyboardDismissMode = UIScrollViewKeyboardDismissMode.OnDrag;
 
-            _keyboardObserverWillShow = NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, KeyboardWillShow);
-            _keyboardObserverWillHide = NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, KeyboardWillHide);
+            EnableKeyboardShowHideEvents();
+        }
+
+        private void EnableKeyboardShowHideEvents()
+        {
+            if (_keyboardObserverWillShow == null)
+            {
+                _keyboardObserverWillShow = NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, KeyboardWillShow);
+                _keyboardObserverWillHide = NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, KeyboardWillHide);
+            }
         }
 
         protected virtual void KeyboardWillShow(NSNotification notification)
@@ -247,6 +261,16 @@ namespace InterfacesiOS.Controllers
         {
             try
             {
+                if (ViewModel != null && ViewModel.EnablePlatformKeyboardHeight)
+                {
+                    ViewModel.PlatformKeyboardHeight = (float)height;
+                }
+
+                if (!_keyboardScrollOffsetHandlingEnabled)
+                {
+                    return;
+                }
+
                 var insets = new UIEdgeInsets(
                     _keyboardTopOffset, 0, height, 0);
                 _scrollViewForKeyboardOffset.ContentInset = insets;

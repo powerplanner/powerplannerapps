@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.AI;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatTools;
+using System;
 using System.Linq;
 using Vx.Views;
 
@@ -15,6 +16,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             _state = state;
             Subscribe(_state);
             SubscribeToCollection(_state.Messages);
+
+            // Enable platform keyboard height updates for software keyboard
+            EnablePlatformKeyboardHeight = true;
 
             Title = R.S("AiEdit_Title");
 
@@ -178,7 +182,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                     new LinearLayout
                     {
                         Orientation = Orientation.Horizontal,
-                        Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 12, Theme.Current.PageMargin + NookInsets.Right, Theme.Current.PageMargin + NookInsets.Bottom),
+                        Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 12, Theme.Current.PageMargin + NookInsets.Right, Theme.Current.PageMargin + Math.Max(NookInsets.Bottom, PlatformKeyboardHeight)),
                         Children =
                         {
                             new MultilineTextBox
