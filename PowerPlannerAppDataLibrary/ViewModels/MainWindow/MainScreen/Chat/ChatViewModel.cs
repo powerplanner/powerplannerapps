@@ -56,6 +56,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 new GetClassesTool(MainScreenViewModel),
                 new GetTasksAndEventsTool(MainScreenViewModel),
                 new GetHolidaysTool(MainScreenViewModel),
+                new GetGradesTool(MainScreenViewModel),
 
                 // Dislay items
                 new DisplayItemTool(MainScreenViewModel)
@@ -250,7 +251,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                     new ScrollView
                     {
                         Content = renderedMessages
-                    },
+                    }.LinearLayoutWeight(1),
 
                     new TextBox
                     {

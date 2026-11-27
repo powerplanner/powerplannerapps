@@ -24,10 +24,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
         [Description("Optional details (free-form user-visible text) for the class.")]
         public string Details { get; set; }
 
-        [Description("The credits the class is worth, or -1 if no credits assigned.")]
-        [NotNull]
-        [DisallowNull]
-        public double Credits { get; set; }
+        [Description("The credits the class is worth, or null if no credits assigned.")]
+        public double? Credits { get; set; }
 
         [Description("Optional start date of the class, if it starts later than the semester itself.")]
         public DateOnly? StartDate { get; set; }
@@ -40,7 +38,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
             Name = c.Name;
             Color = ColorHelper.ToString(c.Color);
             Details = c.Details;
-            Credits = c.Credits;
+            Credits = c.Credits == PowerPlannerSending.Grade.NO_CREDITS ? null : c.Credits;
             StartDate = c.StartDate == DateValues.UNASSIGNED ? null : DateOnly.FromDateTime(c.StartDate);
             EndDate = c.EndDate == DateValues.UNASSIGNED ? null : DateOnly.FromDateTime(c.EndDate);
         }
