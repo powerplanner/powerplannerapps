@@ -25,30 +25,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
     public partial class ChatViewModel : PopupComponentViewModel
     {
         private static readonly HttpClient _httpClient = new HttpClient();
-        private const string TurnUrl = "http://localhost:7074/api/v1/ai/chat/turn";
-        private readonly MyObservableList<ViewItemClass> _classes;
-        private readonly ViewItemSemester _semester;
-        private readonly SemesterItemsViewGroup _semesterItems;
-        private readonly DateOnly _displayMonth;
+        private const string TurnUrl = "https://powerplannerai-gjfgfzfecwhhapey.westus-01.azurewebsites.net/api/v1/ai/chat/turn";
+        //private const string TurnUrl = "http://localhost:7074/api/v1/ai/chat/turn";
+        private readonly MainScreenViewModel _mainScreenViewModel;
 
-        private VxState<List<ChatMessage>> _messages = new([]);
+        private VxState<List<ChatMessage>> _messages = new([new ChatMessage(ChatRole.Assistant, "How can I help you today?")]);
         private VxState<string> _currentInput = new("");
         private VxState<bool> _isLoading = new(false);
 
-        public ChatViewModel(
-            BaseViewModel parent,
-            MyObservableList<ViewItemClass> classes,
-            ViewItemSemester semester,
-            SemesterItemsViewGroup semesterItems,
-            DateOnly displayMonth) : base(parent)
+        public ChatViewModel(MainScreenViewModel mainScreenViewModel) : base(mainScreenViewModel)
         {
-            _classes = classes;
-            _semester = semester;
-            _semesterItems = semesterItems;
-            _displayMonth = displayMonth;
+            _mainScreenViewModel = mainScreenViewModel;
 
-            Title = "AI Planner";
-            UseCancelForBack();
+            Title = R.S("AiEdit_Title");
 
             LocalTools =
             [
@@ -212,12 +201,23 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             return _messages.Value.SelectMany(m => m.Contents).OfType<FunctionCallContent>().FirstOrDefault(i => i.CallId == toolCallId);
         }
 
+        private const float MESSAGE_INDENT = 24;
+        private const float MESSAGE_SPACING = 12;
+
         protected override View Render()
         {
             var renderedMessages = new LinearLayout
             {
                 Margin = new Thickness(Theme.Current.PageMargin)
             };
+
+            renderedMessages.Children.Add(new TextBlock
+            {
+                Text = "Beta feature, requires internet, uses generative AI. Actions that modify your data require user approval.",
+                FontSize = 10,
+                TextColor = Theme.Current.SubtleForegroundColor,
+                Margin = new Thickness(0, 0, 0, MESSAGE_SPACING)
+            });
 
             bool needsToolCallApproval = false;
 
@@ -233,19 +233,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                             if (localTool.RequiresApproval && !HasBeenApproved(toolCall.CallId))
                             {
                                 var renderedApproval = RenderApproval(toolCall, localTool);
-                                renderedApproval.Margin = new Thickness(24, 0, 0, 12);
+                                renderedApproval.Margin = new Thickness(MESSAGE_INDENT, 0, 0, MESSAGE_SPACING);
                                 renderedMessages.Children.Add(renderedApproval);
 
                                 needsToolCallApproval = true;
                             }
                             else
                             {
-                                renderedMessages.Children.Add(new TextBlock
+                                renderedMessages.Children.Add(new HyperlinkTextBlock
                                 {
                                     Text = $"Action: {localTool.DisplayName ?? localTool.Name}",
                                     FontSize = Theme.Current.CaptionFontSize,
                                     TextColor = Theme.Current.SubtleForegroundColor,
-                                    Margin = new Thickness(24, 0, 0, 12)
+                                    Margin = new Thickness(MESSAGE_INDENT, 0, 0, MESSAGE_SPACING),
+                                    IsTextSelectionEnabled = true
                                 });
                             }
                         }
@@ -253,19 +254,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
 
                     if (!string.IsNullOrWhiteSpace(m.Text))
                     {
-                        renderedMessages.Children.Add(new Border
-                        {
-                            BackgroundColor = Theme.Current.AccentColor,
-                            CornerRadius = 6,
-                            Padding = new Thickness(6),
-                            Content = new TextBlock
-                            {
-                                Text = m.Text,
-                                WrapText = true,
-                                TextColor = System.Drawing.Color.White
-                            },
-                            Margin = new Thickness(0, 0, 24, 12)
-                        });
+                        renderedMessages.Children.Add(RenderMessageFromAgent(m.Text));
                     }
                 }
                 else if (m.Role == ChatRole.User)
@@ -275,13 +264,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                         BackgroundColor = Theme.Current.BackgroundAlt1Color,
                         CornerRadius = 6,
                         Padding = new Thickness(6),
-                        Content = new TextBlock
+                        Content = new HyperlinkTextBlock
                         {
                             Text = m.Text,
                             WrapText = true,
-                            TextColor = Theme.Current.ForegroundColor
+                            TextColor = Theme.Current.ForegroundColor,
+                            IsTextSelectionEnabled = true
                         },
-                        Margin = new Thickness(24, 0, 0, 12)
+                        Margin = new Thickness(MESSAGE_INDENT, 0, 0, MESSAGE_SPACING)
                     });
                 }
             }
@@ -298,7 +288,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                         IsIndeterminate = true,
                         Color = System.Drawing.Color.White
                     },
-                    Margin = new Thickness(0, 0, 24, 12)
+                    Margin = new Thickness(0, 0, MESSAGE_INDENT, MESSAGE_SPACING)
+                });
+            }
+
+            if (!_isLoading.Value && !needsToolCallApproval && _messages.Value.Count <= 1)
+            {
+                renderedMessages.Children.Add(new TextButton
+                {
+                    Text = "ℹ️ Tell me what you can do",
+                    Margin = new Thickness(MESSAGE_INDENT, 0, 0, MESSAGE_SPACING),
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    Click = () =>
+                    {
+                        _currentInput.Value = "What actions can you help me with in Power Planner?";
+                        SendMessage();
+                    }
                 });
             }
 
@@ -322,6 +327,23 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                         IsEnabled = _isLoading.Value == false,
                     }
                 }
+            };
+        }
+
+        private View RenderMessageFromAgent(string text)
+        {
+            return new Border
+            {
+                BackgroundColor = Theme.Current.AccentColor,
+                CornerRadius = 6,
+                Padding = new Thickness(6),
+                Content = new TextBlock
+                {
+                    Text = text,
+                    TextColor = System.Drawing.Color.White,
+                    IsTextSelectionEnabled = true
+                },
+                Margin = new Thickness(0, 0, MESSAGE_INDENT, 12)
             };
         }
 
@@ -554,22 +576,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                   - Schedules: Weekly schedule entries for a specific class.
                   - Grades: Grades under a specific class.
                   - Holidays: Holidays under a specific semester.
+                - For any "how to" questions about using the app that you can't help with using the existing tools, refer the user to https://support.powerplanner.net, or ask them to email support@powerplanner.net.
+                - If the user asks what you can do or what actions you can perform, mention the editing/adding tools before others, since users will primarily use this to bulk edit or add data.
+                - Respond to the user in plain text (but feel free to format with bullets or use emojis!). We do not support Markdown rendering.
                 """);
 
-            var contextMessage = $"""
-                Current app state:
-                - CurrentSemesterIdentifier: {_semester.Identifier}
-                - CurrentPage: calendar
-                - CurrentOpenMonth: {_displayMonth.ToString("yyyy-MM")}
-                - CurrentDateTime: {DateTime.Now.ToString("yyyy-MM-ddTHH:mm")}
-                - CurrentWeek: {MainScreenViewModel.CurrentAccount.CurrentWeek}
-                - Current classes in the semester ({_classes.Count}):
-                """;
-
-            foreach (var c in MainScreenViewModel.Classes)
-            {
-                contextMessage += $"\n  - Class: \"{c.Name}\", Identifier: {c.Identifier}, Color: {ColorHelper.ToString(c.Color)}";
-            }
+            var contextMessage = "Current app state:\n" + string.Join("\n", GetCurrentAppState());
 
             var currentContextMessage = new ChatMessage(ChatRole.System, contextMessage);
 
@@ -594,6 +606,43 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             var responseJson = await response.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize(responseJson, ChatTurnJsonContext.Default.ChatTurnResponse);
             return result;
+        }
+
+        private IEnumerable<string> GetCurrentAppState()
+        {
+            yield return $"- CurrentDateTime: {DateTime.Now.ToString("yyyy-MM-ddTHH:mm")}";
+
+            if (_mainScreenViewModel.CurrentSemester != null)
+            {
+                yield return $"- CurrentSemester: \"{_mainScreenViewModel.CurrentSemester.Name}\", Identifier: {_mainScreenViewModel.CurrentSemester.Identifier}";
+            }
+            else
+            {
+                yield return "- CurrentSemester: None";
+            }
+
+            yield return $"- CurrentPage: {_mainScreenViewModel.SelectedItem}";
+
+            if (_mainScreenViewModel.SelectedItem == NavigationManager.MainMenuSelections.Calendar)
+            {
+                yield return $"- CurrentOpenMonth: {NavigationManager.GetDisplayMonth().ToString("yyyy-MM")}";
+            }
+
+            yield return $"- CurrentWeek: {MainScreenViewModel.CurrentAccount.CurrentWeek} (a.k.a. week A/B)";
+
+            if (MainScreenViewModel.Classes.Count == 0)
+            {
+                yield return "- Current classes in the semester: None";
+            }
+            else
+            {
+                yield return $"- Current classes in the semester ({MainScreenViewModel.Classes.Count}):";
+
+                foreach (var c in MainScreenViewModel.Classes)
+                {
+                    yield return $"  - Class: \"{c.Name}\", Identifier: {c.Identifier}, Color: {ColorHelper.ToString(c.Color)}";
+                }
+            }
         }
 
         [JsonSourceGenerationOptions(

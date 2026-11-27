@@ -492,19 +492,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         private void OpenEditWithAi()
         {
-            MainScreenViewModel.ShowPopup(new ChatViewModel(
-                MainScreenViewModel,
-                MainScreenViewModel.Classes,
-                MainScreenViewModel.CurrentSemester,
-                SemesterItemsViewGroup,
-                DateOnly.FromDateTime(DisplayMonth)));
-
-            //MainScreenViewModel.ShowPopup(new AiEditWithAiViewModel(
-            //    MainScreenViewModel,
-            //    MainScreenViewModel.Classes,
-            //    MainScreenViewModel.CurrentSemester,
-            //    SemesterItemsViewGroup,
-            //    DateOnly.FromDateTime(DisplayMonth)));
+            MainScreenViewModel.ShowChat();
         }
 
         private DateTime? GetDateForAdd(DateTime? dueDate, bool useSelectedDate)

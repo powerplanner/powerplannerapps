@@ -34,11 +34,14 @@ using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Components;
 using System.Drawing;
 using Vx;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
     public partial class MainScreenViewModel : PagedViewModelWithPopups
     {
+        private ChatViewModel _chatViewModel;
+
         protected override View Render()
         {
             if (Size.Width == 0)
@@ -1726,6 +1729,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         public void EditClass(ViewItemClass c)
         {
             ShowPopup(AddClassViewModel.CreateForEdit(this, c));
+        }
+
+        public void ShowChat()
+        {
+            if (_chatViewModel == null)
+            {
+                _chatViewModel = new ChatViewModel(this);
+            }
+
+            if (!Popups.Any(i => i == _chatViewModel))
+            {
+                ShowPopup(_chatViewModel);
+            }
         }
 
         public void ShowItem(ViewItemTaskOrEvent item)
