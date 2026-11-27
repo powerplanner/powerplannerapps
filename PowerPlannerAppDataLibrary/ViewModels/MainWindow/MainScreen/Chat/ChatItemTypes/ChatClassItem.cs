@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 using ToolsPortable;
 
@@ -33,6 +34,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
         [Description("Optional end date of the class, if it ends earlier than the semester itself.")]
         public DateOnly? EndDate { get; set; }
 
+        [Description("The schedule of the class, which is a list of days and times the class meets.")]
+        [NotNull]
+        [DisallowNull]
+        public List<ChatScheduleItem> Schedule { get; set; }
+
         public ChatClassItem(ViewItemClass c) : base(c)
         {
             Name = c.Name;
@@ -41,6 +47,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
             Credits = c.Credits == PowerPlannerSending.Grade.NO_CREDITS ? null : c.Credits;
             StartDate = c.StartDate == DateValues.UNASSIGNED ? null : DateOnly.FromDateTime(c.StartDate);
             EndDate = c.EndDate == DateValues.UNASSIGNED ? null : DateOnly.FromDateTime(c.EndDate);
+            Schedule = c.Schedules.Select(i => new ChatScheduleItem(i)).ToList();
         }
     }
 }

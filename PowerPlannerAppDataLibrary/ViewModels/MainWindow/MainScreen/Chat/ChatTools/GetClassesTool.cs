@@ -13,14 +13,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 {
     internal class GetClassesTool : LocalTool<BlankParams, List<ChatClassItem>>
     {
-        public override string Name => "get_classes";
-        public override string Description => "Gets the list of classes in the currently open semester.";
+        public override string Name => "get_classes_and_schedule";
+        public override string Description => "Gets the list of classes in the currently open semester, including their schedules.";
         private MainScreenViewModel _mainScreenViewModel;
 
         public GetClassesTool(MainScreenViewModel mainScreenViewModel)
         {
             _mainScreenViewModel = mainScreenViewModel;
-            DisplayName = "Get classes";
+            DisplayName = "Get classes and schedule";
         }
 
         public override Task<List<ChatClassItem>> InvokeWithResultAsync(BlankParams parameters)

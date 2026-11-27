@@ -150,6 +150,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                     DisplayName = "Edit weight categories"
                 },
 
+                // Add schedules
+                new AddOrEditItemsTool<AddOrEditScheduleDataItem>(MainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Add,
+                    DisplayName = "Add schedules"
+                },
+
+                // Edit schedules
+                new AddOrEditItemsTool<AddOrEditScheduleDataItem>(MainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Edit,
+                    DisplayName = "Edit schedules"
+                },
+
                 // Delete items
                 new DeleteItemsTool(MainScreenViewModel)
                 {
@@ -548,12 +562,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 - CurrentPage: calendar
                 - CurrentOpenMonth: {_displayMonth.ToString("yyyy-MM")}
                 - CurrentDateTime: {DateTime.Now.ToString("yyyy-MM-ddTHH:mm")}
+                - CurrentWeek: {MainScreenViewModel.CurrentAccount.CurrentWeek}
                 - Current classes in the semester ({_classes.Count}):
                 """;
 
             foreach (var c in MainScreenViewModel.Classes)
             {
-                contextMessage += $"\n  - Class: \"{c.Name}\", Identifier: {c.Identifier}";
+                contextMessage += $"\n  - Class: \"{c.Name}\", Identifier: {c.Identifier}, Color: {ColorHelper.ToString(c.Color)}";
             }
 
             var currentContextMessage = new ChatMessage(ChatRole.System, contextMessage);
