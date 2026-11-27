@@ -29,15 +29,23 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
         public void SetCurrentInputSilently(string value)
         {
             CurrentInput = value;
+            HasInput = !string.IsNullOrWhiteSpace(value);
         }
 
         public void SetCurrentInput(string value)
         {
             if (CurrentInput != value)
             {
-                CurrentInput = value;
+                SetCurrentInputSilently(value);
                 OnPropertyChanged(nameof(CurrentInput));
             }
+        }
+
+        private bool _hasInput;
+        public bool HasInput
+        {
+            get => _hasInput;
+            set => SetProperty(ref _hasInput, value, nameof(HasInput));
         }
 
         private bool _isLoading;

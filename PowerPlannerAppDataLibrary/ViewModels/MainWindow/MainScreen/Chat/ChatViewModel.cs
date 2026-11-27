@@ -1,6 +1,7 @@
 ﻿using BareMvvm.Core.ViewModels;
 using Microsoft.Extensions.AI;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Services;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
@@ -42,7 +43,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
         {
             var renderedMessages = new LinearLayout
             {
-                Margin = new Thickness(Theme.Current.PageMargin)
+                Margin = new Thickness(
+                    Theme.Current.PageMargin + NookInsets.Left,
+                    Theme.Current.PageMargin + NookInsets.Top,
+                    Theme.Current.PageMargin + NookInsets.Right,
+                    Theme.Current.PageMargin)
             };
 
             renderedMessages.Children.Add(new TextBlock
@@ -141,6 +146,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 });
             }
 
+            bool isSendButtonActive = _state.HasInput && !_state.IsLoading && !needsToolCallApproval;
+
             return new LinearLayout
             {
                 BackgroundColor = Theme.Current.PopupPageBackgroundColor,
@@ -151,14 +158,36 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                         Content = renderedMessages
                     }.LinearLayoutWeight(1),
 
-                    new TextBox
+                    new LinearLayout
                     {
-                        PlaceholderText = "Type your message...",
-                        Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, Theme.Current.PageMargin),
-                        Text = new VxValue<string>(_state.CurrentInput, v => _state.SetCurrentInputSilently(v)),
-                        OnSubmit = _state.SendMessage,
-                        AutoFocus = true,
-                        IsEnabled = _state.IsLoading == false,
+                        Orientation = Orientation.Horizontal,
+                        Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 12, Theme.Current.PageMargin + NookInsets.Right, Theme.Current.PageMargin + NookInsets.Bottom),
+                        Children =
+                        {
+                            new TextBox
+                            {
+                                PlaceholderText = "Type your message...",
+                                Text = new VxValue<string>(_state.CurrentInput, v => _state.SetCurrentInputSilently(v)),
+                                OnSubmit = _state.SendMessage,
+                                AutoFocus = true,
+                                IsEnabled = _state.IsLoading == false
+                            }.LinearLayoutWeight(1),
+
+                             new Border
+                            {
+                                BackgroundColor = isSendButtonActive ? Theme.Current.AccentColor : Theme.Current.AccentColor.Opacity(0.8),
+                                CornerRadius = 6,
+                                Margin = new Thickness(12, 0, 0, 0),
+                                Content = new FontIcon
+                                {
+                                    Glyph = MaterialDesign.MaterialDesignIcons.Send,
+                                    Color = isSendButtonActive ? System.Drawing.Color.White : System.Drawing.Color.White.Opacity(0.8),
+                                    FontSize = 18,
+                                    Margin = new Thickness(6)
+                                },
+                                Tapped = _state.SendMessage
+                            }
+                        }
                     }
                 }
             };
