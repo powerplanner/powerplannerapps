@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.AI;
+using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatDataTypes;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatTools;
 using System;
@@ -244,6 +245,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             Messages.Add(new ChatMessage(ChatRole.User, CurrentInput));
             SetCurrentInput(string.Empty);
             IsLoading = true;
+            string errorMessage = null;
+            bool wasCancelled = false;
 
             try
             {
@@ -252,14 +255,38 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             }
             catch (OperationCanceledException)
             {
+                wasCancelled = true;
             }
             catch (Exception ex)
             {
-                new PortableMessageDialog($"Error sending message: {ex.Message}", "Error").Show();
+                errorMessage = ex.Message;
+                new PortableMessageDialog(ex.Message, "Error").Show();
             }
             finally
             {
                 IsLoading = false;
+
+                if (!wasCancelled)
+                {
+                    try
+                    {
+                        var props = new Dictionary<string, string>
+                        {
+                            ["Successful"] = (errorMessage == null).ToString(),
+                            ["UserMessages"] = Messages.Count(i => i.Role == ChatRole.User).ToString(),
+                            ["ToolCallCount"] = Messages.SelectMany(i => i.Contents).OfType<FunctionCallContent>().Count().ToString(),
+                            ["ToolCalls"] = string.Join(";", Messages.SelectMany(i => i.Contents).OfType<FunctionCallContent>().Select(i => i.Name))
+                        };
+
+                        if (errorMessage != null)
+                        {
+                            props["Error"] = errorMessage;
+                        }
+
+                        TelemetryExtension.Current?.TrackEvent("ChatTurnCompleted", props);
+                    }
+                    catch { }
+                }
             }
         }
 
