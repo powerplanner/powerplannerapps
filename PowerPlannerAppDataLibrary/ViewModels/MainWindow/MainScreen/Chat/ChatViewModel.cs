@@ -280,12 +280,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 contextMessage += $"\n  - Class: \"{c.Name}\", Identifier: {c.Identifier}";
             }
 
-            var currentContextMessage = new ChatMessage(ChatRole.System, $"""
-                Current app state:
-                - CurrentSemesterIdentifier: {_semester.Identifier}
-                - CurrentPage: calendar
-                - CurrentOpenMonth: {_displayMonth.ToString("yyyy-MM")}
-                """);
+            var currentContextMessage = new ChatMessage(ChatRole.System, contextMessage);
 
             var messages = _messages.Value.ToList();
             messages.Insert(0, systemContextMessage);
