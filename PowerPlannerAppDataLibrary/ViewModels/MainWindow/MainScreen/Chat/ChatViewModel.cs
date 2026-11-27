@@ -148,6 +148,37 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 {
                     Mode = AddOrEditMode.Edit,
                     DisplayName = "Edit weight categories"
+                },
+
+                // Delete items
+                new DeleteItemsTool(MainScreenViewModel)
+                {
+                    PluralItemTypeName = "classes",
+                    DisplayName = "Delete classes"
+                },
+
+                new DeleteItemsTool(MainScreenViewModel)
+                {
+                    PluralItemTypeName = "tasks_and_events",
+                    DisplayName = "Delete tasks and events"
+                },
+
+                new DeleteItemsTool(MainScreenViewModel)
+                {
+                    PluralItemTypeName = "holidays",
+                    DisplayName = "Delete holidays"
+                },
+
+                new DeleteItemsTool(MainScreenViewModel)
+                {
+                    PluralItemTypeName = "weight_categories",
+                    DisplayName = "Delete weight categories"
+                },
+
+                new DeleteItemsTool(MainScreenViewModel)
+                {
+                    PluralItemTypeName = "grades",
+                    DisplayName = "Delete grades"
                 }
             ];
         }
@@ -329,7 +360,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                             Orientation = Orientation.Horizontal,
                             Children =
                             {
-                                new AccentButton
+                                localTool.IsDeleteItems ? new DestructiveButton
+                                {
+                                    Text = "Delete items",
+                                    Margin = new Thickness(0, 0, 3, 0),
+                                    Click = () => ApproveToolCall(toolCall.CallId, true)
+                                } : new AccentButton
                                 {
                                     Text = "Approve",
                                     Margin = new Thickness(0, 0, 3, 0),

@@ -86,6 +86,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
         public abstract string Name { get; }
         public string DisplayName { get; set; }
         public bool RequiresApproval { get; set; } = false;
+        public bool IsDeleteItems { get; set; } = false;
         public abstract string Description { get; }
         public abstract JsonElement ParametersSchema { get; }
         public abstract JsonElement? ReturnSchema { get; }
