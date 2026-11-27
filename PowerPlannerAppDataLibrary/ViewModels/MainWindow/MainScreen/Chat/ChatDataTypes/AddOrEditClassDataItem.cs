@@ -11,7 +11,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
     {
         public override string DataTypeName => "classes";
 
-        protected override BaseAddOrEditDataItemProperty[] GetProperties()
+        protected override BaseAddOrEditItemProperty[] GetProperties()
         {
             return
             [

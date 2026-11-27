@@ -18,7 +18,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
         Edit
     }
 
-    internal class AddOrEditItemsTool<TChatDataItem> : LocalTool where TChatDataItem : BaseAddOrEditDataItem, new()
+    internal class AddOrEditItemsTool<TChatDataItem> : LocalTool where TChatDataItem : BaseAddOrEditItem, new()
     {
         private TChatDataItem _dataTypeInstance = new TChatDataItem();
         public string DataTypeName => _dataTypeInstance.DataTypeName;
@@ -41,46 +41,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
             {
                 if (_parametersSchema == null)
                 {
-                    JsonObject dataTypeProperties = new();
-                    List<string> requiredProperties = new();
-
-                    foreach (var p in _dataTypeInstance.Properties)
-                    {
-                        var propertyPresence = Mode == AddOrEditMode.Add ? p.WhenAdding : p.WhenEditing;
-
-                        if (propertyPresence == PropertyPresence.NotPresent)
-                        {
-                            continue;
-                        }
-
-                        var propertyObj = new JsonObject
-                        {
-                            ["description"] = (propertyPresence == PropertyPresence.Required ? "Required: " : "Optional: ") + p.Description
-                        };
-
-                        foreach (var typeProperty in p.GetJsonSchemaTypeProperties())
-                        {
-                            propertyObj[typeProperty.Key] = JsonValue.Create(typeProperty.Value);
-                        }
-
-                        dataTypeProperties.Add(p.Name, propertyObj);
-
-                        if ((Mode == AddOrEditMode.Add && p.WhenAdding == PropertyPresence.Required) ||
-                            (Mode == AddOrEditMode.Edit && p.WhenEditing == PropertyPresence.Required))
-                        {
-                            requiredProperties.Add(p.Name);
-                        }
-                    }
-
-                    JsonObject itemsObject = new()
-                    {
-                        ["type"] = "object",
-                        ["properties"] = dataTypeProperties
-                    };
-                    if (requiredProperties.Count > 0)
-                    {
-                        itemsObject["required"] = new JsonArray(requiredProperties.Select(i => JsonValue.Create(i)).ToArray());
-                    }
+                    JsonObject itemsObject = _dataTypeInstance.GenerateObjectSchema(Mode);
 
                     string uppercaseDataTypeName = char.ToUpper(DataTypeName[0]) + DataTypeName.Substring(1);
 
@@ -136,12 +97,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 
                 var item = new TChatDataItem();
 
-                foreach (JsonProperty p in itemJsonElement.EnumerateObject())
-                {
-                    item.SetProperty(p.Name, p.Value);
-                }
+                item.SetPropertiesAndValidateHasRequiredProperties(itemJsonElement, Mode);
 
-                item.ValidateHasRequiredProperties(Mode);
                 items.Add(item);
             }
 

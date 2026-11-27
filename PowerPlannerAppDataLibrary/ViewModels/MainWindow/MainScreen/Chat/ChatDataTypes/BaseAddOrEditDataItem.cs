@@ -5,11 +5,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatDataTypes
 {
-    internal abstract class BaseAddOrEditDataItem<D> : BaseAddOrEditDataItem where D : BaseDataItem, new()
+    internal abstract class BaseAddOrEditDataItem<D> : BaseAddOrEditItem where D : BaseDataItem, new()
     {
+        public class NestedProperty : NestedObjectProperty, IPropertyTiedToDataItem
+        {
+            public Action<D, NestedObject> Apply { get; set; }
+
+            public void ApplyToDataItem(BaseDataItem dataItem)
+            {
+                if (Apply == null)
+                {
+                    throw new InvalidOperationException($"Apply action is not set for property '{Name}'.");
+                }
+
+                if (dataItem is D typedDataItem)
+                {
+                    Apply(typedDataItem, GetValue() as NestedObject);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Data item is not of the expected type '{typeof(D).Name}'.");
+                }
+            }
+        }
+
         public class Property<T> : BaseAddOrEditDataItemProperty<D, T>
         {
 
@@ -38,28 +61,88 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
                     throw new ArgumentException($"Missing required property: {property.Name} on {DataTypeName} item.");
                 }
 
-                if (property.HasSetValue)
+                if (property.HasSetValue && property is IPropertyTiedToDataItem tiedToDataItem)
                 {
-                    property.ApplyToDataItem(dataItem);
+                    tiedToDataItem.ApplyToDataItem(dataItem);
                 }
             }
         }
     }
 
-    internal abstract class BaseAddOrEditDataItem
+    internal abstract class BaseAddOrEditItem
     {
         /// <summary>
         /// Should be a lowercase name like "classes"
         /// </summary>
         public abstract string DataTypeName { get; }
 
-        public BaseAddOrEditDataItemProperty[] Properties { get; private set; }
+        public virtual BaseAddOrEditItemProperty[] Properties { get; private set; }
 
-        protected abstract BaseAddOrEditDataItemProperty[] GetProperties();
+        protected abstract BaseAddOrEditItemProperty[] GetProperties();
 
-        public BaseAddOrEditDataItem()
+        public BaseAddOrEditItem()
         {
             Properties = GetProperties();
+        }
+
+        public Tuple<JsonNode, JsonNode> GeneratePropertiesAndRequiredSchema(AddOrEditMode mode)
+        {
+            JsonObject dataTypeProperties = new();
+            List<string> requiredProperties = new();
+
+            foreach (var p in Properties)
+            {
+                var propertyPresence = mode == AddOrEditMode.Add ? p.WhenAdding : p.WhenEditing;
+
+                if (propertyPresence == PropertyPresence.NotPresent)
+                {
+                    continue;
+                }
+
+                var propertyObj = new JsonObject
+                {
+                    ["description"] = (propertyPresence == PropertyPresence.Required ? "Required: " : "Optional: ") + p.Description
+                };
+
+                foreach (var typeProperty in p.GetJsonSchemaTypeProperties())
+                {
+                    propertyObj[typeProperty.Key] = typeProperty.Value;
+                }
+
+                dataTypeProperties.Add(p.Name, propertyObj);
+
+                if ((mode == AddOrEditMode.Add && p.WhenAdding == PropertyPresence.Required) ||
+                    (mode == AddOrEditMode.Edit && p.WhenEditing == PropertyPresence.Required))
+                {
+                    requiredProperties.Add(p.Name);
+                }
+            }
+
+            JsonArray required = null;
+
+            if (requiredProperties.Count > 0)
+            {
+                required = new JsonArray(requiredProperties.Select(i => JsonValue.Create(i)).ToArray());
+            }
+
+            return Tuple.Create<JsonNode, JsonNode>(dataTypeProperties, required);
+        }
+
+        public JsonObject GenerateObjectSchema(AddOrEditMode mode)
+        {
+            var (dataTypeProperties, required) = GeneratePropertiesAndRequiredSchema(mode);
+
+            JsonObject itemsObject = new()
+            {
+                ["type"] = "object",
+                ["properties"] = dataTypeProperties
+            };
+            if (required != null)
+            {
+                itemsObject["required"] = required;
+            }
+
+            return itemsObject;
         }
 
         /// <summary>
@@ -74,6 +157,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
             {
                 property.SetValue(value);
             }
+        }
+
+        public void SetPropertiesAndValidateHasRequiredProperties(JsonElement value, AddOrEditMode mode)
+        {
+            if (value.ValueKind != JsonValueKind.Object)
+            {
+                throw new ArgumentException($"Expected a JSON object for {DataTypeName} item, but got {value.ValueKind}.");
+            }
+
+            foreach (JsonProperty p in value.EnumerateObject())
+            {
+                this.SetProperty(p.Name, p.Value);
+            }
+
+            this.ValidateHasRequiredProperties(mode);
         }
 
         public void ValidateHasRequiredProperties(AddOrEditMode mode)
