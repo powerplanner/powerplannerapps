@@ -59,27 +59,46 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 // Add classes
                 new AddClassesTool(MainScreenViewModel)
                 {
-                    Mode = AddOrEditMode.Add
+                    Mode = AddOrEditMode.Add,
+                    DisplayName = "Add classes"
                 },
 
                 // Edit classes
                 new AddOrEditItemsTool<AddOrEditClassDataItem>(MainScreenViewModel)
                 {
-                    Mode = AddOrEditMode.Edit
+                    Mode = AddOrEditMode.Edit,
+                    DisplayName = "Edit classes"
                 },
 
                 // Add tasks
                 new AddOrEditItemsTool<AddOrEditTaskDataItem>(MainScreenViewModel)
                 {
-                    Mode = AddOrEditMode.Add
+                    Mode = AddOrEditMode.Add,
+                    DisplayName = "Add tasks"
                 },
 
                 // Edit tasks
                 new AddOrEditItemsTool<AddOrEditTaskDataItem>(MainScreenViewModel)
                 {
-                    Mode = AddOrEditMode.Edit
+                    Mode = AddOrEditMode.Edit,
+                    DisplayName = "Edit tasks"
                 },
             ];
+        }
+
+        private LocalTool GetLocalTool(string toolName)
+        {
+            return LocalTools.FirstOrDefault(i => i.Name.Equals(toolName, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private object GetToolResult(FunctionCallContent functionCall)
+        {
+            return _messages.Value.SelectMany(m => m.Contents).OfType<FunctionResultContent>().FirstOrDefault(i => i.CallId == functionCall.CallId);
+        }
+
+        private FunctionCallContent GetToolCall(string toolCallId)
+        {
+            return _messages.Value.SelectMany(m => m.Contents).OfType<FunctionCallContent>().FirstOrDefault(i => i.CallId == toolCallId);
         }
 
         protected override View Render()
@@ -89,19 +108,71 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 Margin = new Thickness(Theme.Current.PageMargin)
             };
 
+            bool needsToolCallApproval = false;
+
             foreach (var m in _messages.Value)
             {
                 if (m.Role == ChatRole.Assistant)
                 {
                     foreach (var toolCall in m.Contents.OfType<FunctionCallContent>())
                     {
-                        renderedMessages.Children.Add(new TextBlock
+                        var localTool = GetLocalTool(toolCall.Name);
+                        if (localTool != null)
                         {
-                            Text = $"Tool call: {toolCall.Name}",
-                            FontSize = Theme.Current.CaptionFontSize,
-                            TextColor = Theme.Current.SubtleForegroundColor,
-                            Margin = new Thickness(24, 0, 0, 12)
-                        });
+                            if (localTool.RequiresApproval && !HasBeenApproved(toolCall.CallId))
+                            {
+                                renderedMessages.Children.Add(new Border
+                                {
+                                    BackgroundColor = Theme.Current.BackgroundAlt1Color,
+                                    CornerRadius = 6,
+                                    Margin = new Thickness(24, 0, 0, 12),
+                                    Padding = new Thickness(6),
+                                    Content = new LinearLayout
+                                    {
+                                        Children =
+                                        {
+                                            new TextBlock
+                                            {
+                                                Text = $"{localTool.DisplayName ?? localTool.Name}",
+                                                Margin = new Thickness(0, 0, 0, 6),
+                                            },
+                                            new LinearLayout
+                                            {
+                                                Orientation = Orientation.Horizontal,
+                                                Children =
+                                                {
+                                                    new AccentButton
+                                                    {
+                                                        Text = "Approve",
+                                                        Margin = new Thickness(0, 0, 3, 0),
+                                                        Click = () => ApproveToolCall(toolCall.CallId, true)
+                                                    },
+
+                                                    new Button
+                                                    {
+                                                        Text = "Deny",
+                                                        Margin = new Thickness(3, 0, 0, 0),
+                                                        Click = () => ApproveToolCall(toolCall.CallId, false)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+
+                                needsToolCallApproval = true;
+                            }
+                            else
+                            {
+                                renderedMessages.Children.Add(new TextBlock
+                                {
+                                    Text = $"{localTool.DisplayName ?? localTool.Name}",
+                                    FontSize = Theme.Current.CaptionFontSize,
+                                    TextColor = Theme.Current.SubtleForegroundColor,
+                                    Margin = new Thickness(24, 0, 0, 12)
+                                });
+                            }
+                        }
                     }
 
                     if (!string.IsNullOrWhiteSpace(m.Text))
@@ -139,7 +210,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 }
             }
 
-            if (_isLoading.Value)
+            if (_isLoading.Value && !needsToolCallApproval)
             {
                 renderedMessages.Children.Add(new Border
                 {
@@ -220,52 +291,101 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             {
                 var toolCalls = response.Messages.SelectMany(i => i.Contents).OfType<FunctionCallContent>().ToArray();
 
-                var toolResults = await HandleToolCallsAsync(toolCalls);
+                _messages.Value.AddRange(response.Messages);
+                MarkDirty();
 
-                var updatedMessages = _messages.Value.ToList();
-                updatedMessages.AddRange(response.Messages);
-                updatedMessages.Add(new ChatMessage(ChatRole.Tool, toolResults));
-                _messages.Value = updatedMessages;
+                await HandleToolCallsAsync(toolCalls);
 
-                // If we had updated tool results, we need to repeat the cycle
-                if (toolResults.Any())
+                // If we had tool calls, we need to repeat the cycle now that we've responded to them
+                if (toolCalls.Any())
                 {
                     await SendMessageAndHandleResponseAsync();
                 }
             }
         }
 
-        private async Task<List<AIContent>> HandleToolCallsAsync(FunctionCallContent[] functionCalls)
+        /// <summary>
+        /// Processes a batch of tool calls, executing calls that do not require approval and queuing approval-required
+        /// calls for later handling.
+        /// </summary>
+        /// <remarks>Calls mapped to local tools that require approval are tracked as pending approval and
+        /// are not executed in this operation.</remarks>
+        /// <param name="functionCalls">The function calls to evaluate for local approval requirements and immediate execution.</param>
+        /// <returns><see langword="true"/> when all calls were handled immediately; <see langword="false"/> when one or more
+        /// calls were deferred for approval.</returns>
+        private async Task HandleToolCallsAsync(FunctionCallContent[] functionCalls)
         {
-            List<AIContent> answer = new List<AIContent>();
-
             foreach (var call in functionCalls)
+            {
+                var localTool = GetLocalTool(call.Name);
+                if (localTool != null && localTool.RequiresApproval)
+                {
+                    if (!await RequestApprovalAsync(call))
+                    {
+                        AddToolCallResponse(call.CallId, "Denied by the user.");
+                        return;
+                    }
+                }
+
+                await HandleToolCallAsync(call);
+            }
+        }
+
+        private Dictionary<string, TaskCompletionSource<bool>> _pendingApprovalRequests = new Dictionary<string, TaskCompletionSource<bool>>();
+
+        private Task<bool> RequestApprovalAsync(FunctionCallContent functionCall)
+        {
+            var taskCompletionSource = new TaskCompletionSource<bool>();
+            _pendingApprovalRequests[functionCall.CallId] = taskCompletionSource;
+            MarkDirty();
+            return taskCompletionSource.Task;
+        }
+
+        private bool HasBeenApproved(string toolCallId)
+        {
+            return !_pendingApprovalRequests.ContainsKey(toolCallId);
+        }
+
+        private void ApproveToolCall(string toolCallId, bool approved)
+        {
+            if (_pendingApprovalRequests.TryGetValue(toolCallId, out var tcs))
+            {
+                tcs.SetResult(approved);
+                _pendingApprovalRequests.Remove(toolCallId);
+                MarkDirty();
+            }
+        }
+
+        private async Task HandleToolCallAsync(FunctionCallContent functionCall)
+        {
+            var localTool = GetLocalTool(functionCall.Name);
+            if (localTool != null)
             {
                 try
                 {
-                    var result = await HandleToolCallAsync(call);
-                    answer.Add(new FunctionResultContent(call.CallId, result));
+                    object result = await localTool.InvokeWithResultAsync(functionCall.Arguments);
+                    AddToolCallResponse(functionCall.CallId, result);
                 }
                 catch (Exception ex)
                 {
-                    answer.Add(new FunctionResultContent(call.CallId, "Error: " + ex.Message));
+                    AddToolCallResponse(functionCall.CallId, "Error: " + ex.Message);
                 }
-            }
-
-            return answer;
-        }
-
-        private async Task<object> HandleToolCallAsync(FunctionCallContent functionCall)
-        {
-            var localTool = LocalTools.FirstOrDefault(i => i.Name == functionCall.Name);
-            if (localTool != null)
-            {
-                return await localTool.InvokeWithResultAsync(functionCall.Arguments);
             }
             else
             {
-                throw new InvalidOperationException("Unknown tool: " + functionCall.Name);
+                AddToolCallResponse(functionCall.CallId, "Error: Unknown tool: " + functionCall.Name);
             }
+        }
+
+        private void AddToolCallResponse(string callId, object result)
+        {
+            AddChatMessage(new ChatMessage(ChatRole.Tool, [new FunctionResultContent(callId, result)]));
+        }
+
+        private void AddChatMessage(ChatMessage chatMessage)
+        {
+            _messages.Value.Add(chatMessage);
+            MarkDirty();
         }
 
         private async Task<ChatTurnResponse> GetResponseAsync()

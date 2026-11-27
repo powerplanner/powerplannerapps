@@ -17,6 +17,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
     internal abstract class BaseAddOrEditItemProperty
     {
         public required string Name { get; set; }
+        /// <summary>
+        /// User-facing name
+        /// </summary>
+        public string DisplayName { get; set; }
         public required string Description { get; set; }
         public required PropertyPresence WhenAdding { get; set; }
         public required PropertyPresence WhenEditing { get; set; }

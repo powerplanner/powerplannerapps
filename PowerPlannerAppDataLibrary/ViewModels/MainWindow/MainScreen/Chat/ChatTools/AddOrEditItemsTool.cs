@@ -28,6 +28,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
         public AddOrEditItemsTool(MainScreenViewModel mainScreenViewModel)
         {
             MainScreenViewModel = mainScreenViewModel;
+            RequiresApproval = true;
         }
 
         public override string Name => Mode == AddOrEditMode.Add ? $"add_{DataTypeName}" : $"edit_{DataTypeName}";

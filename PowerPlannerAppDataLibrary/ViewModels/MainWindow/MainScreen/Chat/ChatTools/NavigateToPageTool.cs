@@ -24,6 +24,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
         public NavigateToPageTool(MainScreenViewModel mainScreenViewModel)
         {
             _mainScreenViewModel = mainScreenViewModel;
+            DisplayName = "Navigate to page";
         }
 
         public override Task InvokeAsync(NavigateToPageToolParameters parameters)

@@ -20,6 +20,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
         public GetClassesTool(MainScreenViewModel mainScreenViewModel)
         {
             _mainScreenViewModel = mainScreenViewModel;
+            DisplayName = "Get classes";
         }
 
         public override Task<List<ChatClassItem>> InvokeWithResultAsync(BlankParams parameters)

@@ -30,6 +30,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
         public GetTasksAndEventsTool(MainScreenViewModel mainScreenViewModel)
         {
             _mainScreenViewModel = mainScreenViewModel;
+            DisplayName = "Get tasks and events";
         }
 
         public override async Task<GetTasksAndEventsToolResponse> InvokeWithResultAsync(BlankParams parameters)
