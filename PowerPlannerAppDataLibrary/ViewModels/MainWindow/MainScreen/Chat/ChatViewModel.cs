@@ -55,6 +55,29 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 new NavigateToPageTool(MainScreenViewModel),
                 new GetClassesTool(MainScreenViewModel),
                 new GetTasksAndEventsTool(MainScreenViewModel),
+                new GetHolidaysTool(MainScreenViewModel),
+
+                // Dislay items
+                new DisplayItemTool(MainScreenViewModel)
+                {
+                    ItemType = PowerPlannerSending.ItemType.Class,
+                    ItemName = "class",
+                    DisplayName = "Open class"
+                },
+
+                new DisplayItemTool(MainScreenViewModel)
+                {
+                    ItemType = PowerPlannerSending.ItemType.MegaItem,
+                    ItemName = "task_or_event",
+                    DisplayName = "Open task or event"
+                },
+
+                new DisplayItemTool(MainScreenViewModel)
+                {
+                    ItemType = PowerPlannerSending.ItemType.MegaItem,
+                    ItemName = "holiday",
+                    DisplayName = "Open holiday"
+                },
 
                 // Add classes
                 new AddClassesTool(MainScreenViewModel)
@@ -83,6 +106,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                     Mode = AddOrEditMode.Edit,
                     DisplayName = "Edit tasks"
                 },
+
+                // Add events
+                new AddOrEditItemsTool<AddOrEditEventDataItem>(MainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Add,
+                    DisplayName = "Add events"
+                },
+
+                // Edit events
+                new AddOrEditItemsTool<AddOrEditEventDataItem>(MainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Edit,
+                    DisplayName = "Edit events"
+                }
             ];
         }
 
@@ -204,11 +241,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                     new TextBox
                     {
                         PlaceholderText = "Type your message...",
-                        Margin = new Thickness(0, 12, 0, 0),
+                        Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, Theme.Current.PageMargin),
                         Text = new VxValue<string>(_currentInput.Value, v => _currentInput.SetValueSilently(v)),
                         OnSubmit = SendMessage,
                         AutoFocus = true,
-                        IsEnabled = _isLoading.Value == false
+                        IsEnabled = _isLoading.Value == false,
                     }
                 }
             };
@@ -242,7 +279,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                         },
                         new ScrollView
                         {
-                            Height = 100,
+                            Height = 75,
                             Content = new Border
                             {
                                 BackgroundColor = Theme.Current.BackgroundAlt2Color,
@@ -255,7 +292,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                                     TextColor = Theme.Current.SubtleForegroundColor,
                                     FontSize = Theme.Current.CaptionFontSize
                                 }
-                            }
+                            },
+                            Margin = new Thickness(0, 0, 0, 6)
                         },
                         new LinearLayout
                         {
@@ -431,6 +469,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 - Be concise and clear in your responses. Stay focused on the user's schedule and avoid providing unrelated information.
                 - Always be polite and professional in your responses.
                 - If the tools aren't available to help with the user's request, respond with a clear message indicating that you cannot assist with that request.
+                - Power Planner has the following data structure... Years -> Semesters -> Classes. Then there are...
+                  - Tasks: Homework / assignments, etc... things that can be marked complete and are due by a specific date. These can be under a class, or under a semester for "no class" tasks.
+                  - Events: Exams / quizzes, etc... things that can't be marked complete and are events that simply happen and are done after they've passed. These can also be under a class, or under a semester for "no class" events. Class schedules should NOT be created using events.
+                  - Schedules: Weekly schedule entries for a specific class.
+                  - Grades: Grades under a specific class.
                 """);
 
             var contextMessage = $"""

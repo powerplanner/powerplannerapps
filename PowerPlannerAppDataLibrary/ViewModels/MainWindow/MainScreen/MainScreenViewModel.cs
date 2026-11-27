@@ -1733,6 +1733,32 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             ShowPopup(ViewTaskOrEventViewModel.Create(this, item));
         }
 
+        public async Task<bool> ShowTaskOrEventAsync(Guid itemId)
+        {
+            var semesterItems = SemesterItemsViewGroup.Load(CurrentLocalAccountId, CurrentSemester);
+            await semesterItems.LoadingTask;
+            var item = semesterItems.Items.OfType<ViewItemTaskOrEvent>().FirstOrDefault(i => i.Identifier == itemId);
+            if (item != null)
+            {
+                ShowItem(item);
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> ShowHolidayAsync(Guid itemId)
+        {
+            var semesterItems = SemesterItemsViewGroup.Load(CurrentLocalAccountId, CurrentSemester);
+            await semesterItems.LoadingTask;
+            var item = semesterItems.Items.OfType<ViewItemHoliday>().FirstOrDefault(i => i.Identifier == itemId);
+            if (item != null)
+            {
+                ViewHoliday(item);
+                return true;
+            }
+            return false;
+        }
+
         public void EditTaskOrEvent(ViewItemTaskOrEvent item)
         {
             ShowPopup(AddTaskOrEventViewModel.CreateForEdit(this, new AddTaskOrEventViewModel.EditParameter()

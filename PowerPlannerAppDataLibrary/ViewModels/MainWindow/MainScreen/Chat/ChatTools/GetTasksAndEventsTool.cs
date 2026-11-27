@@ -19,6 +19,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 
         [Description("The list of complete tasks.")]
         public List<ChatTaskItem> CompletedTasks { get; set; }
+
+        [Description("The list of events that are still happening now or in the future.")]
+        public List<ChatEventItem> ActiveEvents { get; set; }
+
+        [Description("The list of events that have already happened.")]
+        public List<ChatEventItem> PastEvents { get; set; }
     }
 
     internal class GetTasksAndEventsTool : LocalTool<BlankParams, GetTasksAndEventsToolResponse>
@@ -38,6 +44,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
             var semesterItemsViewGroup = SemesterItemsViewGroup.Load(_mainScreenViewModel.CurrentLocalAccountId, _mainScreenViewModel.CurrentSemester);
             await semesterItemsViewGroup.LoadingTask;
 
+            DateTime today = DateTime.Today;
+
             return new GetTasksAndEventsToolResponse
             {
                 ActiveTasks = semesterItemsViewGroup.Items
@@ -49,6 +57,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
                     .OfType<ViewItemTaskOrEvent>()
                     .Where(i => i.Type == TaskOrEventType.Task && i.IsComplete)
                     .Select(i => new ChatTaskItem(i)).ToList(),
+
+                ActiveEvents = semesterItemsViewGroup.Items
+                    .OfType<ViewItemTaskOrEvent>()
+                    .Where(i => i.IsActive(today))
+                    .Select(i => new ChatEventItem(i)).ToList(),
+
+                PastEvents = semesterItemsViewGroup.Items
+                    .OfType<ViewItemTaskOrEvent>()
+                    .Where(i => !i.IsActive(today))
+                    .Select(i => new ChatEventItem(i)).ToList(),
             };
         }
     }

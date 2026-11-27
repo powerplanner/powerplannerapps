@@ -1,5 +1,8 @@
-﻿using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+﻿using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatItemTypes;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatTools;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -145,6 +148,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
                     }
                 }
             ];
+        }
+
+        public override DataItemMegaItem CreateDataItem(AddOrEditMode mode)
+        {
+            var dataItem = base.CreateDataItem(mode);
+            if (dataItem.UpperIdentifier != Guid.Empty)
+            {
+                var semesterId = PowerPlannerApp.Current.GetMainScreenViewModel()?.CurrentSemesterId;
+                if (semesterId != null && semesterId == dataItem.UpperIdentifier)
+                {
+                    dataItem.MegaItemType = PowerPlannerSending.MegaItemType.Task;
+                }
+                else
+                {
+                    dataItem.MegaItemType = PowerPlannerSending.MegaItemType.Homework;
+                }
+            }
+            return dataItem;
         }
     }
 }

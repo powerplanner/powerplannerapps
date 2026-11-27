@@ -38,7 +38,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
         }
 
-        public override BaseDataItem CreateDataItem(AddOrEditMode mode)
+        public override D CreateDataItem(AddOrEditMode mode)
         {
             var dataItem = new D();
             PopulateDataItem(dataItem, mode);

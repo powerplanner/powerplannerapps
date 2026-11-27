@@ -88,12 +88,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
         [Description("The percent complete of the task, from 0.0 to 1.0.")]
         public double PercentComplete { get; set; }
 
+        [Description("The upper identifier of the task, typically a class identifier, but it also can be a semester identifier if it's a \"no class\" task.")]
+        [NotNull]
+        [DisallowNull]
+        public Guid UpperIdentifier { get; set; }
+
         public ChatTaskItem(ViewItemTaskOrEvent task) : base(task)
         {
             Name = task.Name;
             Details = task.Details;
             DueDateAndTime = TaskDueDateAndTime.FromViewItem(task);
             PercentComplete = task.PercentComplete;
+            UpperIdentifier = task.Class.Identifier;
         }
     }
 }
