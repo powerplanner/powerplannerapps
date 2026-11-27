@@ -129,7 +129,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             {
                 renderedMessages.Children.Add(new TextButton
                 {
-                    Text = "ℹ️ Tell me what you can do",
+                    Text = "⚡ Tell me what you can do",
                     Margin = new Thickness(MESSAGE_INDENT, 0, 0, MESSAGE_SPACING),
                     HorizontalAlignment = HorizontalAlignment.Right,
                     Click = () =>
