@@ -35,7 +35,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
         [Description("Optional end date of the class, if it ends earlier than the semester itself.")]
         public DateOnly? EndDate { get; set; }
 
-        public ChatClassItem(ViewItemClass c)
+        public ChatClassItem(ViewItemClass c) : base(c)
         {
             Name = c.Name;
             Color = ColorHelper.ToString(c.Color);

@@ -15,12 +15,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 {
     internal abstract class LocalTool<T, R> : LocalTool
     {
-        public override Type ParametersType => typeof(T);
-        public override Type ReturnType => typeof(R);
-
         public abstract Task<R> InvokeWithResultAsync(T parameters);
 
-        public override async Task<JsonElement> InvokeWithResultAsync(IDictionary<string, object> arguments)
+        public override async Task<object> InvokeWithResultAsync(IDictionary<string, object> arguments)
         {
             var jsonElements = new Dictionary<string, JsonElement>(StringComparer.Ordinal);
 
@@ -53,6 +50,34 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
                 return default;
             }
         }
+
+        public override JsonElement ParametersSchema
+        {
+            get
+            {
+                var context = new LocalToolJsonContext(new JsonSerializerOptions()
+                {
+                    RespectNullableAnnotations = true
+                });
+                var options = context.Options;
+
+                return AIJsonUtilities.CreateJsonSchema(typeof(T), serializerOptions: options);
+            }
+        }
+
+        public override JsonElement? ReturnSchema
+        {
+            get
+            {
+                var context = new LocalToolJsonContext(new JsonSerializerOptions()
+                {
+                    RespectNullableAnnotations = true
+                });
+                var options = context.Options;
+
+                return AIJsonUtilities.CreateJsonSchema(typeof(R), serializerOptions: options);
+            }
+        }
     }
 
     /// <summary>
@@ -61,10 +86,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
     /// <typeparam name="T"></typeparam>
     internal abstract class LocalTool<T> : LocalTool<T, object>
     {
-        public override Type ParametersType => typeof(T);
-
-        public override Type ReturnType => null;
-
+        public override JsonElement? ReturnSchema => null;
         public abstract Task InvokeAsync(T parameters);
 
         public override async Task<object> InvokeWithResultAsync(T parameters)
@@ -78,9 +100,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
     {
         public abstract string Name { get; }
         public abstract string Description { get; }
-        public abstract Type ParametersType { get; }
-        public abstract Type ReturnType { get; }
-        public abstract Task<JsonElement> InvokeWithResultAsync(IDictionary<string, object> arguments);
+        public abstract JsonElement ParametersSchema { get; }
+        public abstract JsonElement? ReturnSchema { get; }
+        public abstract Task<object> InvokeWithResultAsync(IDictionary<string, object> arguments);
 
         public ChatTurnTool ToChatTurnTool()
         {
@@ -94,8 +116,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
             {
                 Name = Name,
                 Description = Description,
-                ParametersSchema = AIJsonUtilities.CreateJsonSchema(ParametersType, serializerOptions: options),
-                ReturnSchema = ReturnType != null ? AIJsonUtilities.CreateJsonSchema(ReturnType, serializerOptions: options) : null
+                ParametersSchema = ParametersSchema,
+                ReturnSchema = ReturnSchema
             };
         }
     }

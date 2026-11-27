@@ -1697,6 +1697,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }
         }
 
+        public Task SaveChanges(DataChanges changes)
+        {
+            return PowerPlannerApp.Current.SaveChanges(CurrentAccount, changes);
+        }
+
         public void AddClass(bool navigateToClassAfterAdd = false, Action<DataLayer.DataItems.DataItemClass> onClassAddedAction = null)
         {
             if (Classes == null)

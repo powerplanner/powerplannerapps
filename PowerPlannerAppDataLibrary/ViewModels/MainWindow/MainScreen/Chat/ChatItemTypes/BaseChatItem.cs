@@ -1,4 +1,5 @@
-﻿using PowerPlannerSending;
+﻿using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
         [Description("A unique identifier for the item.")]
         public Guid Identifier { get; set; }
 
-        [Description("The type of the item.")]
-        public ItemType Discriminator { get; set; }
+        public BaseChatItem(BaseViewItem item)
+        {
+            Identifier = item.Identifier;
+        }
     }
 }

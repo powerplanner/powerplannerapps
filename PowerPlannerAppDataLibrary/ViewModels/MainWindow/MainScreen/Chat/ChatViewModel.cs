@@ -1,8 +1,10 @@
 ﻿using BareMvvm.Core.ViewModels;
 using Microsoft.Extensions.AI;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.Services;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatDataTypes;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatTools;
 using System;
 using System.Collections.Generic;
@@ -52,7 +54,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             [
                 new NavigateToPageTool(MainScreenViewModel),
                 new GetClassesTool(MainScreenViewModel),
+
+                // Add classes
                 new AddClassesTool(MainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Add
+                },
+
+                // Edit classes
+                new AddOrEditItemsTool<AddOrEditClassDataItem>(MainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Edit
+                },
             ];
         }
 
@@ -67,13 +80,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             {
                 if (m.Role == ChatRole.Assistant)
                 {
-                    var toolCalls = string.Join(", ", m.Contents.OfType<FunctionCallContent>().Select(i => i.Name));
-
-                    if (!string.IsNullOrEmpty(toolCalls))
+                    foreach (var toolCall in m.Contents.OfType<FunctionCallContent>())
                     {
                         renderedMessages.Children.Add(new TextBlock
                         {
-                            Text = $"Tool calls: {toolCalls}",
+                            Text = $"Tool call: {toolCall.Name}",
                             FontSize = Theme.Current.CaptionFontSize,
                             TextColor = Theme.Current.SubtleForegroundColor,
                             Margin = new Thickness(24, 0, 0, 12)
@@ -231,7 +242,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             return answer;
         }
 
-        private async Task<JsonElement> HandleToolCallAsync(FunctionCallContent functionCall)
+        private async Task<object> HandleToolCallAsync(FunctionCallContent functionCall)
         {
             var localTool = LocalTools.FirstOrDefault(i => i.Name == functionCall.Name);
             if (localTool != null)
@@ -252,6 +263,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
 
             var currentContextMessage = new ChatMessage(ChatRole.System, $"""
                 Current app state:
+                - CurrentSemesterIdentifier: {_semester.Identifier}
                 - CurrentPage: calendar
                 - CurrentOpenMonth: {_displayMonth.ToString("yyyy-MM")}
                 """);
