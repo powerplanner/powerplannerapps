@@ -12,9 +12,11 @@ public class UIProgressBarWithIndeterminate : UIView
     private double value;
     private double maximum = 100;
     private UIColor foreground = UIColor.Blue;
+    private nfloat animatedWidth;
 
     public UIProgressBarWithIndeterminate()
     {
+        ClipsToBounds = true;
         progressView = new UIProgressView(UIProgressViewStyle.Default);
 
         indeterminateView = new UIView
@@ -40,7 +42,23 @@ public class UIProgressBarWithIndeterminate : UIView
         }
 
         progressView.Frame = new CGRect(0, (Bounds.Height - progressHeight) / 2, Bounds.Width, progressHeight);
-        indeterminateView.Frame = Bounds;
+        nfloat segmentWidth = Bounds.Width / 3;
+        indeterminateView.Frame = new CGRect(-segmentWidth, (Bounds.Height - progressHeight) / 2, segmentWidth, progressHeight);
+        UpdateIndeterminateAnimation();
+    }
+
+    public override void MovedToWindow()
+    {
+        base.MovedToWindow();
+
+        if (Window == null)
+        {
+            indeterminateView.Layer.RemoveAnimation("indeterminate");
+        }
+        else
+        {
+            SetNeedsLayout();
+        }
     }
 
     /// <summary>
@@ -83,7 +101,14 @@ public class UIProgressBarWithIndeterminate : UIView
             progressView.Hidden = isIndeterminate;
             indeterminateView.Hidden = !isIndeterminate;
             if (isIndeterminate)
-                StartIndeterminateAnimation();
+            {
+                SetNeedsLayout();
+            }
+            else
+            {
+                indeterminateView.Layer.RemoveAnimation("indeterminate");
+                UpdateProgress();
+            }
         }
     }
 
@@ -127,14 +152,28 @@ public class UIProgressBarWithIndeterminate : UIView
         }
     }
 
-    private void StartIndeterminateAnimation()
+    private void UpdateIndeterminateAnimation()
     {
-        indeterminateView.Layer.RemoveAllAnimations();
-        var animation = new CABasicAnimation
+        if (!isIndeterminate || Window == null || Bounds.Width <= 0 || Bounds.Height <= 0)
+        {
+            indeterminateView.Layer.RemoveAnimation("indeterminate");
+            return;
+        }
+
+        using var existingAnimation = indeterminateView.Layer.AnimationForKey("indeterminate");
+        if (existingAnimation != null && animatedWidth == Bounds.Width)
+        {
+            return;
+        }
+
+        // Properties can be applied before layout; use the measured width, not the initial zero frame.
+        animatedWidth = Bounds.Width;
+        nfloat halfSegmentWidth = indeterminateView.Bounds.Width / 2;
+        using var animation = new CABasicAnimation
         {
             KeyPath = "position.x",
-            From = NSNumber.FromNFloat(-Frame.Width),
-            To = NSNumber.FromNFloat(Frame.Width),
+            From = NSNumber.FromNFloat(-halfSegmentWidth),
+            To = NSNumber.FromNFloat(Bounds.Width + halfSegmentWidth),
             Duration = 1.2,
             RepeatCount = float.MaxValue,
             AutoReverses = false

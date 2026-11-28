@@ -34,11 +34,14 @@ using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Components;
 using System.Drawing;
 using Vx;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
     public partial class MainScreenViewModel : PagedViewModelWithPopups
     {
+        private ChatViewModelState _chatViewModelState;
+
         protected override View Render()
         {
             if (Size.Width == 0)
@@ -1697,6 +1700,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }
         }
 
+        public Task SaveChanges(DataChanges changes)
+        {
+            return PowerPlannerApp.Current.SaveChanges(CurrentAccount, changes);
+        }
+
         public void AddClass(bool navigateToClassAfterAdd = false, Action<DataLayer.DataItems.DataItemClass> onClassAddedAction = null)
         {
             if (Classes == null)
@@ -1723,9 +1731,45 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             ShowPopup(AddClassViewModel.CreateForEdit(this, c));
         }
 
+        public void ShowChat()
+        {
+            if (_chatViewModelState == null)
+            {
+                _chatViewModelState = new ChatViewModelState(this);
+            }
+
+            ShowPopup(new ChatViewModel(this, _chatViewModelState));
+        }
+
         public void ShowItem(ViewItemTaskOrEvent item)
         {
             ShowPopup(ViewTaskOrEventViewModel.Create(this, item));
+        }
+
+        public async Task<bool> ShowTaskOrEventAsync(Guid itemId)
+        {
+            var semesterItems = SemesterItemsViewGroup.Load(CurrentLocalAccountId, CurrentSemester);
+            await semesterItems.LoadingTask;
+            var item = semesterItems.Items.OfType<ViewItemTaskOrEvent>().FirstOrDefault(i => i.Identifier == itemId);
+            if (item != null)
+            {
+                ShowItem(item);
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> ShowHolidayAsync(Guid itemId)
+        {
+            var semesterItems = SemesterItemsViewGroup.Load(CurrentLocalAccountId, CurrentSemester);
+            await semesterItems.LoadingTask;
+            var item = semesterItems.Items.OfType<ViewItemHoliday>().FirstOrDefault(i => i.Identifier == itemId);
+            if (item != null)
+            {
+                ViewHoliday(item);
+                return true;
+            }
+            return false;
         }
 
         public void EditTaskOrEvent(ViewItemTaskOrEvent item)
@@ -2092,6 +2136,40 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             catch (Exception ex)
             {
                 TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Note that you still must await the LoadingTask within the answer if you want the Items to be populated.
+        /// </summary>
+        /// <param name="semesterIdentifier"></param>
+        /// <returns></returns>
+        public async Task<SemesterItemsViewGroup> LoadSemesterItemsViewGroupAsync(Guid semesterIdentifier)
+        {
+            if (CurrentSemester != null && semesterIdentifier == CurrentSemester.Identifier)
+            {
+                return SemesterItemsViewGroup.Load(CurrentLocalAccountId, CurrentSemester);
+            }
+            else
+            {
+                return await SemesterItemsViewGroup.LoadAsync(CurrentLocalAccountId, semesterIdentifier);
+            }
+        }
+
+        public async Task<ClassViewItemsGroup> LoadClassViewItemsGroupAsync(Guid classIdentifier, bool includeWeights = false)
+        {
+            if (CurrentSemester != null && Classes != null && Classes.Any(i => i.Identifier == classIdentifier))
+            {
+                return await ClassViewItemsGroup.LoadAsync(CurrentLocalAccountId, classIdentifier, DateTime.Today, CurrentSemester, includeWeights: includeWeights);
+            }
+            else
+            {
+                var data = await AccountDataStore.Get(CurrentLocalAccountId);
+                Guid semesterIdentifier = await data.GetSemesterIdForClassAsync(classIdentifier);
+                if (semesterIdentifier == Guid.Empty)
+                    throw new InvalidOperationException("Could not find the semester for the specified class.");
+                var scheduleViewItemGroup = await ScheduleViewItemsGroup.LoadAsync(CurrentLocalAccountId, semesterIdentifier);
+                return await ClassViewItemsGroup.LoadAsync(CurrentLocalAccountId, classIdentifier, DateTime.Today, scheduleViewItemGroup.Semester, includeWeights: includeWeights);
             }
         }
     }

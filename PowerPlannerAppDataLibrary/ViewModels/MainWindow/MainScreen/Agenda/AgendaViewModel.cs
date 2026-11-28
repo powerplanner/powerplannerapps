@@ -114,7 +114,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                             new Toolbar
                             {
                                 Title = PowerPlannerResources.GetStringMenuItem(NavigationManager.MainMenuSelections.Agenda),
-                                NookInsets = NookInsets
+                                NookInsets = NookInsets,
+                                PrimaryCommands =
+                                {
+                                    ToolbarHelper.ChatCommand(MainScreenViewModel)
+                                }
                             },
 
                             baseView.LinearLayoutWeight(1)
@@ -478,22 +482,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                 Type = type,
                 DueDate = date
             }));
-        }
-
-        public void ShowItem(ViewItemTaskOrEvent item)
-        {
-            MainScreenViewModel.ShowItem(item);
-        }
-
-        private void OpenEditWithAi()
-        {
-            var semesterItems = SemesterItemsViewGroup.Load(MainScreenViewModel.CurrentLocalAccountId, MainScreenViewModel.CurrentSemester);
-            MainScreenViewModel.ShowPopup(new TasksOrEvents.AiEditWithAiViewModel(
-                MainScreenViewModel,
-                MainScreenViewModel.Classes,
-                MainScreenViewModel.CurrentSemester,
-                semesterItems,
-                DateOnly.FromDateTime(DateTime.Today)));
         }
     }
 

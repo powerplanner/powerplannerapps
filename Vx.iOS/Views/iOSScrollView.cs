@@ -19,6 +19,7 @@ namespace Vx.iOS.Views
             View.MinimumZoomScale = newView.MinimumZoomScale;
             View.ConfigureZoom(newView.MaximumZoomScale != newView.MinimumZoomScale);
             View.HorizontalScrollEnabled = newView.HorizontalScrollEnabled;
+            View.ScrollToBottomWhenContentHeightChanges = newView.ScrollToBottomWhenContentHeightChanges;
 
             ReconcileContentNew(oldView?.Content, newView.Content, changedView =>
             {
@@ -109,8 +110,24 @@ namespace Vx.iOS.Views
                 nfloat contentHeight = MaxF(desired.Height, Bounds.Height);
                 _contentView.Frame = new CGRect(0, 0, width, contentHeight);
                 ContentSize = new CGSize(width, contentHeight);
+
+                var prevHeight = _prevContentHeight;
+                _prevContentHeight = contentHeight;
+
+                if (ScrollToBottomWhenContentHeightChanges && contentHeight > prevHeight)
+                {
+                    var bottomOffset = contentHeight - Bounds.Height + AdjustedContentInset.Bottom;
+                    if (bottomOffset > 0)
+                    {
+                        SetContentOffset(new CGPoint(ContentOffset.X, bottomOffset), false);
+                    }
+                }
             }
         }
+
+        public bool ScrollToBottomWhenContentHeightChanges { get; set; }
+
+        private nfloat _prevContentHeight;
 
         public override CGSize SizeThatFits(CGSize size)
         {

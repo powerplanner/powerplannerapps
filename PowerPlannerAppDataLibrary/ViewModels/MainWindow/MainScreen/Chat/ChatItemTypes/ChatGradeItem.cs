@@ -1,0 +1,49 @@
+﻿using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
+
+namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatItemTypes
+{
+    internal class ChatGradeItem : BaseChatItem
+    {
+        [Description("The name of the grade.")]
+        [NotNull]
+        [DisallowNull]
+        public string Name { get; set; }
+
+        [Description("The number of points received for the grade. Can be null if not yet graded.")]
+        public double? GradeReceived { get; set; }
+
+        [Description("The total number of points possible for the grade.")]
+        [NotNull]
+        [DisallowNull]
+        public double GradeTotal { get; set; }
+
+        [Description("Optional details for the grade.")]
+        public string Details { get; set; }
+
+        [Description("The date of the grade.")]
+        [NotNull]
+        [DisallowNull]
+        public DateOnly Date { get; set; }
+
+        [Description("Whether the grade is dropped (ignored from the overall grade calculation).")]
+        [NotNull]
+        [DisallowNull]
+        public bool IsDropped { get; set; }
+
+        public ChatGradeItem(BaseViewItemMegaItem item) : base(item)
+        {
+            Name = item.Name;
+            GradeReceived = item.GradeReceived == PowerPlannerSending.Grade.UNGRADED ? null : item.GradeReceived;
+            GradeTotal = item.GradeTotal;
+            Details = item.Details;
+            Date = DateOnly.FromDateTime(item.Date);
+            IsDropped = item.IsDropped;
+        }
+    }
+}

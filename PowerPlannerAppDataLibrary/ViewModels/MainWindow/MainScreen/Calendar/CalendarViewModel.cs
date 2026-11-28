@@ -21,6 +21,7 @@ using System.Drawing;
 using Vx;
 using PowerPlannerAppDataLibrary.Views;
 using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 {
@@ -489,16 +490,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             }));
         }
 
-        private void OpenEditWithAi()
-        {
-            MainScreenViewModel.ShowPopup(new AiEditWithAiViewModel(
-                MainScreenViewModel,
-                MainScreenViewModel.Classes,
-                MainScreenViewModel.CurrentSemester,
-                SemesterItemsViewGroup,
-                DateOnly.FromDateTime(DisplayMonth)));
-        }
-
         private DateTime? GetDateForAdd(DateTime? dueDate, bool useSelectedDate)
         {
             if (dueDate == null)
@@ -722,22 +713,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 });
 
                 // Add button is displayed as floating action button sometimes
-                bool hasAddButtonInToolbar = false;
                 if (DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
                 {
                     toolbar.PrimaryCommands.Insert(0, ToolbarHelper.AddCommand(() => AddTask(), () => AddEvent(), () => AddHoliday()));
-                    hasAddButtonInToolbar = true;
                 }
 
-                var editWithAiMenuItem = new MenuItem
-                {
-                    Text = R.S("AiEdit_Title"),
-                    Glyph = MaterialDesign.MaterialDesignIcons.Bolt,
-                    Click = OpenEditWithAi
-                };
+                var editWithAiMenuItem = ToolbarHelper.ChatCommand(MainScreenViewModel);
                 if (ShowEditWithAiInPrimaryCommands)
                 {
-                    toolbar.PrimaryCommands.Insert(hasAddButtonInToolbar ? 1 : 0, editWithAiMenuItem);
+                    toolbar.PrimaryCommands.Add(editWithAiMenuItem);
                 }
                 else
                 {

@@ -7,6 +7,9 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
+    /// <summary>
+    /// Sizes to its text content when Height is unset; fixed-height text boxes scroll internally.
+    /// </summary>
     public class iOSMultilineTextBox : iOSView<Vx.Views.MultilineTextBox, UIRoundedTextViewWithHeader>
     {
         public iOSMultilineTextBox()
@@ -22,12 +25,19 @@ namespace Vx.iOS.Views
 
         private void View_TextChanged(object sender, string e)
         {
+            if (float.IsNaN(ViewWrapper.Height))
+            {
+                ViewWrapper.InvalidateMeasure();
+            }
+
             VxView.Text?.ValueChanged?.Invoke(View.Text);
         }
 
         protected override void ApplyProperties(MultilineTextBox oldView, MultilineTextBox newView)
         {
             base.ApplyProperties(oldView, newView);
+
+            View.AutoSize = float.IsNaN(newView.Height);
 
             if (newView.Text != null)
             {
@@ -174,6 +184,12 @@ namespace Vx.iOS.Views
         private UILabel _errorMessage;
         private UIView _errorMessageContainer;
 
+        public bool AutoSize
+        {
+            get => !_textField.ScrollEnabled;
+            set => _textField.ScrollEnabled = !value;
+        }
+
         public UIRoundedTextViewWithHeader()
         {
             _headerContainer = new UIView();
@@ -218,7 +234,9 @@ namespace Vx.iOS.Views
             nfloat width = size.Width >= UIViewWrapper.UnboundedSize ? NMax(_header.SizeThatFits(size).Width, _textField.SizeThatFits(size).Width) : size.Width;
             var headerHeight = HeaderHeight(width);
             var errorHeight = ErrorHeight(width);
-            nfloat textHeight = size.Height >= UIViewWrapper.UnboundedSize ? (nfloat)36 : NMax(36, size.Height - headerHeight - 4 - errorHeight);
+            nfloat textHeight = AutoSize
+                ? NMax(36, _textField.SizeThatFits(new CGSize(width, UIViewWrapper.UnboundedSize)).Height)
+                : size.Height >= UIViewWrapper.UnboundedSize ? (nfloat)36 : NMax(36, size.Height - headerHeight - 4 - errorHeight);
             return new CGSize(width, headerHeight + 4 + textHeight + errorHeight);
         }
 

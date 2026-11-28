@@ -1,18 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.App;
-using PowerPlannerAppDataLibrary.DataLayer;
-using PowerPlannerAppDataLibrary.DataLayer.DataItems;
-using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerAppDataLibrary.Helpers;
-using PowerPlannerAppDataLibrary.Services;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToolsPortable;
+﻿using System.Drawing;
 using Vx.Views;
-using static PowerPlannerAppDataLibrary.Services.AiService;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 {
@@ -72,7 +59,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     {
                         Text = R.S("ScheduleWelcome_ButtonAddWithAi"),
                         HorizontalAlignment = HorizontalAlignment.Center,
-                        Click = () => ScheduleViewModel.ShowPopup(new AddClassesAndScheduleWithAiViewModel(ScheduleViewModel)),
+                        Click = ScheduleViewModel.MainScreenViewModel.ShowChat,
                         Margin = new Thickness(0, 0, 0, 0)
                     }
                 }

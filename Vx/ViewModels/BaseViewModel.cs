@@ -810,6 +810,28 @@ namespace BareMvvm.Core.ViewModels
             return isValid;
         }
 
+        /// <summary>
+        /// Must be set before the view renders.
+        /// </summary>
+        public bool EnablePlatformKeyboardHeight { get; set; }
+
+        private float _platformKeyboardHeight;
+        /// <summary>
+        /// Ensure you set <see cref="EnablePlatformKeyboardHeight"/> to true to use this.
+        /// </summary>
+        public float PlatformKeyboardHeight
+        {
+            get => _platformKeyboardHeight;
+            set
+            {
+                if (_platformKeyboardHeight != value)
+                {
+                    _platformKeyboardHeight = value;
+                    MarkDirty();
+                }
+            }
+        }
+
         private Thickness _platformNookInsets = new Thickness();
 
         /// <summary>
