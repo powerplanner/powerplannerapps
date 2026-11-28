@@ -73,12 +73,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                             }
                             else
                             {
-                                renderedMessages.Children.Add(new HyperlinkTextBlock
+                                renderedMessages.Children.Add(new TextBlock
                                 {
                                     Text = localTool.DisplayName ?? localTool.Name,
                                     FontSize = Theme.Current.CaptionFontSize,
                                     TextColor = Theme.Current.SubtleForegroundColor,
-                                    Margin = new Thickness(MESSAGE_INDENT, 0, 0, MESSAGE_SPACING),
+                                    Margin = new Thickness(MESSAGE_INDENT + 6, 0, 0, MESSAGE_SPACING),
                                     IsTextSelectionEnabled = true
                                 });
                             }
