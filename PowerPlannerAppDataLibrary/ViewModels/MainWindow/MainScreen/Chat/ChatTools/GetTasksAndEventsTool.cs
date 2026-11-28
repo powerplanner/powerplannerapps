@@ -27,21 +27,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
         public List<ChatEventItem> PastEvents { get; set; }
     }
 
-    internal class GetTasksAndEventsTool : LocalTool<BlankParams, GetTasksAndEventsToolResponse>
+    internal class GetTasksAndEventsTool : LocalTool<SemesterParams, GetTasksAndEventsToolResponse>
     {
-        public override string Name => "get_tasks_and_events";
-        public override string Description => "Gets the list of tasks and events in the currently open semester, including active and complete tasks and events.";
+        public override string Name => "list_tasks_and_events";
+        public override string Description => "Lists the tasks and events from the specified semester, including active and complete tasks and events.";
         private MainScreenViewModel _mainScreenViewModel;
 
         public GetTasksAndEventsTool(MainScreenViewModel mainScreenViewModel)
         {
             _mainScreenViewModel = mainScreenViewModel;
-            DisplayName = "Get tasks and events";
+            DisplayName = "Get tasks and events list items";
         }
 
-        public override async Task<GetTasksAndEventsToolResponse> InvokeWithResultAsync(BlankParams parameters)
+        public override async Task<GetTasksAndEventsToolResponse> InvokeWithResultAsync(SemesterParams parameters)
         {
-            var semesterItemsViewGroup = SemesterItemsViewGroup.Load(_mainScreenViewModel.CurrentLocalAccountId, _mainScreenViewModel.CurrentSemester);
+            var semesterItemsViewGroup = await _mainScreenViewModel.LoadSemesterItemsViewGroupAsync(parameters.SemesterIdentifier);
             await semesterItemsViewGroup.LoadingTask;
 
             DateTime today = DateTime.Today;

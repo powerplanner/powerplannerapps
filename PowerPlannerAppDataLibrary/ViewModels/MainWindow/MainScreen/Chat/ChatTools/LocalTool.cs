@@ -42,7 +42,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
             {
                 var context = new LocalToolJsonContext(new JsonSerializerOptions()
                 {
-                    RespectNullableAnnotations = true
+                    RespectNullableAnnotations = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 });
                 var options = context.Options;
 
@@ -56,7 +57,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
             {
                 var context = new LocalToolJsonContext(new JsonSerializerOptions()
                 {
-                    RespectNullableAnnotations = true
+                    RespectNullableAnnotations = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 });
                 var options = context.Options;
 

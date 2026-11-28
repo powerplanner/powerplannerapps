@@ -40,6 +40,18 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             _cachedSemesterItems.Clear();
         }
 
+        /// <summary>
+        /// Note that you still must wait for the LoadingTask within this if you want the Items to be populated
+        /// </summary>
+        /// <param name="localAcountId"></param>
+        /// <param name="semesterId"></param>
+        /// <returns></returns>
+        public static async Task<SemesterItemsViewGroup> LoadAsync(Guid localAcountId, Guid semesterId)
+        {
+            var scheduleViewItemGroup = await ScheduleViewItemsGroup.LoadAsync(localAcountId, semesterId);
+            return Load(localAcountId, scheduleViewItemGroup.Semester);
+        }
+
         public static SemesterItemsViewGroup Load(Guid localAccountId, ViewItemSemester semester, bool trackChanges = true)
         {
             if (trackChanges)

@@ -22,6 +22,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
     [JsonSerializable(typeof(ClassInputParams))]
     [JsonSerializable(typeof(GradesResponse))]
     [JsonSerializable(typeof(DeleteItemsToolRequest))]
+    [JsonSerializable(typeof(GetYearsAndSemestersToolResponse))]
+    [JsonSerializable(typeof(GetFullTasksAndEventsToolRequest))]
+    [JsonSerializable(typeof(GetFullTasksAndEventsToolResponse))]
+    [JsonSerializable(typeof(SemesterParams))]
     internal partial class LocalToolJsonContext : JsonSerializerContext
     {
 

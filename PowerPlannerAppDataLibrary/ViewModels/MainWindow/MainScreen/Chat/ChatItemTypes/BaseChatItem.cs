@@ -9,12 +9,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
 {
     internal class BaseChatItem
     {
-        [Description("A unique identifier for the item.")]
-        public Guid Identifier { get; set; }
+        [Description("A unique id for the item.")]
+        public Guid Id { get; set; }
 
         public BaseChatItem(BaseViewItem item)
         {
-            Identifier = item.Identifier;
+            Id = item.Identifier;
         }
     }
 }

@@ -31,8 +31,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
             RequiresApproval = true;
         }
 
-        public override string Name => Mode == AddOrEditMode.Add ? $"add_{DataTypeName}" : $"edit_{DataTypeName}";
-        public override string Description => Mode == AddOrEditMode.Add ? $"Add new {DataTypeName}." : $"Edit existing {DataTypeName}. For each item, you must provide the identifier of the item you want to edit, and you can set the properties you want to update. Only set properties you actually want to change, unset properties will retain their current value.";
+        public override string Name => Mode == AddOrEditMode.Add ? $"create_{DataTypeName}" : $"update_{DataTypeName}";
+        public override string Description => Mode == AddOrEditMode.Add ? $"Create new {DataTypeName}." : $"Update existing {DataTypeName}. For each item, provide the ID of the item you want to update, and set the properties you want to update. Unset properties will retain their current value.";
 
         private JsonElement? _parametersSchema;
 
@@ -44,16 +44,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
                 {
                     JsonObject itemsObject = _dataTypeInstance.GenerateObjectSchema(Mode);
 
-                    string uppercaseDataTypeName = char.ToUpper(DataTypeName[0]) + DataTypeName.Substring(1);
-
                     JsonObject schema = new()
                     {
                         ["type"] = "object",
                         ["properties"] = new JsonObject
                         {
-                            [uppercaseDataTypeName] = new JsonObject
+                            [DataTypeName] = new JsonObject
                             {
-                                ["description"] = Mode == AddOrEditMode.Add ? $"The {DataTypeName} to add." : $"The {DataTypeName} to edit.",
+                                ["description"] = Mode == AddOrEditMode.Add ? $"The {DataTypeName} to create." : $"The {DataTypeName} to update.",
                                 ["type"] = "array",
                                 ["items"] = itemsObject
                             }

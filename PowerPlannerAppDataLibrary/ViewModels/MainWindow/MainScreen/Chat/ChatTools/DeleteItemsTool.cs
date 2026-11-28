@@ -10,38 +10,39 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 {
     public class DeleteItemsToolRequest
     {
-        [Description("The list of identifiers to delete.")]
+        [Description("The list of IDs to delete.")]
         [NotNull]
         [DisallowNull]
-        public List<Guid> IdentifiersToDelete { get; set; }
+        public required List<Guid> IdsToDelete { get; set; }
     }
     internal class DeleteItemsTool : LocalTool<DeleteItemsToolRequest, object>
     {
         public override string Name => "delete_" + PluralItemTypeName;
-        public override string Description => $"Deletes the specified {PluralItemTypeName} from the account, including any children underneath it if applicable.";
+        public override string Description => $"Deletes the specified {PluralItemTypeName} from the account{(HasChildren ? ", including all descendants" : "")}.";
         public required string PluralItemTypeName { get; init; }
-        private MainScreenViewModel _mainScreenViewModel;
+        public required bool HasChildren { get; init; }
+        public MainScreenViewModel MainScreenViewModel { get; private set; }
         public DeleteItemsTool(MainScreenViewModel mainScreenViewModel)
         {
-            _mainScreenViewModel = mainScreenViewModel;
+            MainScreenViewModel = mainScreenViewModel;
             RequiresApproval = true;
             IsDeleteItems = true;
             DisplayName = "Delete " + PluralItemTypeName;
         }
         public override async Task<object> InvokeWithResultAsync(DeleteItemsToolRequest parameters)
         {
-            if (parameters.IdentifiersToDelete.Count == 0)
+            if (parameters.IdsToDelete.Count == 0)
             {
-                throw new ArgumentException("You must provide at least one identifier to delete.");
+                throw new ArgumentException("You must provide at least one ID to delete.");
             }
 
             DataChanges changes = new DataChanges();
-            foreach (var d in parameters.IdentifiersToDelete)
+            foreach (var d in parameters.IdsToDelete)
             {
                 changes.DeleteItem(d);
             }
-            await _mainScreenViewModel.SaveChanges(changes);
-            return "Successfully deleted " + parameters.IdentifiersToDelete.Count + " items.";
+            await MainScreenViewModel.SaveChanges(changes);
+            return "Successfully deleted " + parameters.IdsToDelete.Count + " items.";
         }
     }
 }

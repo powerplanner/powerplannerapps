@@ -17,8 +17,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
             [
                 new Property<Guid>
                 {
-                    Name = "Identifier",
-                    Description = "The identifier of the schedule.",
+                    Name = "id",
+                    Description = "The ID of the schedule.",
                     WhenAdding = PropertyPresence.NotPresent,
                     WhenEditing = PropertyPresence.Required,
                     RequireNonDefaultValueIfSet = true,
@@ -26,7 +26,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
                     {
                         if (value == Guid.Empty)
                         {
-                            throw new ArgumentException("Schedule identifier cannot be empty.");
+                            throw new ArgumentException("Schedule ID cannot be empty.");
                         }
                         dataItem.Identifier = value;
                     }
@@ -34,8 +34,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<Guid>
                 {
-                    Name = "ClassIdentifier",
-                    Description = "The identifier of the class this schedule belongs to.",
+                    Name = "classId",
+                    Description = "The ID of the class this schedule belongs to.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
                     RequireNonDefaultValueIfSet = true,
@@ -47,7 +47,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<DayOfWeek>
                 {
-                    Name = "DayOfWeek",
+                    Name = "dayOfWeek",
                     Description = "The day of the week the schedule occurs on.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
@@ -59,7 +59,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<TimeOnly>
                 {
-                    Name = "StartTime",
+                    Name = "startTime",
                     Description = "The start time of the schedule, in HH:mm format.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
@@ -71,7 +71,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<TimeOnly>
                 {
-                    Name = "EndTime",
+                    Name = "endTime",
                     Description = "The end time of the schedule, in HH:mm format.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
@@ -83,7 +83,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<PowerPlannerSending.Schedule.Week>
                 {
-                    Name = "WeekType",
+                    Name = "weekType",
                     Description = "Whether the schedule is weekly, or bi-weekly on week one/A or week two/B.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
@@ -95,7 +95,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<string>
                 {
-                    Name = "Room",
+                    Name = "room",
                     Description = "The room the schedule occurs in, or a plain URL if it's an online class.",
                     WhenAdding = PropertyPresence.Optional,
                     WhenEditing = PropertyPresence.Optional,

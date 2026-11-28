@@ -44,29 +44,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
             PopulateDataItem(dataItem, mode);
             return dataItem;
         }
-
-        public void PopulateDataItem(D dataItem, AddOrEditMode mode)
-        {
-            foreach (var property in Properties)
-            {
-                var propertyPresence = mode == AddOrEditMode.Add ? property.WhenAdding : property.WhenEditing;
-
-                if (propertyPresence == PropertyPresence.NotPresent)
-                {
-                    continue;
-                }
-
-                if (propertyPresence == PropertyPresence.Required && !property.HasSetValue)
-                {
-                    throw new ArgumentException($"Missing required property: {property.Name} on {DataTypeName} item.");
-                }
-
-                if (property.HasSetValue && property is IPropertyTiedToDataItem tiedToDataItem)
-                {
-                    tiedToDataItem.ApplyToDataItem(dataItem);
-                }
-            }
-        }
     }
 
     internal abstract class BaseAddOrEditItem
@@ -190,6 +167,29 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
         }
 
         public abstract BaseDataItem CreateDataItem(AddOrEditMode mode);
+
+        public void PopulateDataItem(BaseDataItem dataItem, AddOrEditMode mode)
+        {
+            foreach (var property in Properties)
+            {
+                var propertyPresence = mode == AddOrEditMode.Add ? property.WhenAdding : property.WhenEditing;
+
+                if (propertyPresence == PropertyPresence.NotPresent)
+                {
+                    continue;
+                }
+
+                if (propertyPresence == PropertyPresence.Required && !property.HasSetValue)
+                {
+                    throw new ArgumentException($"Missing required property: {property.Name} on {DataTypeName} item.");
+                }
+
+                if (property.HasSetValue && property is IPropertyTiedToDataItem tiedToDataItem)
+                {
+                    tiedToDataItem.ApplyToDataItem(dataItem);
+                }
+            }
+        }
     }
 
     internal class PropertyRegistration

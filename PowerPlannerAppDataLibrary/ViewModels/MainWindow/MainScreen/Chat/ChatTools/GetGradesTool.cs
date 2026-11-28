@@ -16,10 +16,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 {
     internal class ClassInputParams
     {
-        [Description("The identifier of the class to fetch data for.")]
+        [Description("The id of the class to fetch data for.")]
         [NotNull]
         [DisallowNull]
-        public Guid ClassIdentifier { get; set; }
+        public required Guid ClassId { get; set; }
     }
 
     internal class GradesResponse
@@ -59,8 +59,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 
     internal class GetGradesTool : LocalTool<ClassInputParams, GradesResponse>
     {
-        public override string Name => "get_grades_and_weight_categories_from_class";
-        public override string Description => "Gets the list of weight categories and grades from the specified class.";
+        public override string Name => "list_grades_and_weight_categories";
+        public override string Description => "Lists the weight categories and grades from the specified class, and grade-related properties of the class itself like the current grade and GPA and associated settings.";
         private MainScreenViewModel _mainScreenViewModel;
 
         public GetGradesTool(MainScreenViewModel mainScreenViewModel)
@@ -71,13 +71,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 
         public override async Task<GradesResponse> InvokeWithResultAsync(ClassInputParams parameters)
         {
-            var classItem = _mainScreenViewModel.Classes.FirstOrDefault(i => i.Identifier == parameters.ClassIdentifier);
+            var classItem = _mainScreenViewModel.Classes.FirstOrDefault(i => i.Identifier == parameters.ClassId);
             if (classItem == null)
             {
-                throw new ArgumentException($"Class with identifier {parameters.ClassIdentifier} not found.");
+                throw new ArgumentException($"Class with identifier {parameters.ClassId} not found.");
             }
 
-            var viewItemsGroupClass = await ClassViewItemsGroup.LoadAsync(_mainScreenViewModel.CurrentLocalAccountId, classItem.Identifier, DateTime.Today, _mainScreenViewModel.CurrentSemester, includeWeights: true);
+            var viewItemsGroupClass = await _mainScreenViewModel.LoadClassViewItemsGroupAsync(parameters.ClassId, includeWeights: true);
             viewItemsGroupClass.LoadGrades();
             await viewItemsGroupClass.LoadGradesTask;
 

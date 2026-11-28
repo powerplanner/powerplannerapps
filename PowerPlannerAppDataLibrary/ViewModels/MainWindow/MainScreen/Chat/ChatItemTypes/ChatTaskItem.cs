@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatItemTypes
 {
@@ -30,7 +31,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
         [DisallowNull]
         public required TaskDueTimeOption DueTimeOption { get; set; }
 
-        [Description("If the DueTimeOption is set to CustomTime, this specifies the custom due time.")]
+        [Description("If the dueTimeOption is set to CustomTime, this specifies the custom due time.")]
         public TimeOnly? CustomDueTime { get; set; }
 
         public static TaskDueDateAndTime FromViewItem(ViewItemTaskOrEvent task)
@@ -72,12 +73,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
 
     internal class ChatTaskItem : BaseChatItem
     {
-        [Description("The name of the task.")]
+        [Description("The name of the task, trimmed to at most 100 chars.")]
         [NotNull]
         [DisallowNull]
         public string Name { get; set; }
 
-        [Description("Optional details for the task.")]
+        [Description("Optional details for the task, trimmed to at most 100 chars.")]
         public string Details { get; set; }
 
         [Description("The due date and time of the task.")]
@@ -88,18 +89,52 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
         [Description("The percent complete of the task, from 0.0 to 1.0.")]
         public double PercentComplete { get; set; }
 
-        [Description("The upper identifier of the task, typically a class identifier, but it also can be a semester identifier if it's a \"no class\" task.")]
+        [Description("The ID of the parent the task belongs to. Typically this is a class ID, but it can be a semester ID for \"no class\" tasks.")]
         [NotNull]
         [DisallowNull]
-        public Guid UpperIdentifier { get; set; }
+        public Guid ClassOrSemesterId { get; set; }
 
         public ChatTaskItem(ViewItemTaskOrEvent task) : base(task)
         {
-            Name = task.Name;
-            Details = task.Details;
+            Name = StringTools.TrimLengthWithEllipses(task.Name, 100);
+            Details = StringTools.TrimLengthWithEllipses(task.Details, 100);
             DueDateAndTime = TaskDueDateAndTime.FromViewItem(task);
             PercentComplete = task.PercentComplete;
-            UpperIdentifier = task.Class.Identifier;
+            ClassOrSemesterId = task.Class.Identifier;
+        }
+    }
+
+    internal class ChatFullTaskItem : ChatTaskItem
+    {
+        [Description("The name of the task.")]
+        [NotNull]
+        [DisallowNull]
+        public new string Name { get; set; }
+
+        [Description("Optional details for the task.")]
+
+        public new string Details { get; set; }
+
+        [Description("If set to a valid weight category from the task's class, this means the task is a graded item and is part of that weight. Alternatively, this can be an \"Unassigned\" grade if it's null. Unassigned grades show up in a separate list on the class grades page. Or, this can be \"Excluded from grades\" if set to \"11111111-1111-1111-1111-111111111111\", which prevents the item from showing up in the grades page completely. Default is null (unassigned).")]
+        public Guid? GradeWeightCategoryId { get; set; }
+
+        [Description("The number of points received for the grade. Can be null if not yet graded.")]
+        public double? GradeReceived { get; set; }
+
+        [Description("The total number of points possible for the grade.")]
+        public double? GradeTotal { get; set; }
+
+        [Description("Whether the grade is dropped (ignored from the overall grade calculation).")]
+        public bool GradeIsDropped { get; set; }
+
+        public ChatFullTaskItem(ViewItemTaskOrEvent e) : base(e)
+        {
+            Name = e.Name;
+            Details = e.Details;
+            GradeWeightCategoryId = e.WeightCategoryIdentifier == PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_UNASSIGNED ? null : e.WeightCategoryIdentifier;
+            GradeReceived = e.GradeReceived == PowerPlannerSending.Grade.UNGRADED ? null : e.GradeReceived;
+            GradeTotal = e.GradeTotal == PowerPlannerSending.Grade.UNGRADED ? null : e.GradeTotal;
+            GradeIsDropped = e.IsDropped;
         }
     }
 }

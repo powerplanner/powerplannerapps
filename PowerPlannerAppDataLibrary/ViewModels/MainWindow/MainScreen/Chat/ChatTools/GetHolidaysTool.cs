@@ -12,10 +12,10 @@ using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.Ch
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatTools
 {
-    internal class GetHolidaysTool : LocalTool<BlankParams, List<ChatHolidayItem>>
+    internal class GetHolidaysTool : LocalTool<SemesterParams, List<ChatHolidayItem>>
     {
-        public override string Name => "get_holidays";
-        public override string Description => "Gets the list of holidays in the currently open semester, including future and past holidays.";
+        public override string Name => "list_holidays";
+        public override string Description => "Lists the holidays from the specified semester, including future and past holidays.";
         private MainScreenViewModel _mainScreenViewModel;
 
         public GetHolidaysTool(MainScreenViewModel mainScreenViewModel)
@@ -24,9 +24,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
             DisplayName = "Get holidays";
         }
 
-        public override async Task<List<ChatHolidayItem>> InvokeWithResultAsync(BlankParams parameters)
+        public override async Task<List<ChatHolidayItem>> InvokeWithResultAsync(SemesterParams parameters)
         {
-            var semesterItemsViewGroup = SemesterItemsViewGroup.Load(_mainScreenViewModel.CurrentLocalAccountId, _mainScreenViewModel.CurrentSemester);
+            var semesterItemsViewGroup = await _mainScreenViewModel.LoadSemesterItemsViewGroupAsync(parameters.SemesterIdentifier);
             await semesterItemsViewGroup.LoadingTask;
 
             return semesterItemsViewGroup.Items

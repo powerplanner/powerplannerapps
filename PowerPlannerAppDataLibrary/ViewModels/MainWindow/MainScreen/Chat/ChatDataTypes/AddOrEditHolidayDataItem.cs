@@ -17,8 +17,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
             [
                 new Property<Guid>
                 {
-                    Name = "Identifier",
-                    Description = "The identifier of the holiday to edit.",
+                    Name = "id",
+                    Description = "The ID of the holiday to edit.",
                     WhenAdding = PropertyPresence.NotPresent,
                     WhenEditing = PropertyPresence.Required,
                     RequireNonDefaultValueIfSet = true,
@@ -30,8 +30,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<Guid>
                 {
-                    Name = "SemesterIdentifier",
-                    Description = "The identifier of the semester that the holiday is part of.",
+                    Name = "semesterId",
+                    Description = "The ID of the semester that the holiday is part of.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
                     RequireNonDefaultValueIfSet = true,
@@ -43,7 +43,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<string>
                 {
-                    Name = "Name",
+                    Name = "name",
                     Description = "The name of the holiday.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
@@ -58,7 +58,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<DateOnly>
                 {
-                    Name = "StartDate",
+                    Name = "startDate",
                     Description = "The start date of the holiday.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
@@ -70,7 +70,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<DateOnly>
                 {
-                    Name = "EndDate",
+                    Name = "endDate",
                     Description = "The end date of the holiday.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,

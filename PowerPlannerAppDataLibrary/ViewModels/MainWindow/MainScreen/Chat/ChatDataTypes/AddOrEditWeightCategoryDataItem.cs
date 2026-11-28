@@ -17,8 +17,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
             [
                 new Property<Guid>
                 {
-                    Name = "Identifier",
-                    Description = "The identifier of the weight category.",
+                    Name = "id",
+                    Description = "The ID of the weight category.",
                     WhenAdding = PropertyPresence.NotPresent,
                     WhenEditing = PropertyPresence.Required,
                     RequireNonDefaultValueIfSet = true,
@@ -30,8 +30,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<Guid>
                 {
-                    Name = "ClassIdentifier",
-                    Description = "The identifier of the class that the weight category belongs to.",
+                    Name = "classId",
+                    Description = "The ID of the class that the weight category belongs to.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
                     RequireNonDefaultValueIfSet = true,
@@ -43,7 +43,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<string>
                 {
-                    Name = "Name",
+                    Name = "name",
                     Description = "The name of the weight category.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
@@ -58,7 +58,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<double>
                 {
-                    Name = "WeightValue",
+                    Name = "weightValue",
                     Description = "The weight value of the weight category. This must be 0 or greater. Typical values are 20, 50, etc. Weight totals can sum to greater than 100, some students have weight categories where each one is worth 100 or 200, and the total is 500. When the value is 0, it's treated as an extra credit weight category.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,

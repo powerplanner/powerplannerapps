@@ -18,8 +18,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
             [
                 new Property<Guid>
                 {
-                    Name = "Identifier",
-                    Description = "The identifier of the task.",
+                    Name = "id",
+                    Description = "The ID of the task.",
                     WhenAdding = PropertyPresence.NotPresent,
                     WhenEditing = PropertyPresence.Required,
                     RequireNonDefaultValueIfSet = true,
@@ -31,8 +31,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<Guid>
                 {
-                    Name = "UpperIdentifier",
-                    Description = "The upper identifier of the task, typically a class identifier, but also can be a semester identifier if it's a \"no class\" task that isn't within a specific class.",
+                    Name = "classOrSemesterId",
+                    Description = "The ID of the parent the task belongs to. Typically this is a class ID, but it can be a semester ID for \"no class\" tasks.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
                     RequireNonDefaultValueIfSet = true,
@@ -44,7 +44,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<string>
                 {
-                    Name = "Name",
+                    Name = "name",
                     Description = "The name of the task.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
@@ -59,7 +59,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<double>
                 {
-                    Name = "PercentComplete",
+                    Name = "percentComplete",
                     Description = "The percent complete of the task, from 0.0 to 1.0",
                     WhenAdding = PropertyPresence.Optional,
                     WhenEditing = PropertyPresence.Optional,
@@ -76,7 +76,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new NestedProperty
                 {
-                    Name = "DueDateAndTime",
+                    Name = "dueDateAndTime",
                     Description = "The due date and time of the task.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
@@ -87,22 +87,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
                         [
                             new Property<DateOnly>
                             {
-                                Name = "DueDate",
+                                Name = "dueDate",
                                 Description = "The due date of the task.",
                                 WhenAdding = PropertyPresence.Required,
                                 WhenEditing = PropertyPresence.Required
                             },
                             new Property<TaskDueTimeOption>
                             {
-                                Name = "DueTimeOption",
+                                Name = "dueTimeOption",
                                 Description = "The due time option for the task. \"StartOfClass\" is the default option that should be used unless otherwise specified or already set.",
                                 WhenAdding = PropertyPresence.Required,
                                 WhenEditing = PropertyPresence.Required
                             },
                             new Property<TimeOnly>
                             {
-                                Name = "CustomDueTime",
-                                Description = "If the DueTimeOption is set to CustomTime, this specifies the custom due time in HH:MM format.",
+                                Name = "customDueTime",
+                                Description = "If the dueTimeOption is set to CustomTime, this specifies the custom due time in HH:MM format.",
                                 WhenAdding = PropertyPresence.Optional,
                                 WhenEditing = PropertyPresence.Optional
                             }
@@ -150,7 +150,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<string>
                 {
-                    Name = "Details",
+                    Name = "details",
                     Description = "Additional details about the task.",
                     WhenAdding = PropertyPresence.Optional,
                     WhenEditing = PropertyPresence.Optional,
@@ -158,6 +158,54 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
                     Apply = (dataItem, value) =>
                     {
                         dataItem.Details = value;
+                    }
+                },
+
+                new Property<Guid>
+                {
+                    Name = "gradeWeightCategoryId",
+                    Description = $"If set to a valid weight category from the task's class, this means the task is a graded item and is part of that weight. Alternatively, this can be an \"Unassigned\" grade by specifying \"{PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_UNASSIGNED}\". Unassigned grades show up in a separate list on the class grades page. Or, this can be \"Excluded from grades\", by specifying \"{PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_EXCLUDED}\", which will prevent the item from showing up in the grades page completely. Default is \"{PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_UNASSIGNED}\".",
+                    WhenAdding = PropertyPresence.Optional,
+                    WhenEditing = PropertyPresence.Optional,
+                    Apply = (dataItem, value) =>
+                    {
+                        dataItem.WeightCategoryIdentifier = value;
+                    }
+                },
+
+                new Property<double>
+                {
+                    Name = "gradeReceived",
+                    Description = "The number of points received for the grade. To clear the grade received and make this a not-yet-graded item, set this to -50.",
+                    WhenAdding = PropertyPresence.Optional,
+                    WhenEditing = PropertyPresence.Optional,
+                    Apply = (dataItem, value) =>
+                    {
+                        dataItem.GradeReceived = value;
+                    }
+                },
+
+                new Property<double>
+                {
+                    Name = "gradeTotal",
+                    Description = "The total number of points possible for the grade.",
+                    WhenAdding = PropertyPresence.Optional,
+                    WhenEditing = PropertyPresence.Optional,
+                    Apply = (dataItem, value) =>
+                    {
+                        dataItem.GradeTotal = value;
+                    }
+                },
+
+                new Property<bool>
+                {
+                    Name = "gradeIsDropped",
+                    Description = "Whether the grade is dropped (ignored from the overall grade calculation).",
+                    WhenAdding = PropertyPresence.Optional,
+                    WhenEditing = PropertyPresence.Optional,
+                    Apply = (dataItem, value) =>
+                    {
+                        dataItem.IsDropped = value;
                     }
                 }
             ];

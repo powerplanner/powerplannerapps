@@ -2138,5 +2138,39 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 TelemetryExtension.Current?.TrackException(ex);
             }
         }
+
+        /// <summary>
+        /// Note that you still must await the LoadingTask within the answer if you want the Items to be populated.
+        /// </summary>
+        /// <param name="semesterIdentifier"></param>
+        /// <returns></returns>
+        public async Task<SemesterItemsViewGroup> LoadSemesterItemsViewGroupAsync(Guid semesterIdentifier)
+        {
+            if (CurrentSemester != null && semesterIdentifier == CurrentSemester.Identifier)
+            {
+                return SemesterItemsViewGroup.Load(CurrentLocalAccountId, CurrentSemester);
+            }
+            else
+            {
+                return await SemesterItemsViewGroup.LoadAsync(CurrentLocalAccountId, semesterIdentifier);
+            }
+        }
+
+        public async Task<ClassViewItemsGroup> LoadClassViewItemsGroupAsync(Guid classIdentifier, bool includeWeights = false)
+        {
+            if (CurrentSemester != null && Classes != null && Classes.Any(i => i.Identifier == classIdentifier))
+            {
+                return await ClassViewItemsGroup.LoadAsync(CurrentLocalAccountId, classIdentifier, DateTime.Today, CurrentSemester, includeWeights: includeWeights);
+            }
+            else
+            {
+                var data = await AccountDataStore.Get(CurrentLocalAccountId);
+                Guid semesterIdentifier = await data.GetSemesterIdForClassAsync(classIdentifier);
+                if (semesterIdentifier == Guid.Empty)
+                    throw new InvalidOperationException("Could not find the semester for the specified class.");
+                var scheduleViewItemGroup = await ScheduleViewItemsGroup.LoadAsync(CurrentLocalAccountId, semesterIdentifier);
+                return await ClassViewItemsGroup.LoadAsync(CurrentLocalAccountId, classIdentifier, DateTime.Today, scheduleViewItemGroup.Semester, includeWeights: includeWeights);
+            }
+        }
     }
 }

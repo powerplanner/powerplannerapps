@@ -54,7 +54,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             // Subscribe to the school
             Subscribe(YearsViewItemsGroup.School);
 
-            bool hasTitlebar = MainScreenViewModel.IsCompactMode && !PowerPlannerApp.ShowYearsAsPopups;
+            bool hasTitlebar = !PowerPlannerApp.ShowYearsAsPopups;
             var contentMargins = PowerPlannerApp.ShowYearsAsPopups ? new Thickness(Theme.Current.SmallPageMargin + NookInsets.Left, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin + NookInsets.Right, Theme.Current.SmallPageMargin + NookInsets.Bottom) : MainScreenViewModel.ContentMargins;
 
             var linearLayout = new LinearLayout
@@ -155,6 +155,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                         Title = Title,
                         NookInsets = MainScreenViewModel.ContentNookInsets,
                         OnBack = CanGoBack ? () => GoBack() : null,
+                        PrimaryCommands =
+                        {
+                            ToolbarHelper.ChatCommand(MainScreenViewModel)
+                        }
                     }.InnerToolbarThemed() : null,
 
                     new Border

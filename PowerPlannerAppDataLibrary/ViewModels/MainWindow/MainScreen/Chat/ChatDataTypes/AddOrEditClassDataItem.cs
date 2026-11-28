@@ -17,8 +17,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
             [
                 new Property<Guid>
                 {
-                    Name = "Identifier",
-                    Description = "The identifier of the class.",
+                    Name = "id",
+                    Description = "The ID of the class.",
                     WhenAdding = PropertyPresence.NotPresent,
                     WhenEditing = PropertyPresence.Required,
                     RequireNonDefaultValueIfSet = true,
@@ -26,7 +26,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
                     {
                         if (value == Guid.Empty)
                         {
-                            throw new ArgumentException("Class identifier cannot be empty.");
+                            throw new ArgumentException("Class ID cannot be empty.");
                         }
                         dataItem.Identifier = value;
                     }
@@ -34,8 +34,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<Guid>
                 {
-                    Name = "SemesterIdentifier",
-                    Description = "The identifier of the semester this class belongs to.",
+                    Name = "semesterId",
+                    Description = "The ID of the semester this class belongs to.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
                     RequireNonDefaultValueIfSet = true,
@@ -43,7 +43,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
                     {
                         if (value == Guid.Empty)
                         {
-                            throw new ArgumentException("Semester identifier cannot be empty.");
+                            throw new ArgumentException("Semester ID cannot be empty.");
                         }
                         dataItem.UpperIdentifier = value;
                     }
@@ -51,7 +51,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<string>
                 {
-                    Name = "Name",
+                    Name = "name",
                     Description = "The name of the class.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
@@ -73,7 +73,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<Color>
                 {
-                    Name = "Color",
+                    Name = "color",
                     Description = "The color of the class, in hex string format, ex \"#FF0000\" for red. Use darker colors, since white text will be displayed on top of the class color.",
                     WhenAdding = PropertyPresence.Required,
                     WhenEditing = PropertyPresence.Optional,
@@ -83,9 +83,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
                     }
                 },
 
+                new Property<string>
+                {
+                    Name = "details",
+                    Description = "Details for the class (office hour contact info, notes about the class, etc).",
+                    WhenAdding = PropertyPresence.Optional,
+                    WhenEditing = PropertyPresence.Optional,
+                    MaxLength = 4000,
+                    Apply = (dataItem, value) =>
+                    {
+                        dataItem.Details = value;
+                    }
+                },
+
                 new Property<DateOnly>
                 {
-                    Name = "StartDate",
+                    Name = "startDate",
                     Description = "The start date of the class. To clear the start date, send " + DateOnly.MinValue.ToString("yyyy-MM-dd") + ".",
                     WhenAdding = PropertyPresence.Optional,
                     WhenEditing = PropertyPresence.Optional,
@@ -108,7 +121,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<DateOnly>
                 {
-                    Name = "EndDate",
+                    Name = "endDate",
                     Description = "The end date of the class. To clear the end date, send " + DateOnly.MinValue.ToString("yyyy-MM-dd") + ".",
                     WhenAdding = PropertyPresence.Optional,
                     WhenEditing = PropertyPresence.Optional,
@@ -131,7 +144,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
 
                 new Property<double>
                 {
-                    Name = "Credits",
+                    Name = "credits",
                     Description = "The credits the class is worth. If no credits are assigned, send -1.",
                     WhenAdding = PropertyPresence.Optional,
                     WhenEditing = PropertyPresence.Optional,
@@ -143,6 +156,64 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatD
                         }
 
                         dataItem.Credits = value;
+                    }
+                },
+
+                new Property<double>
+                {
+                    Name = "overriddenGrade",
+                    Description = "The overridden grade for the class (as a percent from 0.0 to 1.0). To remove the overridden grade, send -1.",
+                    WhenAdding = PropertyPresence.Optional,
+                    WhenEditing = PropertyPresence.Optional,
+                    Apply = (dataItem, value) =>
+                    {
+                        if (value < -1)
+                        {
+                            throw new ArgumentException("Overridden grade cannot be less than -1.");
+                        }
+
+                        dataItem.OverriddenGrade = value;
+                    }
+                },
+
+                new Property<double>
+                {
+                    Name = "overriddenGpa",
+                    Description = "The overridden GPA for the class (ex: 3.0 or 4.0). To remove the overridden GPA, send -1.",
+                    WhenAdding = PropertyPresence.Optional,
+                    WhenEditing = PropertyPresence.Optional,
+                    Apply = (dataItem, value) =>
+                    {
+                        if (value < -1)
+                        {
+                            throw new ArgumentException("Overridden GPA cannot be less than -1.");
+                        }
+
+                        dataItem.OverriddenGPA = value;
+                    }
+                },
+
+                new Property<PowerPlannerSending.GpaType>
+                {
+                    Name = "gpaType",
+                    Description = "Whether the class uses GPA numbers (\"Standard\", and the default value), or if it's a pass/fail class. ",
+                    WhenAdding = PropertyPresence.Optional,
+                    WhenEditing = PropertyPresence.Optional,
+                    Apply = (dataItem, value) =>
+                    {
+                        dataItem.GpaType = value;
+                    }
+                },
+
+                new Property<double>
+                {
+                    Name = "passingGrade",
+                    Description = "If the class is a pass/fail class, this specifies the passing grade for the class, as a percent from 0.0 to 1.0. If the class is not a pass/fail class, this value is insignificant.",
+                    WhenAdding = PropertyPresence.Optional,
+                    WhenEditing = PropertyPresence.Optional,
+                    Apply = (dataItem, value) =>
+                    {
+                        dataItem.PassingGrade = value;
                     }
                 }
             ];

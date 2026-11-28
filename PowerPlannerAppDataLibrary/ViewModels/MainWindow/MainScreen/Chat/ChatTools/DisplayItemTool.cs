@@ -10,16 +10,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 {
     internal class DisplayItemToolParams
     {
-        [Description("The identifier of the item to display")]
+        [Description("The id of the item to open.")]
         [NotNull]
         [DisallowNull]
-        public Guid Identifier { get; set; }
+        public required Guid Id { get; set; }
     }
 
     internal class DisplayItemTool : LocalTool<DisplayItemToolParams, string>
     {
-        public override string Name => "display_" + ItemName;
-        public override string Description => $"Displays the {ItemName} to the user.";
+        public override string Name => "open_" + ItemName;
+        public override string Description => $"Opens the {ItemName} in the app.";
         public required PowerPlannerSending.ItemType ItemType { get; set; }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
                 switch (ItemType)
                 {
                     case PowerPlannerSending.ItemType.Class:
-                        var c = _mainScreenViewModel.Classes.FirstOrDefault(i => i.Identifier == parameters.Identifier);
+                        var c = _mainScreenViewModel.Classes.FirstOrDefault(i => i.Identifier == parameters.Id);
                         if (c == null)
                         {
                             return NOT_FOUND;
@@ -54,7 +54,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
                     case PowerPlannerSending.ItemType.MegaItem:
                         if (ItemName == "task_or_event")
                         {
-                            if (await _mainScreenViewModel.ShowTaskOrEventAsync(parameters.Identifier))
+                            if (await _mainScreenViewModel.ShowTaskOrEventAsync(parameters.Id))
                             {
                                 return SUCCESS;
                             }
@@ -62,7 +62,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
                         }
                         if (ItemName == "holiday")
                         {
-                            if (await _mainScreenViewModel.ShowHolidayAsync(parameters.Identifier))
+                            if (await _mainScreenViewModel.ShowHolidayAsync(parameters.Id))
                             {
                                 return SUCCESS;
                             }

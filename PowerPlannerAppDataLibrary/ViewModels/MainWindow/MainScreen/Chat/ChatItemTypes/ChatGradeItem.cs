@@ -15,10 +15,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
         [DisallowNull]
         public string Name { get; set; }
 
-        [NotNull]
-        [DisallowNull]
-        public double GradeReceived { get; set; }
+        [Description("The number of points received for the grade. Can be null if not yet graded.")]
+        public double? GradeReceived { get; set; }
 
+        [Description("The total number of points possible for the grade.")]
         [NotNull]
         [DisallowNull]
         public double GradeTotal { get; set; }
@@ -31,7 +31,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
         [DisallowNull]
         public DateOnly Date { get; set; }
 
-        [Description("Indicates whether the grade is dropped or not.")]
+        [Description("Whether the grade is dropped (ignored from the overall grade calculation).")]
         [NotNull]
         [DisallowNull]
         public bool IsDropped { get; set; }
@@ -39,7 +39,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatI
         public ChatGradeItem(BaseViewItemMegaItem item) : base(item)
         {
             Name = item.Name;
-            GradeReceived = item.GradeReceived;
+            GradeReceived = item.GradeReceived == PowerPlannerSending.Grade.UNGRADED ? null : item.GradeReceived;
             GradeTotal = item.GradeTotal;
             Details = item.Details;
             Date = DateOnly.FromDateTime(item.Date);

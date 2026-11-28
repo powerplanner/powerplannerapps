@@ -2,6 +2,7 @@
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatDataTypes;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatTools;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -76,6 +77,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 new GetTasksAndEventsTool(_mainScreenViewModel),
                 new GetHolidaysTool(_mainScreenViewModel),
                 new GetGradesTool(_mainScreenViewModel),
+                new GetYearsAndSemestersTool(_mainScreenViewModel),
+                new GetFullTasksAndEventsTool(_mainScreenViewModel),
 
                 // Dislay items
                 new DisplayItemTool(_mainScreenViewModel)
@@ -169,6 +172,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                     DisplayName = "Edit weight categories"
                 },
 
+                // Add grades
+                new AddOrEditItemsTool<AddOrEditGradeDataItem>(_mainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Add,
+                    DisplayName = "Add grades"
+                },
+
+                // Edit grades
+                new EditGradesTool(_mainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Edit,
+                    DisplayName = "Edit grades"
+                },
+
                 // Add schedules
                 new AddOrEditItemsTool<AddOrEditScheduleDataItem>(_mainScreenViewModel)
                 {
@@ -183,35 +200,68 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                     DisplayName = "Edit schedules"
                 },
 
+                // Add semesters
+                new AddOrEditItemsTool<AddOrEditSemesterDataItem>(_mainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Add,
+                    DisplayName = "Add semesters"
+                },
+
+                // Edit semesters
+                new AddOrEditItemsTool<AddOrEditSemesterDataItem>(_mainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Edit,
+                    DisplayName = "Edit semesters"
+                },
+
+                // Add years
+                new AddOrEditItemsTool<AddOrEditYearDataItem>(_mainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Add,
+                    DisplayName = "Add years"
+                },
+
+                // Edit years
+                new AddOrEditItemsTool<AddOrEditYearDataItem>(_mainScreenViewModel)
+                {
+                    Mode = AddOrEditMode.Edit,
+                    DisplayName = "Edit years"
+                },
+
                 // Delete items
                 new DeleteItemsTool(_mainScreenViewModel)
                 {
                     PluralItemTypeName = "classes",
-                    DisplayName = "Delete classes"
+                    DisplayName = "Delete classes",
+                    HasChildren = true
                 },
 
                 new DeleteItemsTool(_mainScreenViewModel)
                 {
                     PluralItemTypeName = "tasks_and_events",
-                    DisplayName = "Delete tasks and events"
+                    DisplayName = "Delete tasks and events",
+                    HasChildren = false
                 },
 
                 new DeleteItemsTool(_mainScreenViewModel)
                 {
                     PluralItemTypeName = "holidays",
-                    DisplayName = "Delete holidays"
+                    DisplayName = "Delete holidays",
+                    HasChildren = false
                 },
 
                 new DeleteItemsTool(_mainScreenViewModel)
                 {
                     PluralItemTypeName = "weight_categories",
-                    DisplayName = "Delete weight categories"
+                    DisplayName = "Delete weight categories",
+                    HasChildren = true
                 },
 
-                new DeleteItemsTool(_mainScreenViewModel)
+                new DeleteGradesTool(_mainScreenViewModel)
                 {
                     PluralItemTypeName = "grades",
-                    DisplayName = "Delete grades"
+                    DisplayName = "Delete grades",
+                    HasChildren = false
                 }
             ];
         }
@@ -462,6 +512,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                   - Schedules: Weekly schedule entries for a specific class.
                   - Grades: Grades under a specific class.
                   - Holidays: Holidays under a specific semester.
+                - The term "semester" is used in the app, but Power Planner also supports "trimesters" and "quarters" (each year can have 0-many semesters).
                 - For any "how to" questions about using the app that you can't help with using the existing tools, refer the user to https://support.powerplanner.net, or ask them to email support@powerplanner.net.
                 - Power Planner does have a MCP server, it's in beta, refer the user to https://support.powerplanner.net/misc/mcp/ only if they explicitly ask about MCP.
                 - If the user asks what you can do or what actions you can perform, mention the editing/adding tools before others, since users will primarily use this to bulk edit or add data.
@@ -497,12 +548,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
 
         private IEnumerable<string> GetCurrentAppState()
         {
-            yield return $"- CurrentDateTime: {DateTime.Now.ToString("yyyy-MM-ddTHH:mm")}";
-            yield return $"- CurrentWeek: {_mainScreenViewModel.CurrentAccount.CurrentWeek} (a.k.a. week A/B)";
+            yield return $"- Current date and time: {DateTime.Now.ToString("yyyy-MM-ddTHH:mm")}";
+            yield return $"- Current week (a.k.a. week A/B): {_mainScreenViewModel.CurrentAccount.CurrentWeek}";
 
             if (_mainScreenViewModel.CurrentSemester != null)
             {
-                yield return $"- CurrentSemester: \"{_mainScreenViewModel.CurrentSemester.Name}\", Identifier: {_mainScreenViewModel.CurrentSemester.Identifier}";
+                yield return $"- Current semester: \"{_mainScreenViewModel.CurrentSemester.Name}\", ID: {_mainScreenViewModel.CurrentSemester.Identifier}";
 
                 if (_mainScreenViewModel.Classes.Count == 0)
                 {
@@ -514,33 +565,34 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
 
                     foreach (var c in _mainScreenViewModel.Classes)
                     {
-                        yield return $"  - Class: \"{c.Name}\", Identifier: {c.Identifier}, Color: {ColorHelper.ToString(c.Color)}";
+                        yield return $"  - Class: \"{c.Name}\", ID: {c.Identifier}, Color: {ColorHelper.ToString(c.Color)}";
                     }
                 }
             }
             else
             {
-                yield return "- CurrentSemester: None";
+                yield return "- Current semester: None";
             }
 
             if (_mainScreenViewModel.SelectedItem == NavigationManager.MainMenuSelections.Classes)
             {
                 if (_mainScreenViewModel.SelectedClass != null)
                 {
-                    yield return $"- CurrentOpenPage: Class: \"{_mainScreenViewModel.SelectedClass.Name}\", Identifier: {_mainScreenViewModel.SelectedClass.Identifier}";
+                    yield return $"- Current open page: Class: \"{_mainScreenViewModel.SelectedClass.Name}\", ID: {_mainScreenViewModel.SelectedClass.Identifier}";
+                    yield return $"  - Current page within class: {ClassViewModel.LastSelectedPage}";
                 }
                 else
                 {
-                    yield return "- CurrentOpenPage: Classes";
+                    yield return "- Current open page: Classes";
                 }
             }
             else
             {
-                yield return $"- CurrentOpenPage: {_mainScreenViewModel.SelectedItem}";
+                yield return $"- Current open page: {_mainScreenViewModel.SelectedItem}";
 
                 if (_mainScreenViewModel.SelectedItem == NavigationManager.MainMenuSelections.Calendar)
                 {
-                    yield return $"- CurrentOpenMonth: {NavigationManager.GetDisplayMonth().ToString("yyyy-MM")}";
+                    yield return $"  - Current open month on calendar: {NavigationManager.GetDisplayMonth().ToString("yyyy-MM")}";
                 }
             }
         }

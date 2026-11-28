@@ -11,14 +11,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
     public class NavigateToPageToolParameters
     {
         [JsonPropertyName("page")]
-        [Description("The page to navigate to.")]
+        [Description("The page to show.")]
         public required ChatPageType Page { get; set; }
     }
 
     internal class NavigateToPageTool : LocalTool<NavigateToPageToolParameters>
     {
-        public override string Name => "navigate_to_page";
-        public override string Description => "Navigates to the specified page.";
+        public override string Name => "show_page";
+        public override string Description => "Shows the specified page in the app.";
         private MainScreenViewModel _mainScreenViewModel;
 
         public NavigateToPageTool(MainScreenViewModel mainScreenViewModel)
