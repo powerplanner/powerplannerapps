@@ -3,6 +3,8 @@ using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatTools;
 using System;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
@@ -218,12 +220,37 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
             };
         }
 
+        [JsonSourceGenerationOptions(
+            WriteIndented = true)]
+        [JsonSerializable(typeof(JsonElement))]
+        internal partial class JsonArgumentsContext : JsonSerializerContext
+        {
+        }
+
+        private string PrettifyArguments(JsonElement arguments)
+        {
+            try
+            {
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    TypeInfoResolver = JsonArgumentsContext.Default
+                };
+                string formattedJson = JsonSerializer.Serialize(arguments, jsonTypeInfo: JsonArgumentsContext.Default.JsonElement);
+                return formattedJson;
+            }
+            catch
+            {
+                return arguments.ToString();
+            }
+        }
+
         private View RenderApproval(FunctionCallContent toolCall, LocalTool localTool)
         {
             string toolArguments;
             try
             {
-                toolArguments = LocalTool.ConvertToolCallArgumentsToJsonElement(toolCall.Arguments).ToString();
+                toolArguments = PrettifyArguments(LocalTool.ConvertToolCallArgumentsToJsonElement(toolCall.Arguments));
             }
             catch
             {
