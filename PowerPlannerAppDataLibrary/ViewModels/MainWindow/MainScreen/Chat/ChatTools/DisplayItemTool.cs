@@ -80,7 +80,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
                         return NOT_FOUND;
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return "Unknown error occurred.";
             }
