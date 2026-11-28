@@ -36,6 +36,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
         public override async Task<string> InvokeWithResultAsync(DisplayItemToolParams parameters)
         {
             const string NOT_FOUND = "Error: Couldn't find the item to display.";
+            const string NOT_FOUND_IN_CURRENT_SEMESTER = "Error: Couldn't find the item to display in the current semester. Please first open the correct semester and try again.";
             const string SUCCESS = "Successfully displayed the item.";
 
             try
@@ -43,13 +44,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
                 switch (ItemType)
                 {
                     case PowerPlannerSending.ItemType.Class:
-                        var c = _mainScreenViewModel.Classes.FirstOrDefault(i => i.Identifier == parameters.Id);
-                        if (c == null)
+                        if (await _mainScreenViewModel.SelectClass(parameters.Id))
                         {
-                            return NOT_FOUND;
+                            return SUCCESS;
                         }
-                        _mainScreenViewModel.ViewClass(c);
-                        return SUCCESS;
+                        return NOT_FOUND;
 
                     case PowerPlannerSending.ItemType.MegaItem:
                         if (ItemName == "task_or_event")
@@ -58,7 +57,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
                             {
                                 return SUCCESS;
                             }
-                            return NOT_FOUND;
+                            return NOT_FOUND_IN_CURRENT_SEMESTER;
                         }
                         if (ItemName == "holiday")
                         {
@@ -66,10 +65,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
                             {
                                 return SUCCESS;
                             }
-                            return NOT_FOUND;
+                            return NOT_FOUND_IN_CURRENT_SEMESTER;
                         }
                         return NOT_FOUND;
-                        break;
+                    case PowerPlannerSending.ItemType.Semester:
+                        await _mainScreenViewModel.SetCurrentSemester(parameters.Id);
+                        if (_mainScreenViewModel.CurrentSemester != null && _mainScreenViewModel.CurrentSemester.Identifier == parameters.Id)
+                        {
+                            return SUCCESS;
+                        }
+                        return NOT_FOUND;
 
                     default:
                         return NOT_FOUND;

@@ -80,7 +80,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                 new GetYearsAndSemestersTool(_mainScreenViewModel),
                 new GetFullTasksAndEventsTool(_mainScreenViewModel),
 
-                // Dislay items
+                // Open items
                 new DisplayItemTool(_mainScreenViewModel)
                 {
                     ItemType = PowerPlannerSending.ItemType.Class,
@@ -100,6 +100,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat
                     ItemType = PowerPlannerSending.ItemType.MegaItem,
                     ItemName = "holiday",
                     DisplayName = "Open holiday"
+                },
+
+                new DisplayItemTool(_mainScreenViewModel)
+                {
+                    ItemType = PowerPlannerSending.ItemType.Semester,
+                    ItemName = "semester",
+                    DisplayName = "Open semester"
                 },
 
                 // Add classes

@@ -32,7 +32,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Chat.ChatT
 
     internal class GetYearsAndSemestersTool : LocalTool<BlankParams, GetYearsAndSemestersToolResponse>
     {
-        public override string Name => "get_academic_overview";
+        public override string Name => "list_years_with_semesters_and_classes_and_grades";
         public override string Description => "Returns the overall GPA and credits, plus all academic years, semesters, and classes with their dates, credits, grades, and GPA values.";
         private MainScreenViewModel _mainScreenViewModel;
 
